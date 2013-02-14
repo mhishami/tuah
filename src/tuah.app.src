@@ -1,0 +1,15 @@
+{application, tuah,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  crypto,
+                  ranch,
+                  cowboy
+                 ]},
+  {mod, { tuah_app, []}},
+  {env, []}
+ ]}.
