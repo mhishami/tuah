@@ -11,14 +11,12 @@ init(_Transport, Req, []) ->
 	{ok, Req, undefined}.
 
 handle(Req, State) ->
-	{Method, Req2} = cowboy_req:method(Req),
+    {Method, Req2} = cowboy_req:method(Req),
     {Path, Req3} = cowboy_req:path(Req2),
-	{Vals, Req4} = cowboy_req:qs_vals(Req3),
+    {Vals, Req4} = cowboy_req:qs_vals(Req3),
     {ok, PostVals, Req5} = cowboy_req:body_qs(Req4),
 
     Parms = [{qs, Vals}, {body, PostVals}],
-    % io:format("Path: ~p, Vals: ~p, Req: ~p~n", [Path, Vals, Req3]),
-    % io:format("Path: ~p~n", [get_path(Path)]),
     {Controller, Action, Args, Params} =
         case get_path(Path) of
             [<<>>] ->
@@ -28,10 +26,8 @@ handle(Req, State) ->
             [C, A] ->
                 {C, A, [], Parms};
             [C, A | R] ->
-                {C, A, R, Parms}
-                
+                {C, A, R, Parms}                
         end,
-    % io:format("~p: C:~p, A:~p, R:~p, P:~p~n", [?MODULE, Controller, Action, Args, Params]),
     {ok, Req6} = case get_controllers(Controller) of
         {ok, _Con} ->
             %% ok, found controllers
@@ -43,15 +39,6 @@ handle(Req, State) ->
     end,    
 	{ok, Req6, State}.
 
-% process(<<"GET">>, undefined, Req) ->
-%     cowboy_req:reply(400, [], <<"Missing process parameter.">>, Req);
-% process(<<"GET">>, _Vals, Req) ->
-%     cowboy_req:reply(200,
-%         [{<<"content-encoding">>, <<"utf-8">>}], "Pass", Req);
-% process(_, _, Req) ->
-%     %% Method not allowed.
-%     cowboy_req:reply(405, Req).
-    
 process_request(Controller, Method, Action, Args, Params, Req) ->
     C = to_atom(Controller, "_controller"),
     Con = C:new(Req),
@@ -61,7 +48,6 @@ process_request(Controller, Method, Action, Args, Params, Req) ->
     %% and then call the controller
     case catch Con:handle_request(Method, Action, Args, Params) of
         {'EXIT', _} ->
-            % io:format("Error in calling controller..."),
             do_error(Req, "'handle_request/4' not found: " ++ atom_to_list(Con));
         {ok, Data} ->
             %% render template
@@ -80,10 +66,8 @@ process_request(Controller, Method, Action, Args, Params, Req) ->
     end.
     
 do_error(Req, Message) ->
-    % io:format("Do Error....~n"),
     case filelib:wildcard("ebin/error_dtl.beam") of
         [] ->
-            % io:format("Returning 404 error..."),
             cowboy_req:reply(404, [], Message, Req);
         _ ->
             {ok, Content} = error_dtl:render([{error, Message}]),
@@ -101,7 +85,6 @@ get_controllers(C) ->
     find(C, Cons).        
         
 find(C, [H|T]) ->
-    % io:format("~p: H: ~p, Match: ~p~n", [?MODULE, H, re:run(H, C)]),
     case re:run(H, C) of
         {match, _} ->
             {ok, H};
