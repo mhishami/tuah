@@ -6,7 +6,7 @@
 -export([terminate/3]).
 
 init(_Transport, Req, []) ->
-	{ok, Req, undefined}.
+    {ok, Req, undefined}.
 
 handle(Req, State) ->
     {Method, Req2} = cowboy_req:method(Req),
@@ -35,7 +35,7 @@ handle(Req, State) ->
             Cx = to_atom(Controller, "_controller"),
             do_error(Req4, "Controller not found: " ++ atom_to_list(Cx))
     end,    
-	{ok, Req6, State}.
+    {ok, Req6, State}.
 
 process_request(Controller, Method, Action, Args, Params, Req) ->
     C = to_atom(Controller, "_controller"),

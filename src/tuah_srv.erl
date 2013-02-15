@@ -33,13 +33,17 @@ init(Args) ->
 		{'_', [
 			{"/static/[...]", cowboy_static, [
 				{directory, <<"priv">>},
-                {etag, {attributes, [filepath, filesize, inode, mtime]}},
-				{mimetypes, {fun mimetypes:path_to_mimes/2, default}}
+				{mimetypes, {fun mimetypes:path_to_mimes/2, default}},
+                {etag, {attributes, [filesize, inode, mtime]}}
 			]},
             {'_', main_handler, []}
 		]}
 	]),
-	{ok, _} = cowboy:start_http(http, 100, [{port, 8080}], [
+    Port = case os:getenv("PORT") of
+               false -> 8080;
+               Val -> list_to_binary(Val)
+           end,
+	{ok, _} = cowboy:start_http(http, 100, [{port, Port}], [
 		{env, [{dispatch, Dispatch}]}
 	]),
     io:format("Web server started at port 8080...~n"),
