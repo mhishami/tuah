@@ -10,19 +10,17 @@ Usage
 
   Create a new project using rebar template
 
-  ``` shell
+  ``` bash
   $ mkdir foo
   $ cd foo
   $ rebar create template=project
   $ rebar create template=simpleapp appid=foo
-
   ```
 
 2. Create The App to Start/Stop
 
-  ``` shell
+  ``` bash
   $ touch src/foo.erl
-
   ```
 
 3. Add The Code
@@ -56,14 +54,15 @@ Usage
 
 4. Implement Your Controller
 
-  ``` shell
+  ``` bash
   $ touch src/home_controller_.erl
-
   ```
+  
   ``` erlang
 
   -module (home_controller, [Req]).
   -export ([handle_request/4]).
+  -export ([before_filter/0]).
 
   before_filter() ->
       %% do some checking
@@ -90,11 +89,10 @@ Usage
 
 5. Do The Templates
 
-  ``` shell
+  ``` bash
   $ mkdir templates
   $ cd templates
   $ touch home.dtl
-
   ```
 
   And complete the home.dtl using ErlyDTL specs.
@@ -102,26 +100,23 @@ Usage
 
   ``` html
   <link href="/static/assets/css/bootstrap.css" rel="stylesheet">
-
   ```
 
 6. Run The App
 
   Edit the Makefile a bit
 
-  ``` shell
+  ``` bash
   dev:
   	@erl +A 10 -sname foo -pa ebin include deps/*/ebin deps/*/include ebin include \
   		-boot start_sasl \
   		-s tuah -s foo
-
   ```
 
   And run it.    
 
   ``` shell
   $ make; make dev
-
   ```
 
 
