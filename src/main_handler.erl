@@ -5,8 +5,6 @@
 -export([handle/2]).
 -export([terminate/3]).
 
--compile(export_all).
-
 init(_Transport, Req, []) ->
 	{ok, Req, undefined}.
 
@@ -16,19 +14,19 @@ handle(Req, State) ->
     {Vals, Req4} = cowboy_req:qs_vals(Req3),
     {ok, PostVals, Req5} = cowboy_req:body_qs(Req4),
 
-    Parms = [{qs, Vals}, {body, PostVals}],
-    {Controller, Action, Args, Params} =
+    Params = [{qs_vals, Vals}, {body_qs, PostVals}],
+    {Controller, Action, Args} =
         case get_path(Path) of
             [<<>>] ->
-                {<<"home">>, <<"index">>, [], Parms};
+                {<<"home">>, <<"index">>, []};
             [C] ->
-                {C, <<"index">>, [], Parms};
+                {C, <<"index">>, []};
             [C, A] ->
-                {C, A, [], Parms};
+                {C, A, []};
             [C, A | R] ->
-                {C, A, R, Parms}                
+                {C, A, R}                
         end,
-    {ok, Req6} = case get_controllers(Controller) of
+    {ok, Req6} = case find_controller(Controller) of
         {ok, _Con} ->
             %% ok, found controllers
             process_request(Controller, Method, Action, Args, Params, Req5);
@@ -44,8 +42,16 @@ process_request(Controller, Method, Action, Args, Params, Req) ->
     Con = C:new(Req),
     
     %% we can do filter here first
+    case catch Con:before_filter() of
+        {redirect, Location} ->
+        	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req);
+        _ ->
+            %% no filter,
+            handle_request(Con, Controller, Method, Action, Args, Params, Req)
+    end.
     
-    %% and then call the controller
+handle_request(Con, Controller, Method, Action, Args, Params, Req) ->
+    %% process request
     case catch Con:handle_request(Method, Action, Args, Params) of
         {'EXIT', _} ->
             do_error(Req, "'handle_request/4' not found: " ++ atom_to_list(Con));
@@ -80,7 +86,7 @@ get_path(Path) ->
 to_atom(Name, Type) ->
     binary_to_atom(iolist_to_binary([Name, Type]), latin1).
     
-get_controllers(C) ->
+find_controller(C) ->
     Cons = filelib:wildcard("ebin/*_controller.beam"),
     find(C, Cons).        
         

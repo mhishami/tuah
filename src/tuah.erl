@@ -1,4 +1,5 @@
 -module (tuah).
+-author ('Hisham Ismail <mhishami@gmail.com').
 
 -export ([start/0]).
 -export ([stop/0]).

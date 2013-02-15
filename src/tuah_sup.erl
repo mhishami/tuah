@@ -1,5 +1,6 @@
 
 -module(tuah_sup).
+-author ('Hisham Ismail <mhishami@gmail.com').
 
 -behaviour(supervisor).
 

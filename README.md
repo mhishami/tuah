@@ -65,10 +65,16 @@ Usage
   -module (home_controller, [Req]).
   -export ([handle_request/4]).
 
+  before_filter() ->
+      %% do some checking
+      
+      %% {redirect, <<"/login">>}
+      {ok, proceed}.
+  
   handle_request(<<"GET">>, Action, Args, Params) ->    
       {ok, []};
     
-  handle_request(<<"POST">>, <<"login">>, _, [{qs, _}, {body, Vals}] = Params) ->
+  handle_request(<<"POST">>, <<"login">>, _, [{qs_vals, _}, {body_qs_, Vals}] = Params) ->
       Username = proplists:get_value(<<"email">>, Vals),
       Password = proplists:get_value(<<"password">>, Vals),
     
