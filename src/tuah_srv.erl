@@ -46,7 +46,7 @@ init(Args) ->
 	{ok, _} = cowboy:start_http(http, 100, [{port, Port}], [
 		{env, [{dispatch, Dispatch}]}
 	]),
-    io:format("Web server started at port 8080...~n"),
+    io:format("Web server started at port ~p...~n", [Port]),
     {ok, Args}.
 
 handle_call(_Request, _From, State) ->
