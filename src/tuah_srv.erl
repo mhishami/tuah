@@ -41,7 +41,7 @@ init(Args) ->
 	]),
     Port = case os:getenv("PORT") of
                false -> 8080;
-               Val -> list_to_binary(Val)
+               Val -> list_to_integer(Val)
            end,
 	{ok, _} = cowboy:start_http(http, 100, [{port, Port}], [
 		{env, [{dispatch, Dispatch}]}
