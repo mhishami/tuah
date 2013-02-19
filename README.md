@@ -126,4 +126,16 @@ Usage
   ```
 
 
-  * That's it. Enjoy!
+Notes
+=====
+
+1. Reply can be done in several ways in the controller:
+  ``` erlang
+  {redirect, "/page"}   %% redirect to page_controller -> page.dtl
+  {ok, Data}            %% return the page for the current controller with Data
+  {<<"login">>, Data}   %% return login.dtl view with Data
+  ```
+  
+2. Customize your error view with custom error.dtl page that takes `{{ error }}` as the message
+
+  

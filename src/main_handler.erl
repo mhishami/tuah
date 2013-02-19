@@ -58,17 +58,30 @@ handle_request(Con, Controller, Method, Action, Args, Params, Req) ->
         {ok, Data} ->
             %% render template
             Template = to_atom(Controller, "_dtl"),
-            case catch Template:render(Data) of
-                {ok, Content} ->
-                    cowboy_req:reply(200, [], Content, Req);
-                {'EXIT', _} ->
-                    %% No template
-                    do_error(Req, "No template found for: " ++ atom_to_list(Template))
-            end;
+            render_template(Template, Data, Req);
         {redirect, Location} ->
         	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req);
         {error, Message} ->
-            do_error(Req, Message)            
+            do_error(Req, Message);
+        {Page, Data} ->
+            Template = to_atom(Page, "_dtl"),
+            render_template(Template, Data, Req);
+        _ ->
+            % catch all
+            Content = << <<"Cannot process this req: ">>/binary, <<"\r\n">>/binary,
+                        <<"Controller: ">>/binary, Controller/binary, <<"\r\n">>/binary,
+                        <<"Action: ">>/binary, Action/binary, <<"\r\n">>/binary,
+                        <<"Args: ">>/binary, Args/binary >>,
+            do_error(Req, Content)
+    end.
+    
+render_template(Template, Data, Req) ->
+    case catch Template:render(Data) of
+        {ok, Content} ->
+            cowboy_req:reply(200, [], Content, Req);
+        {'EXIT', _} ->
+            %% No template
+            do_error(Req, "No template found for: " ++ atom_to_list(Template))
     end.
     
 do_error(Req, Message) ->
