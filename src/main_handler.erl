@@ -63,6 +63,8 @@ handle_request(Con, Controller, Method, Action, Args, Params, Req) ->
         	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req);
         {error, Message} ->
             do_error(Req, Message);
+        {json, Data} ->
+        	cowboy_req:reply(200, [{<<"content-type">>, <<"application/json">>}], Data, Req);            
         {Page, Data} ->
             Template = to_atom(Page, "_dtl"),
             render_template(Template, Data, Req);
