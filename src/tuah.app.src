@@ -5,10 +5,7 @@
   {registered, []},
   {applications, [
                   kernel,
-                  stdlib,
-                  crypto,
-                  ranch,
-                  cowboy
+                  stdlib
                  ]},
   {mod, { tuah_app, []}},
   {env, []}
