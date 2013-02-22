@@ -29,6 +29,7 @@ start_link() ->
 %% ------------------------------------------------------------------
 
 init(Args) ->
+    uuid:init(),
 	Dispatch = cowboy_router:compile([
 		{'_', [
 			{"/static/[...]", cowboy_static, [

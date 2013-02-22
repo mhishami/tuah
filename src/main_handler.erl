@@ -39,17 +39,40 @@ handle(Req, State) ->
 
 process_request(Controller, Method, Action, Args, Params, Req) ->
     C = to_atom(Controller, "_controller"),
-    Con = C:new(Req),
+    
+    %% get the cookie for session id
+    {Sid, Req2} = prepare_cookie(Req),
+    
+    %% do other lookup based ont his Sid, if need be.
+    
+    %% spawn a new Req.
+    Con = C:new(Req2, Sid),
     
     %% we can do filter here first
     case catch Con:before_filter() of
         {redirect, Location} ->
-        	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req);
+        	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req2);
         _ ->
             %% no filter,
-            handle_request(Con, Controller, Method, Action, Args, Params, Req)
+            handle_request(Con, Controller, Method, Action, Args, Params, Req2)
     end.
-    
+
+prepare_cookie(Req) ->
+    {Sid, Req2} = cowboy_req:cookie(<<"_tuah">>, Req),
+    case Sid of
+        undefined ->
+            %% set the cookie
+            Uuid = uuid:gen(),
+            Req3 = cowboy_req:set_resp_cookie(<<"_tuah">>, 
+                     Uuid, [{path, <<"/">>}], Req2),
+            {Uuid, Req3};
+        _ ->
+            {Sid, Req2}
+    end.
+            
+    % io:format("sid: ~p~n", [Sid]),
+    % Req2.
+        
 handle_request(Con, Controller, Method, Action, Args, Params, Req) ->
     %% process request
     case catch Con:handle_request(Method, Action, Args, Params) of
@@ -61,6 +84,12 @@ handle_request(Con, Controller, Method, Action, Args, Params, Req) ->
             render_template(Template, Data, Req);
         {redirect, Location} ->
         	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req);
+        {redirect, Location, {cookie, Key, Val}} ->
+            Req2 = cowboy_req:set_resp_cookie(Key, Val, [{path, <<"/">>}], Req),
+        	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req2);            
+        {redirect, Location, {cookie, Key, Val, [{path, Path}]}} ->
+            Req2 = cowboy_req:set_resp_cookie(Key, Val, [{path, Path}], Req),
+        	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req2);            
         {error, Message} ->
             do_error(Req, Message);
         {json, Data} ->
