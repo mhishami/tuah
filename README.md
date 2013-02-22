@@ -45,12 +45,14 @@ Usage
   start() ->
       ok = ensure_started(crypto),
       ok = ensure_started(ranch),
+      ok = ensure_started(cowboy),
       ok = ensure_started(tuah),
       ok = ensure_started(foo).
     
   stop() ->
       application:stop(foo),
       application:stop(tuah),
+      application:stop(cowboy),
       application:stop(ranch),
       application:stop(crypto).
     
