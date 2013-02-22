@@ -1,6 +1,6 @@
 {application, tuah,
  [
-  {description, ""},
+  {description, "A Simple HTTP Framework based on Cowboy, inspired by BeepBeep"},
   {vsn, "1"},
   {registered, []},
   {applications, [

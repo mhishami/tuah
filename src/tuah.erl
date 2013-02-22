@@ -4,11 +4,19 @@
 -export ([start/0]).
 -export ([stop/0]).
 
+ensure_started(App) ->
+    case application:start(App) of
+        ok ->
+            ok;
+        {error, {already_started, App}} ->
+            ok
+    end.
+
 start() ->
-	ok = application:start(crypto),
-	ok = application:start(ranch),
-	ok = application:start(cowboy),
-	ok = application:start(tuah).
+	ok = ensure_started(crypto),
+	ok = ensure_started(ranch),
+	ok = ensure_started(cowboy),
+	ok = ensure_started(tuah).
     
 stop() ->
     ok.
