@@ -68,22 +68,42 @@ Usage
 
   -module (home_controller, [Req]).
   -export ([handle_request/4]).
-  -export ([before_filter/0]).
+  -export ([before_filter/1]).
 
-  before_filter() ->
+  before_filter(Params) ->
       %% do some checking
+      User = proplists:get_value(auth, Params, undefined),
+      case User of
+          undefined ->
+              {redirect, <<"/auth/login">>}
+          _ ->
+              {ok, proceed}
+      end.
+
+  handle_request(<<"GET">>, <<"api">>, _, _) ->
+      %% return data as json data
+      %%  note: value cannot be an atom.
+      %%
+      {json, [{username, <<"hisham">>}, {password, <<"sa">>}]};
       
-      %% {redirect, <<"/login">>}
-      {ok, proceed}.
-  
-  handle_request(<<"GET">>, Action, Args, Params) ->    
-      {ok, []};
+  handle_request(<<"GET">>, Action, _Args, _Params) ->
+      %% /home/foo -> will render foo.dtl since Action == foo
+      %% /home/bar -> will render bar.dtl since Action == bar
+      %% /home/foo/bar -> will render foo.dtl too. <<"bar">> appears in Args
+      {Action, []}
     
-  handle_request(<<"POST">>, <<"login">>, _, [{qs_vals, _}, {body_qs_, Vals}] = Params) ->
+  handle_request(<<"GET">>, _Action, _Args, _Params) ->    
+      %% / will render home.dtl
+      {ok, []};
+      
+  handle_request(<<"POST">>, <<"login">>, _, [{auth, _}, {qs_vals, _}, {qs_body, Vals}]) ->
       Username = proplists:get_value(<<"email">>, Vals),
       Password = proplists:get_value(<<"password">>, Vals),
     
       %% authenticate the user
+      
+      %% set the session
+      tuah:set(Sid, <<"foo@bar.com">>),
     
       %% redirect
       {redirect, "/"};

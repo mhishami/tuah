@@ -14,7 +14,7 @@ handle(Req, State) ->
     {Vals, Req4} = cowboy_req:qs_vals(Req3),
     {ok, PostVals, Req5} = cowboy_req:body_qs(Req4),
 
-    Params = [{qs_vals, Vals}, {body_qs, PostVals}],
+    Params = [{qs_vals, Vals}, {qs_body, PostVals}],
     {Controller, Action, Args} =
         case get_path(Path) of
             [<<>>] ->
@@ -49,12 +49,13 @@ process_request(Controller, Method, Action, Args, Params, Req) ->
     Con = C:new(Req2, Sid),
     
     %% we can do filter here first
-    case catch Con:before_filter() of
+    P = [{auth, tuah:get(Sid)}|Params],
+    case catch Con:before_filter(P) of
         {redirect, Location} ->
         	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req2);
         _ ->
             %% no filter,
-            handle_request(Con, Controller, Method, Action, Args, Params, Req2)
+            handle_request(Con, Controller, Method, Action, Args, P, Req2)
     end.
 
 prepare_cookie(Req) ->
@@ -76,8 +77,14 @@ prepare_cookie(Req) ->
 handle_request(Con, Controller, Method, Action, Args, Params, Req) ->
     %% process request
     case catch Con:handle_request(Method, Action, Args, Params) of
+        {'EXIT', _} when is_atom(Con) ->
+            C = list_to_binary(atom_to_list(Con)),
+            do_error(Req, 
+                << <<"'handle_request/4' error, or not found: ">>/binary, C/binary >>);
         {'EXIT', _} ->
-            do_error(Req, "'handle_request/4' not found: " ++ atom_to_list(Con));
+            do_error(Req, 
+                << <<"Erorr(s) in 'handle_request/4' in ">>/binary, Controller/binary,
+                <<"_controller. Please fix it">>/binary >>);
         {ok, Data} ->
             %% render template
             Template = to_atom(Controller, "_dtl"),
@@ -93,7 +100,13 @@ handle_request(Con, Controller, Method, Action, Args, Params, Req) ->
         {error, Message} ->
             do_error(Req, Message);
         {json, Data} ->
-        	cowboy_req:reply(200, [{<<"content-type">>, <<"application/json">>}], Data, Req);            
+            case catch jsx:encode(Data) of
+                {'EXIT', _} ->
+                    Message = jsx:encode([{<<"error">>, <<"Error in your JSON data">>}]),
+                    cowboy_req:reply(404, [{<<"content-type">>, <<"application/json">>}], Message, Req);
+                Json ->
+                    cowboy_req:reply(200, [{<<"content-type">>, <<"application/json">>}], Json, Req)
+            end;
         {Page, Data} ->
             Template = to_atom(Page, "_dtl"),
             render_template(Template, Data, Req);

@@ -26,5 +26,6 @@ start_link() ->
 
 init([]) ->
     Web = ?CHILD(tuah_srv, worker),
-    {ok, { {one_for_one, 5, 10}, [Web]} }.
+    Session = ?CHILD(session_srv, worker),
+    {ok, { {one_for_one, 5, 10}, [Web, Session]} }.
 
