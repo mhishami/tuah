@@ -39,21 +39,44 @@ init(Args) ->
         {disc_copies, Nodes},
         {type, set}
     ]),
-    mnesia:wait_for_tables([tuah_session], 5000),
+    mnesia:create_table(tuah_ctrls, [
+        {attributes, record_info(fields, tuah_ctrls)},
+        {ram_copies, Nodes},
+        {type, set}
+    ]),
+    mnesia:wait_for_tables([tuah_session, tuah_ctrls], 1000),
+    ?INFO("Session server is ready~n"),
+    % tuah:reload(),
     {ok, Args}.
     
-% install(Nodes) ->
-%     ok = mnesia:create_schema(Nodes),
-%     application:start(mnesia),
-%     mnesia:create_table(tuah_session, [
-%         {attributes, record_info(fields, tuah_session)},
-%         {disc_copies, Nodes},
-%         {type, set}
-%     ]),
-%     application:stop(mnesia).
-
-handle_call({set, Key, Value}, _From, State) ->
-    F = fun() -> mnesia:write(#tuah_session{key= Key, val= Value}) end,
+handle_call({reload}, _From, State) ->
+    C1 = [ string:sub_string(C, 6) || C <- filelib:wildcard("ebin/*_controller.beam") ],
+    C2 = [ string:tokens(X, ".") || X <- C1 ],
+    C3 = [ H || [H|_] <- [ string:tokens(Z, "_") || Z <- [ Y || [Y, _] <- C2 ]]],
+    C4 = [ {list_to_binary(W), list_to_atom(W ++ "_controller")} || W <- C3 ],
+    F = fun() ->
+            lists:foreach(
+                fun({X,Y}) ->
+                    mnesia:write(#tuah_ctrls{key= X, val= Y})
+                end, C4)
+        end,
+    Reply = mnesia:activity(transaction, F),
+    {reply, Reply, State};
+    
+handle_call({locate, Key}, _From, State) ->
+    F = fun() ->
+            case mnesia:read({tuah_ctrls, Key}) of
+                [] ->
+                    undefined;
+                [#tuah_ctrls{val=V}] ->
+                    V
+            end
+        end,
+    Reply = mnesia:activity(transaction, F),
+    {reply, Reply, State};
+                
+handle_call({set, Key, Value, Expiry}, _From, State) ->
+    F = fun() -> mnesia:write(#tuah_session{key= Key, val= Value, expiry= Expiry}) end,
     Reply = mnesia:activity(transaction, F),
     {reply, Reply, State};
     

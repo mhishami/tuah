@@ -26,36 +26,45 @@ handle(Req, State) ->
             [C, A | R] ->
                 {C, A, R}                
         end,
-    {ok, Req6} = case find_controller(Controller) of
-        {ok, _Con} ->
-            %% ok, found controllers
-            process_request(Controller, Method, Action, Args, Params, Req5);
-        _ ->
-            %% error
-            Cx = to_atom(Controller, "_controller"),
-            do_error(Req4, "Controller not found: " ++ atom_to_list(Cx))
-    end,    
+    {ok, Req6} = 
+        case tuah:locate(Controller) of
+            undefined ->
+                %% error, try to reload the controller again
+                tuah:reload(),
+                case tuah:locate(Controller) of
+                    undefined ->
+                        do_error(Req4, 
+                            << <<"Controller not found: ">>/binary, Controller/binary,
+                            <<"_controller">>/binary >>);
+                    Con ->
+                        %% ok, found controllers
+                        process_request(Con, Controller, Method, Action, Args, Params, Req5)
+                end;
+            Con ->
+                %% ok, found controllers
+                process_request(Con, Controller, Method, Action, Args, Params, Req5)
+         end,
+         
     {ok, Req6, State}.
 
-process_request(Controller, Method, Action, Args, Params, Req) ->
-    C = to_atom(Controller, "_controller"),
+process_request(Con, Controller, Method, Action, Args, Params, Req) ->
     
     %% get the cookie for session id
     {Sid, Req2} = prepare_cookie(Req),
     
-    %% do other lookup based ont his Sid, if need be.
+    %% do other lookup based on this Sid, if need be.
     
     %% spawn a new Req.
-    Con = C:new(Req2, Sid),
+    Ctrl = Con:new(Req2, Sid),
     
     %% we can do filter here first
     P = [{auth, tuah:get(Sid)}|Params],
-    case catch Con:before_filter(P) of
+    case catch Ctrl:before_filter(P) of
         {redirect, Location} ->
         	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req2);
         _ ->
             %% no filter,
-            handle_request(Con, Controller, Method, Action, Args, P, Req2)
+            handle_request(Ctrl, Controller, Method, Action, Args, P, Req2)
     end.
 
 prepare_cookie(Req) ->
@@ -143,18 +152,5 @@ get_path(Path) ->
 to_atom(Name, Type) ->
     binary_to_atom(iolist_to_binary([Name, Type]), latin1).
     
-find_controller(C) ->
-    Cons = filelib:wildcard("ebin/*_controller.beam"),
-    find(C, Cons).        
-        
-find(C, [H|T]) ->
-    case re:run(H, C) of
-        {match, _} ->
-            {ok, H};
-        _ ->
-            find(C, T)
-    end;
-find(_C, []) -> {error, none}.
-
 terminate(_Reason, _Req, _State) ->
 	ok.
