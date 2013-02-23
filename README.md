@@ -154,6 +154,7 @@ Notes
   {redirect, "/page"}   %% redirect to page_controller -> page.dtl
   {ok, Data}            %% return the page for the current controller with Data
   {<<"login">>, Data}   %% return login.dtl view with Data
+  {json, DataList}      %% return json data from erlang list
   ```
   
 2. Customize your error view with custom error.dtl page that takes `{{ error }}` as the message

@@ -50,15 +50,17 @@ init(Args) ->
     {ok, Args}.
     
 handle_call({reload}, _From, State) ->
-    C1 = [ string:sub_string(C, 6) || C <- filelib:wildcard("ebin/*_controller.beam") ],
-    C2 = [ string:tokens(X, ".") || X <- C1 ],
-    C3 = [ H || [H|_] <- [ string:tokens(Z, "_") || Z <- [ Y || [Y, _] <- C2 ]]],
-    C4 = [ {list_to_binary(W), list_to_atom(W ++ "_controller")} || W <- C3 ],
+    C1 = lists:foldl(
+            fun(C, Acu) ->
+                {match, [{A, 16}]} = re:run(C, "_controller.beam"),
+                [string:sub_string(C, 6, A)|Acu]
+            end, [], filelib:wildcard("ebin/*_controller.beam")),            
+    C2 = [ {list_to_binary(W), list_to_atom(W ++ "_controller")} || W <- C1 ],
     F = fun() ->
             lists:foreach(
                 fun({X,Y}) ->
                     mnesia:write(#tuah_ctrls{key= X, val= Y})
-                end, C4)
+                end, C2)
         end,
     Reply = mnesia:activity(transaction, F),
     {reply, Reply, State};
