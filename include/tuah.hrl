@@ -3,5 +3,5 @@
 -define (INFO(Name, Args), error_logger:info_msg(Name, Args)).
 
 %% record to keep the key, value
--record(tuah_session, {key, val, expiry}).
+-record(tuah_session, {key, val, expiry, timestamp = {date(), time()}}).
 -record(tuah_ctrls, {key, val}).

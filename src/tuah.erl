@@ -38,7 +38,7 @@ set(Key, Value) ->
     gen_server:call(?SERVER, {set, Key, Value, 0}).
 
 set(Key, Value, Exp) ->
-    gen_server:call(?SERVER, {set, Key, Value, Exp}).
+    gen_server:call(?SERVER, {set, Key, Value, date_util:epoch() + Exp}).
     
 get(Key) ->
     gen_server:call(?SERVER, {get, Key}).

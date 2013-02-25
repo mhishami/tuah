@@ -58,7 +58,10 @@ process_request(Con, Controller, Method, Action, Args, Params, Req) ->
     Ctrl = Con:new(Req2, Sid),
     
     %% we can do filter here first
-    P = [{auth, tuah:get(Sid)}|Params],
+    P = case tuah:get(Sid) of
+            undefined -> [[]|Params];
+            Data -> [{auth, Data}|Params]
+        end,
     case catch Ctrl:before_filter(P) of
         {redirect, Location} ->
         	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req2);

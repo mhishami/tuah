@@ -78,20 +78,28 @@ handle_call({locate, Key}, _From, State) ->
     {reply, Reply, State};
                 
 handle_call({set, Key, Value, Expiry}, _From, State) ->
-    F = fun() -> mnesia:write(#tuah_session{key= Key, val= Value, expiry= Expiry}) end,
+    % ?INFO("Setting: {~p, ~p, ~p}~n", [Key, Value, Expiry]),
+    F = fun() -> mnesia:write(#tuah_session{key= Key, val= Value, expiry= Expiry, timestamp={date(), time()}}) end,
     Reply = mnesia:activity(transaction, F),
     {reply, Reply, State};
     
 handle_call({get, Key}, _From, State) ->
+    Now = date_util:epoch(),
     F = fun() ->
             case mnesia:read({tuah_session, Key}) of
-                [#tuah_session{val=V}] ->
+                [#tuah_session{val=V, expiry=Exp}] when Exp =:= 0; Exp > Now ->
                     V;
+                [#tuah_session{val=_V, expiry=Exp}] when Exp < Now ->
+                    mnesia:delete({tuah_session, Key}),
+                    undefined;
                 [] ->
                     undefined
             end
         end,
-    Reply = mnesia:activity(transaction, F),
+    Reply = case catch mnesia:activity(transaction, F) of
+                {'EXIT', _} -> undefined;
+                Val -> Val
+            end,
     {reply, Reply, State};
     
 handle_call({delete, Key}, _From, State) ->
