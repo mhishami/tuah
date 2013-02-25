@@ -3,6 +3,7 @@
 -define(SERVER, ?MODULE).
 
 -include ("tuah.hrl").
+-include_lib("stdlib/include/qlc.hrl").
 
 %% ------------------------------------------------------------------
 %% API Function Exports
@@ -73,6 +74,31 @@ handle_call({locate, Key}, _From, State) ->
                 [#tuah_ctrls{val=V}] ->
                     V
             end
+        end,
+    Reply = mnesia:activity(transaction, F),
+    {reply, Reply, State};
+    
+handle_call({sessions}, _From, State) ->
+    F = fun() ->
+            qlc:eval(qlc:q(
+                [ S || S <- mnesia:table(tuah_session) ]
+            ))
+        end,
+    Reply = mnesia:activity(transaction, F),
+    {reply, Reply, State};
+    
+handle_call({prune, Day}, _From, State) ->
+    Now = {date(), time()},
+    F = fun() ->
+            Q = qlc:q(
+                [ S || S <- mnesia:table(tuah_session),
+                       date_util:is_sooner_by(Now, S#tuah_session.timestamp, {days, Day}) ]
+            ),
+            Olds = qlc:e(Q),
+            lists:foreach(
+                fun(X) -> 
+                    mnesia:delete({tuah_session, X#tuah_session.key})
+                end, Olds)
         end,
     Reply = mnesia:activity(transaction, F),
     {reply, Reply, State};

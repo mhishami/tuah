@@ -5,6 +5,7 @@
 -export ([stop/0]).
 -export ([set/2, set/3, get/1, delete/1]).
 -export ([reload/0, locate/1]).
+-export ([sessions/0, prune/1]).
 
 -include ("tuah.hrl").
 
@@ -34,6 +35,12 @@ locate(Key) ->
     % ?INFO("locate key: ~p~n", [Key]),
     gen_server:call(?SERVER, {locate, Key}).
     
+sessions() ->
+    gen_server:call(?SERVER, {sessions}).
+    
+prune(Day) ->
+    gen_server:call(?SERVER, {prune, Day}).
+
 set(Key, Value) ->
     gen_server:call(?SERVER, {set, Key, Value, 0}).
 
