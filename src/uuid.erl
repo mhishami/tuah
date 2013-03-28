@@ -2,7 +2,6 @@
 -author('Hisham Ismail <mhishami@gmail.com').
 
 -export([v4/0, to_string/1, get_parts/1, to_binary/1]).
--import(random).
 -export ([gen/0, init/0, init/3]).
 -export ([bin2hex/1]).
 
