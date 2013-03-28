@@ -5,6 +5,8 @@
 -export([handle/2]).
 -export([terminate/3]).
 
+-define(COOKIE, <<"_tuah">>).
+
 init(_Transport, Req, []) ->
     {ok, Req, undefined}.
 
@@ -47,22 +49,19 @@ handle(Req, State) ->
          
     {ok, Req6, State}.
 
-process_request(Con, Controller, Method, Action, Args, Params, Req) ->
+process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     
     %% get the cookie for session id
     {Sid, Req2} = prepare_cookie(Req),
     
     %% do other lookup based on this Sid, if need be.
     
-    %% spawn a new Req.
-    Ctrl = Con:new(Req2, Sid),
-    
     %% we can do filter here first
     P = case tuah:get(Sid) of
-            undefined -> [[]|Params];
-            Data -> [{auth, Data}|Params]
+            undefined -> [[], {sid, Sid}|Params];
+            Data -> [{auth, Data}, {sid, Sid}|Params]
         end,
-    case catch Ctrl:before_filter(P) of
+    case catch Ctrl:before_filter(P, Req2) of
         {redirect, Location} ->
         	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req2);
         _ ->
@@ -71,12 +70,12 @@ process_request(Con, Controller, Method, Action, Args, Params, Req) ->
     end.
 
 prepare_cookie(Req) ->
-    {Sid, Req2} = cowboy_req:cookie(<<"_tuah">>, Req),
+    {Sid, Req2} = cowboy_req:cookie(?COOKIE, Req),
     case Sid of
         undefined ->
             %% set the cookie
             Uuid = uuid:gen(),
-            Req3 = cowboy_req:set_resp_cookie(<<"_tuah">>, 
+            Req3 = cowboy_req:set_resp_cookie(?COOKIE, 
                      Uuid, [{path, <<"/">>}], Req2),
             {Uuid, Req3};
         _ ->
@@ -88,7 +87,7 @@ prepare_cookie(Req) ->
         
 handle_request(Con, Controller, Method, Action, Args, Params, Req) ->
     %% process request
-    case catch Con:handle_request(Method, Action, Args, Params) of
+    case catch Con:handle_request(Method, Action, Args, Params, Req) of
         {'EXIT', _} when is_atom(Con) ->
             C = list_to_binary(atom_to_list(Con)),
             do_error(Req, 

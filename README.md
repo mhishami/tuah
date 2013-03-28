@@ -66,11 +66,11 @@ Usage
   
   ``` erlang
 
-  -module (home_controller, [Req]).
-  -export ([handle_request/4]).
-  -export ([before_filter/1]).
+  -module (home_controller).
+  -export ([handle_request/5]).
+  -export ([before_filter/2]).
 
-  before_filter(Params) ->
+  before_filter(Params, _Req) ->
       %% do some checking
       User = proplists:get_value(auth, Params, undefined),
       case User of
@@ -80,23 +80,23 @@ Usage
               {ok, proceed}
       end.
 
-  handle_request(<<"GET">>, <<"api">>, _, _) ->
+  handle_request(<<"GET">>, <<"api">>, _, _, _) ->
       %% return data as json data
       %%  note: value cannot be an atom.
       %%
       {json, [{username, <<"hisham">>}, {password, <<"sa">>}]};
       
-  handle_request(<<"GET">>, Action, _Args, _Params) ->
+  handle_request(<<"GET">>, Action, _Args, _Params, _Req) ->
       %% /home/foo -> will render foo.dtl since Action == foo
       %% /home/bar -> will render bar.dtl since Action == bar
       %% /home/foo/bar -> will render foo.dtl too. <<"bar">> appears in Args
       {Action, []}
     
-  handle_request(<<"GET">>, _Action, _Args, _Params) ->    
+  handle_request(<<"GET">>, _Action, _Args, _Params, _Req) ->    
       %% / will render home.dtl
       {ok, []};
       
-  handle_request(<<"POST">>, <<"login">>, _, [{auth, _}, {qs_vals, _}, {qs_body, Vals}]) ->
+  handle_request(<<"POST">>, <<"login">>, _, [{auth, _}, {sid, Sid}, {qs_vals, _}, {qs_body, Vals}], _Req) ->
       Username = proplists:get_value(<<"email">>, Vals),
       Password = proplists:get_value(<<"password">>, Vals),
     
@@ -108,8 +108,8 @@ Usage
       %% redirect
       {redirect, "/"};
     
-  handle_request(_, _, _, _) ->
-      {error, "Opps, Forbidden"}.
+  handle_request(_, _, _, _, _) ->
+      {error, <<"Opps, Forbidden">>}.
 
   ```
 
