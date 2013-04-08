@@ -61,7 +61,7 @@ process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     
     %% we can do filter here first
     P = case tuah:get(Sid) of
-            undefined -> [[], {sid, Sid}|Params];
+            undefined -> [{auth, []}, {sid, Sid}|Params];
             Data -> [{auth, Data}, {sid, Sid}|Params]
         end,
     case catch Ctrl:before_filter(P, Req2) of
