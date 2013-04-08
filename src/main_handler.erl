@@ -35,7 +35,7 @@ handle(Req, State) ->
                 tuah:reload(),
                 case tuah:locate(Controller) of
                     undefined ->
-                        do_error(Req4, 
+                        do_error(Req5, 
                             << <<"Controller not found: ">>/binary, Controller/binary,
                             <<"_controller">>/binary >>);
                     Con ->
@@ -51,6 +51,9 @@ handle(Req, State) ->
 
 process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     
+    lager:log(debug, self(), "process_request: Controller=~p, Method=~p, Action=~p, Params=~p", 
+        [Controller, Method, Action, Params]),
+        
     %% get the cookie for session id
     {Sid, Req2} = prepare_cookie(Req),
     
@@ -70,6 +73,9 @@ process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     end.
 
 prepare_cookie(Req) ->
+    
+    lager:log(debug, self(), "Preparing cookie..."),
+    
     {Sid, Req2} = cowboy_req:cookie(?COOKIE, Req),
     case Sid of
         undefined ->
@@ -86,6 +92,10 @@ prepare_cookie(Req) ->
     % Req2.
         
 handle_request(Con, Controller, Method, Action, Args, Params, Req) ->
+    
+    lager:log(debug, self(), "handle_request: Controller=~p, Method=~p, Action=~p, Params=~p", 
+        [Controller, Method, Action, Params]),
+    
     %% process request
     case catch Con:handle_request(Method, Action, Args, Params, Req) of
         {'EXIT', _} when is_atom(Con) ->
@@ -131,8 +141,11 @@ handle_request(Con, Controller, Method, Action, Args, Params, Req) ->
     end.
     
 render_template(Template, Data, Req) ->
+    lager:log(debug, self(), "render_template: Template=~p", [Template]),
+    
     case catch Template:render(Data) of
         {ok, Content} ->
+            lager:log(debug, self(), "Template ~p found", [Template]),
             cowboy_req:reply(200, [], Content, Req);
         {'EXIT', _} ->
             %% No template
