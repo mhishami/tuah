@@ -126,16 +126,16 @@ Usage
   
   ``` bash
   +-- Project
-    +-- deps
-    +-- ebin
-    +-- include
-    +-- priv
-      +-- assets
-        +-- css
-          - bootstrap.css
-          - ...
-        +-- js
-        +-- img      
+      +-- deps
+      +-- ebin
+      +-- include
+      +-- priv
+        +-- assets
+          +-- css
+            - bootstrap.css
+            - ...
+          +-- js
+          +-- img      
   ```
 
   The corresponding `href` will be like:
