@@ -35,26 +35,26 @@ Usage
   -export ([stop/0]).
 
   ensure_started(App) ->
-          case application:start(App) of
-              ok ->
-                  ok;
-              {error, {already_started, App}} ->
-                  ok
-          end.
+        case application:start(App) of
+            ok ->
+                ok;
+            {error, {already_started, App}} ->
+                ok
+        end.
     
   start() ->
-          ok = ensure_started(crypto),
-          ok = ensure_started(ranch),
-          ok = ensure_started(cowboy),
-          ok = ensure_started(tuah),
-          ok = ensure_started(foo).
+        ok = ensure_started(crypto),
+        ok = ensure_started(ranch),
+        ok = ensure_started(cowboy),
+        ok = ensure_started(tuah),
+        ok = ensure_started(foo).
     
   stop() ->
-          application:stop(foo),
-          application:stop(tuah),
-          application:stop(cowboy),
-          application:stop(ranch),
-          application:stop(crypto).
+        application:stop(foo),
+        application:stop(tuah),
+        application:stop(cowboy),
+        application:stop(ranch),
+        application:stop(crypto).
     
   ````
 
@@ -71,45 +71,45 @@ Usage
   -export ([before_filter/2]).
 
   before_filter(Params, _Req) ->
-          %% do some checking
-          User = proplists:get_value(auth, Params, undefined),
-          case User of
-              undefined ->
-                  {redirect, <<"/auth/login">>}
-              _ ->
-                  {ok, proceed}
-          end.
+        %% do some checking
+        User = proplists:get_value(auth, Params, undefined),
+        case User of
+            undefined ->
+                {redirect, <<"/auth/login">>}
+            _ ->
+                {ok, proceed}
+        end.
 
   handle_request(<<"GET">>, <<"api">>, _, _, _) ->
-          %% return data as json data
-          %%  note: value cannot be an atom.
-          %%
-          {json, [{username, <<"hisham">>}, {password, <<"sa">>}]};
+        %% return data as json data
+        %%  note: value cannot be an atom.
+        %%
+        {json, [{username, <<"hisham">>}, {password, <<"sa">>}]};
       
   handle_request(<<"GET">>, Action, _Args, _Params, _Req) ->
-          %% /home/foo -> will render foo.dtl since Action == foo
-          %% /home/bar -> will render bar.dtl since Action == bar
-          %% /home/foo/bar -> will render foo.dtl too. <<"bar">> appears in Args
-          {Action, []}
+        %% /home/foo -> will render foo.dtl since Action == foo
+        %% /home/bar -> will render bar.dtl since Action == bar
+        %% /home/foo/bar -> will render foo.dtl too. <<"bar">> appears in Args
+        {Action, []}
     
   handle_request(<<"GET">>, _Action, _Args, _Params, _Req) ->    
-          %% / will render home.dtl
-          {ok, []};
+        %% / will render home.dtl
+        {ok, []};
       
   handle_request(<<"POST">>, <<"login">>, _, [{auth, _}, {sid, Sid}, {qs_vals, _}, {qs_body, Vals}], _Req) ->
-          Username = proplists:get_value(<<"email">>, Vals),
-          Password = proplists:get_value(<<"password">>, Vals),
+        Username = proplists:get_value(<<"email">>, Vals),
+        Password = proplists:get_value(<<"password">>, Vals),
+  
+        %% authenticate the user
     
-          %% authenticate the user
-      
-          %% set the session
-          tuah:set(Sid, <<"foo@bar.com">>),
-    
-          %% redirect
-          {redirect, "/"};
+        %% set the session
+        tuah:set(Sid, <<"foo@bar.com">>),
+  
+        %% redirect
+        {redirect, "/"};
     
   handle_request(_, _, _, _, _) ->
-          {error, <<"Opps, Forbidden">>}.
+        {error, <<"Opps, Forbidden">>}.
 
   ````
 
