@@ -165,7 +165,8 @@ Usage
   Once everything is fine, we can then deploy it to Heroku
   
   ``` bash
-  $ heroku create <<your app>> --stack cedar --buildpack https://github.com/archaelus/heroku-buildpack-erlang.git    
+  $ heroku create <<your app>> --stack cedar \
+    --buildpack https://github.com/archaelus/heroku-buildpack-erlang.git    
   ```
   
   Create a Profile that contains the above running instructions
