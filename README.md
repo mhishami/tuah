@@ -17,6 +17,16 @@ Usage
   $ rebar create template=simpleapp appid=foo
   ````
 
+  Add tuah in the `rebar.config` file
+  ```` bash
+  cat rebar.config
+  ...
+  {deps, [
+    {tuah, ".*", {git, "git://github.com/mhishami/tuah.git", "master"}}
+  ]}.
+  ...
+  ````
+  
 2. Create The App to Start/Stop
 
   ```` bash
