@@ -19,7 +19,7 @@ Usage
 
   Add tuah in the `rebar.config` file
   ```` bash
-  cat rebar.config
+  $ cat rebar.config
   ...
   {deps, [
       {tuah, ".*", {git, "git://github.com/mhishami/tuah.git", "master"}}
