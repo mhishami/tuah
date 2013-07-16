@@ -10,24 +10,24 @@ Usage
 
   Create a new project using rebar template
 
-  ``` bash
+  ```` bash
   $ mkdir foo
   $ cd foo
   $ rebar create template=project
   $ rebar create template=simpleapp appid=foo
-  ```
+  ````
 
 2. Create The App to Start/Stop
 
-  ``` bash
+  ```` bash
   $ touch src/foo.erl
-  ```
+  ````
 
 3. Add The Code
 
   The content might be similar to this
 
-  ``` erlang
+  ```` erlang
 
   -module (foo).
 
@@ -56,15 +56,15 @@ Usage
       application:stop(ranch),
       application:stop(crypto).
     
-  ```
+  ````
 
 4. Implement Your Controller
 
-  ``` bash
+  ```` bash
   $ touch src/home_controller_.erl
-  ```
+  ````
   
-  ``` erlang
+  ```` erlang
 
   -module (home_controller).
   -export ([handle_request/5]).
@@ -111,19 +111,34 @@ Usage
   handle_request(_, _, _, _, _) ->
       {error, <<"Opps, Forbidden">>}.
 
-  ```
+  ````
 
 5. Do The Templates
 
-  ``` bash
+  ```` bash
   $ mkdir templates
   $ cd templates
   $ touch home.dtl
-  ```
+  ````
 
   And complete the home.dtl using ErlyDTL specs.
-  Put all the static files in the priv directory, and prepend it with `static` name, i.e.
+  Put all the static files in the `priv` directory, and prepend it with `static` name, i.e.
+  
+  ``` bash
+  +-- Project
+    +-- deps
+    +-- ebin
+    +-- include
+    +-- priv
+      +-- assets
+        +-- css
+          - bootstrap.css
+          - ...
+        +-- js
+        +-- img      
+  ```
 
+  The corresponding `href` will be like:
   ``` html
   <link href="/static/assets/css/bootstrap.css" rel="stylesheet">
   ```
@@ -135,7 +150,7 @@ Usage
   ``` bash
   dev:
   	@erl +A 10 -sname foo -pa ebin include deps/*/ebin deps/*/include ebin include \
-  		-boot start_sasl \
+  		-boot start_sasl -s reloader \
   		-s tuah -s foo
   ```
 
@@ -144,6 +159,39 @@ Usage
   ``` shell
   $ make; make dev
   ```
+  
+7. Deploy to Heroku
+
+  Once everything is fine, we can then deploy it to Heroku
+  
+  ``` bash
+  $ heroku create <<your app>> --stack cedar --buildpack https://github.com/archaelus/heroku-buildpack-erlang.git    
+  ```
+  
+  Create a Profile that contains the above running instructions
+  ``` bash
+  $ cat Procfile
+  web: erl -sname foo -pa ebin include deps/*/ebin deps/*/include ebin include \
+  		-boot start_sasl -s reloader \
+  		-s tuah -s foo
+  ```
+  
+  Specify Erlang version
+  
+  ``` bash
+  $ cat .preferred_otp_version
+
+  echo OTP_R15B01 > .preferred_otp_version
+  ```
+  
+  Add all to git, and do
+  
+  ``` bash
+  $ git push heroku master
+  $ heroku ps:scale worker=1
+  ```
+  
+  That's it!
 
 
 Notes
