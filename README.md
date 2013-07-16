@@ -74,10 +74,10 @@ Usage
           %% do some checking
           User = proplists:get_value(auth, Params, undefined),
           case User of
-                  undefined ->
-                          {redirect, <<"/auth/login">>}
-                  _ ->
-                          {ok, proceed}
+              undefined ->
+                  {redirect, <<"/auth/login">>}
+              _ ->
+                  {ok, proceed}
           end.
 
   handle_request(<<"GET">>, <<"api">>, _, _, _) ->
