@@ -22,7 +22,7 @@ Usage
   cat rebar.config
   ...
   {deps, [
-    {tuah, ".*", {git, "git://github.com/mhishami/tuah.git", "master"}}
+      {tuah, ".*", {git, "git://github.com/mhishami/tuah.git", "master"}}
   ]}.
   ...
   ````
