@@ -71,14 +71,14 @@ Usage
   -export ([before_filter/2]).
 
   before_filter(Params, _Req) ->
-      %% do some checking
-      User = proplists:get_value(auth, Params, undefined),
-      case User of
-          undefined ->
-              {redirect, <<"/auth/login">>}
-          _ ->
-              {ok, proceed}
-      end.
+          %% do some checking
+          User = proplists:get_value(auth, Params, undefined),
+          case User of
+                  undefined ->
+                          {redirect, <<"/auth/login">>}
+                  _ ->
+                          {ok, proceed}
+          end.
 
   handle_request(<<"GET">>, <<"api">>, _, _, _) ->
       %% return data as json data
