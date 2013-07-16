@@ -166,7 +166,7 @@ Usage
   
   ``` bash
   $ heroku create <<your app>> --stack cedar \
-    --buildpack https://github.com/archaelus/heroku-buildpack-erlang.git    
+      --buildpack https://github.com/archaelus/heroku-buildpack-erlang.git    
   ```
   
   Create a Profile that contains the above running instructions
