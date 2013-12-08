@@ -1,0 +1,12 @@
+{% extends "base.dtl" %}
+
+{% block content %}
+
+      <div class="jumbotron">
+        <h1>Secure Page</h1>
+        <p class="lead">
+            You get to this page because you have signed in.
+        </p>
+      </div>
+
+{% endblock %}
