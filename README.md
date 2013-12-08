@@ -134,27 +134,41 @@ Usage
   Put all the static files in the `priv` directory, and prepend it with `static` name, i.e.
   ```` bash
   $ cd ~/Projects/Erlang/foo
-  $ cp -r ~/Projects/Web/bootstrap/docs/assets priv/assets
-  $ cp -r ~/Projects/Web/bootstrap/docs/examples/marketing-narrow.html templates/base.dtl
+  $ cp -r ~/Projects/Web/bootstrap/dist priv/assets
+  $ cp -r ~/Projects/Web/bootstrap/docs-assets/ico priv/assets/.
+  $ cp ~/Projects/Web/bootstrap/docs/examples/jumbotron-narrow/index.html templates/base.dtl
+  $ cp ~/Projects/Web/bootstrap/docs/examples/jumbotron-narrow/jumbotron-narrow.css priv/assets/css/style.css
   ````
-  
+
+  Replace all references to css and js files
+  Edit `base.html` header file to be:
+
+  ``` html
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/assets/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/assets/css/style.css" rel="stylesheet">
+
+  ```
   Edit the `base.dtl` file to include the `content` block to be:
   
-  ```` html
+  ``` html
   
-  {% block content %}
-  <div class="jumbotron">
-    <h1>Super awesome marketing speak!</h1>
-    ...
+      {% block content %}
+      <div class="jumbotron">
+        <h1>Jumbotron heading</h1>
+        ...
     
-    ...
-    <h4>Subheading</h4>
-      <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-    </div>
-  </div>
-  {% endblock %}
+        ...
+           <h4>Subheading</h4>
+          <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+        </div>
+      </div>
+      {% endblock %}
     
-  ````
+  ```
   
   Edit `home.dtl` to use the said template
   
@@ -179,12 +193,6 @@ Usage
           +-- img      
   ```
 
-  The corresponding `href` will be like:
-  ``` html
-  <link href="/static/assets/css/bootstrap.css" rel="stylesheet">
-  ```
-
-  Replace all `"../assets` in base.dtl file into `"/static/assets`
   
 6. Run The App
 
@@ -192,7 +200,8 @@ Usage
 
   ``` bash
   dev:
-  	@erl +A 10 -sname foo -pa ebin include deps/*/ebin deps/*/include ebin include \
+  	@erl +A 10 -sname foo \
+      -pa ebin include deps/*/ebin deps/*/include ebin include \
   		-boot start_sasl -s reloader -s tuah -s foo
   ```
 

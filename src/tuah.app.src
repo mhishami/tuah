@@ -1,12 +1,13 @@
 {application, tuah,
- [
-  {description, "A Simple HTTP Framework based on Cowboy, inspired by BeepBeep"},
-  {vsn, "1"},
-  {registered, []},
-  {applications, [
-                  kernel,
-                  stdlib
-                 ]},
-  {mod, { tuah_app, []}},
-  {env, []}
+[
+    {description, "A Simple HTTP Framework based on Cowboy, inspired by BeepBeep"},
+    {vsn, "1"},
+    {registered, []},
+    {applications, [
+        kernel,
+        stdlib,
+        cowboy
+    ]},
+    {mod, { tuah_app, []}},
+    {env, []}
  ]}.

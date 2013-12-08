@@ -20,10 +20,11 @@ ensure_started(App) ->
     end.
 
 start() ->
-	ok = ensure_started(crypto),
-	ok = ensure_started(ranch),
-	ok = ensure_started(cowboy),
-	ok = ensure_started(tuah).
+    ok = ensure_started(crypto),
+    ok = ensure_started(ranch),
+    ok = ensure_started(cowlib),
+    ok = ensure_started(cowboy),
+    ok = ensure_started(tuah).
     
 stop() ->
     ok.    

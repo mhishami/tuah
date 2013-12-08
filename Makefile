@@ -1,7 +1,7 @@
 ERL					?= erl
 ERLC				= erlc
-EBIN_DIRS		:= $(wildcard deps/*/ebin)
-APPS				:= $(shell dir apps)
+EBIN_DIRS			:= $(wildcard deps/*/ebin)
+#APPS				:= $(shell dir apps)
 REL_DIR     = rel
 NODE				= {{name}}
 REL					= {{name}}
@@ -58,7 +58,7 @@ doc:
 	done;
 
 dev:
-	@erl -pa ebin include deps/*/ebin deps/*/include ebin include \
+	@erl +A 10 -pa ebin include deps/*/ebin deps/*/include ebin include \
 		-boot start_sasl -s reloader -s tuah
 
 analyze: checkplt

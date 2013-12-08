@@ -32,11 +32,8 @@ init(Args) ->
     uuid:init(),
 	Dispatch = cowboy_router:compile([
 		{'_', [
-			{"/static/[...]", cowboy_static, [
-				{directory, <<"priv">>},
-				{mimetypes, {fun mimetypes:path_to_mimes/2, default}},
-                {etag, {attributes, [filesize, inode, mtime]}}
-			]},
+			{"/static/[...]", cowboy_static, {priv_dir, static_world, "",
+                [{mimetypes, cow_mimetypes, all}]}},
             {'_', main_handler, []}
 		]}
 	]),

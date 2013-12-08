@@ -16,6 +16,11 @@ handle(Req, State) ->
     {Vals, Req4} = cowboy_req:qs_vals(Req3),
     {ok, PostVals, Req5} = cowboy_req:body_qs(Req4),
 
+    % lager:log(info, self(), "** Method = ~p", [Method]),
+    % lager:log(info, self(), "** Path = ~p", [Path]),
+    % lager:log(info, self(), "** Vals = ~p", [Vals]),
+    % lager:log(info, self(), "** POST Vals = ~p", [PostVals]),
+
     Params = [{qs_vals, Vals}, {qs_body, PostVals}],
     {Controller, Action, Args} =
         case get_path(Path) of
@@ -28,6 +33,7 @@ handle(Req, State) ->
             [C, A | R] ->
                 {C, A, R}                
         end,
+    % lager:log(info, self(), "** CAA = ~p, ~p, ~p", [Controller, Action, Args]),
     {ok, Req6} = 
         case tuah:locate(Controller) of
             undefined ->
@@ -51,8 +57,8 @@ handle(Req, State) ->
 
 process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     
-    lager:log(debug, self(), "process_request: Controller=~p, Method=~p, Action=~p, Params=~p", 
-        [Controller, Method, Action, Params]),
+    % lager:log(info, self(), "process_request: Controller=~p, Method=~p, Action=~p, Params=~p", 
+    %     [Controller, Method, Action, Params]),
         
     %% get the cookie for session id
     {Sid, Req2} = prepare_cookie(Req),
