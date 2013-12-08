@@ -28,11 +28,15 @@
     <div class="container">
       <div class="header">
         <ul class="nav nav-pills pull-right">
-          <li class="active"><a href="#">Home</a></li>
+          <li class="active"><a href="/">Home</a></li>
           <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="/secure/private">Private</a></li>
+          {% if user %}
+          <li><a href="/auth/logout">({{ user }}) Logout</a></li>
+          {% else %}
           <li><a href="/auth/login">Login</a></li>
           <li><a href="/auth/register">Register</a></li>
+          {% endif %}
         </ul>
         <h3 class="text-muted">nOrum</h3>
       </div>

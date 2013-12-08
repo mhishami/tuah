@@ -4,13 +4,27 @@
 before_filter(_, _) ->
     {ok, proceed}.
 
-handle_request(<<"GET">>, <<"login">>, Args, Params, _Req) ->
-    lager:log(info, self(), "Params = ~p, ~p", [Args, Params]),
-    {"login", []};
+handle_request(<<"POST">>, <<"login">>, _Args, [_, {sid, Sid}, _, {qs_body, Vals}] = Params, Req) ->
+    lager:log(info, self(), "Login Params :: ~p~n, Req = ~p~n", [Params, Req]),
+    Email = proplists:get_value(<<"email">>, Vals),
+    Pass = proplists:get_value(<<"password">>, Vals),
+    lager:log(info, self(), "Username = ~p, Password = ~p~n", [Email, Pass]),
 
-handle_request(<<"GET">>, <<"register">>, Args, Params, _Req) ->
-    lager:log(info, self(), "Params = ~p, ~p", [Args, Params]),
-    {"register", []};
+    case Email =:= <<"foo@bar.com">> andalso Pass =:= <<"bar">> of
+        true ->
+            tuah:set(Sid, Email),
+            {redirect, "/secure/private"};
+        false ->
+            {redirect, "/"}
+    end;
+
+handle_request(<<"GET">>, <<"logout">>, _, [_, {sid, Sid}, _, _], _) ->
+    tuah:delete(Sid),
+    {redirect, "/"};
+
+handle_request(<<"GET">>, Action, Args, Params, _Req) ->
+    lager:log(debug, self(), "Params = ~p, ~p, ~p", [Action, Args, Params]),
+    {Action, []};
 
 handle_request(_, _, _, _, _) ->
     {redirect, "/"}.

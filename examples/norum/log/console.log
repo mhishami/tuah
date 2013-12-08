@@ -589,3 +589,320 @@
 2013-12-08 15:44:55.662 [info] <0.274.0> Params = [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
 2013-12-08 15:44:58.769 [info] <0.274.0> Params = [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
 2013-12-08 15:44:59.757 [info] <0.274.0> Params = [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 16:47:26.068 [info] <0.7.0> Application lager started on node norum@skrall
+2013-12-08 16:47:26.089 [info] <0.69.0> tuah: Web server started at port 8080...
+2013-12-08 16:47:26.090 [info] <0.69.0> tuah: SSL is not configured.
+2013-12-08 16:47:26.312 [info] <0.7.0> Application mnesia started on node norum@skrall
+2013-12-08 16:47:26.345 [info] <0.189.0> Session server is ready
+
+2013-12-08 16:47:26.345 [info] <0.7.0> Application tuah started on node norum@skrall
+2013-12-08 16:47:26.349 [info] <0.7.0> Application norum started on node norum@skrall
+2013-12-08 16:47:32.418 [info] <0.244.0> Params = [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 16:56:22.684 [info] <0.259.0> User = []
+2013-12-08 16:56:55.519 [info] <0.261.0> User = []
+2013-12-08 16:57:24.664 [info] <0.262.0> User = []
+2013-12-08 16:57:26.296 [info] <0.262.0> User = []
+2013-12-08 16:57:26.300 [info] <0.262.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 16:57:31.301 [info] <0.262.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 16:57:33.547 [info] <0.262.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 16:59:30.653 [info] <0.264.0> User = []
+2013-12-08 16:59:30.658 [info] <0.264.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 16:59:32.339 [info] <0.264.0> Params = [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}], {http_req,#Port<0.8508>,ranch_tcp,keepalive,<0.264.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51737},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"0">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,0},{<<"expect">>,undefined},{<<"content-length">>,0},{<<"transfer-encoding">>,[<<"identity">>]},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 16:59:51.461 [info] <0.265.0> User = []
+2013-12-08 16:59:51.465 [info] <0.265.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 16:59:59.129 [info] <0.266.0> Params = [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}], {http_req,#Port<0.8510>,ranch_tcp,keepalive,<0.266.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51742},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"0">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,0},{<<"expect">>,undefined},{<<"content-length">>,0},{<<"transfer-encoding">>,[<<"identity">>]},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:02:54.504 [info] <0.268.0> User = []
+2013-12-08 17:02:54.509 [info] <0.268.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:02:59.879 [info] <0.269.0> Params = [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}], {http_req,#Port<0.8515>,ranch_tcp,keepalive,<0.269.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51749},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"0">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,0},{<<"expect">>,undefined},{<<"content-length">>,0},{<<"transfer-encoding">>,[<<"identity">>]},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:05:08.081 [info] <0.270.0> User = []
+2013-12-08 17:05:08.086 [info] <0.270.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:05:12.083 [info] <0.270.0> Params = [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}], {http_req,#Port<0.8519>,ranch_tcp,keepalive,<0.270.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51752},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"0">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,0},{<<"expect">>,undefined},{<<"content-length">>,0},{<<"transfer-encoding">>,[<<"identity">>]},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:06:18.914 [info] <0.272.0> User = []
+2013-12-08 17:06:18.919 [info] <0.272.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:06:22.617 [info] <0.272.0> Params = [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}], {http_req,#Port<0.8523>,ranch_tcp,keepalive,<0.272.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51760},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"0">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,0},{<<"expect">>,undefined},{<<"content-length">>,0},{<<"transfer-encoding">>,[<<"identity">>]},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:06:22.619 [info] <0.272.0> Body Params = []
+2013-12-08 17:15:03.380 [info] <0.7.0> Application lager started on node norum@skrall
+2013-12-08 17:15:03.397 [info] <0.69.0> tuah: Web server started at port 8080...
+2013-12-08 17:15:03.398 [info] <0.69.0> tuah: SSL is not configured.
+2013-12-08 17:15:03.573 [info] <0.7.0> Application mnesia started on node norum@skrall
+2013-12-08 17:15:03.583 [info] <0.189.0> Session server is ready
+
+2013-12-08 17:15:03.583 [info] <0.7.0> Application tuah started on node norum@skrall
+2013-12-08 17:15:03.586 [info] <0.7.0> Application norum started on node norum@skrall
+2013-12-08 17:15:06.579 [info] <0.238.0> ** Method = <<"GET">>
+2013-12-08 17:15:06.580 [info] <0.238.0> ** Path = <<"/">>
+2013-12-08 17:15:06.580 [info] <0.238.0> ** Vals = []
+2013-12-08 17:15:06.580 [info] <0.238.0> ** POST Vals = []
+2013-12-08 17:15:08.148 [info] <0.238.0> ** Method = <<"GET">>
+2013-12-08 17:15:08.149 [info] <0.238.0> ** Path = <<"/secure/private">>
+2013-12-08 17:15:08.149 [info] <0.238.0> ** Vals = []
+2013-12-08 17:15:08.149 [info] <0.238.0> ** POST Vals = []
+2013-12-08 17:15:08.151 [info] <0.238.0> User = []
+2013-12-08 17:15:08.155 [info] <0.238.0> ** Method = <<"GET">>
+2013-12-08 17:15:08.156 [info] <0.238.0> ** Path = <<"/auth/login">>
+2013-12-08 17:15:08.156 [info] <0.238.0> ** Vals = []
+2013-12-08 17:15:08.156 [info] <0.238.0> ** POST Vals = []
+2013-12-08 17:15:08.158 [info] <0.238.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:15:12.697 [info] <0.238.0> ** Method = <<"POST">>
+2013-12-08 17:15:12.697 [info] <0.238.0> ** Path = <<"/auth/login">>
+2013-12-08 17:15:12.698 [info] <0.238.0> ** Vals = []
+2013-12-08 17:15:12.698 [info] <0.238.0> ** POST Vals = []
+2013-12-08 17:15:12.699 [info] <0.238.0> Params = [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}], {http_req,#Port<0.7967>,ranch_tcp,keepalive,<0.238.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51778},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"0">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,0},{<<"expect">>,undefined},{<<"content-length">>,0},{<<"transfer-encoding">>,[<<"identity">>]},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:15:12.701 [info] <0.238.0> Body Params = []
+2013-12-08 17:15:12.710 [info] <0.238.0> ** Method = <<"GET">>
+2013-12-08 17:15:12.710 [info] <0.238.0> ** Path = <<"/">>
+2013-12-08 17:15:12.711 [info] <0.238.0> ** Vals = []
+2013-12-08 17:15:12.711 [info] <0.238.0> ** POST Vals = []
+2013-12-08 17:16:17.570 [info] <0.240.0> ** Method = <<"GET">>
+2013-12-08 17:16:17.570 [info] <0.240.0> ** Path = <<"/">>
+2013-12-08 17:16:17.571 [info] <0.240.0> ** Vals = []
+2013-12-08 17:16:17.571 [info] <0.240.0> ** POST Vals = []
+2013-12-08 17:16:18.930 [info] <0.240.0> ** Method = <<"GET">>
+2013-12-08 17:16:18.930 [info] <0.240.0> ** Path = <<"/secure/private">>
+2013-12-08 17:16:18.930 [info] <0.240.0> ** Vals = []
+2013-12-08 17:16:18.931 [info] <0.240.0> ** POST Vals = []
+2013-12-08 17:16:18.931 [info] <0.240.0> User = []
+2013-12-08 17:16:18.935 [info] <0.240.0> ** Method = <<"GET">>
+2013-12-08 17:16:18.935 [info] <0.240.0> ** Path = <<"/auth/login">>
+2013-12-08 17:16:18.935 [info] <0.240.0> ** Vals = []
+2013-12-08 17:16:18.935 [info] <0.240.0> ** POST Vals = []
+2013-12-08 17:16:18.936 [info] <0.240.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:16:21.609 [info] <0.240.0> ** Method = <<"POST">>
+2013-12-08 17:16:21.609 [info] <0.240.0> ** Path = <<"/auth/login">>
+2013-12-08 17:16:21.610 [info] <0.240.0> ** Vals = []
+2013-12-08 17:16:21.610 [info] <0.240.0> ** POST Vals = []
+2013-12-08 17:16:21.611 [info] <0.240.0> Params = [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}], {http_req,#Port<0.8252>,ranch_tcp,keepalive,<0.240.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51783},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"0">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,0},{<<"expect">>,undefined},{<<"content-length">>,0},{<<"transfer-encoding">>,[<<"identity">>]},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:16:21.612 [info] <0.240.0> Body Params = []
+2013-12-08 17:16:21.616 [info] <0.240.0> ** Method = <<"GET">>
+2013-12-08 17:16:21.616 [info] <0.240.0> ** Path = <<"/">>
+2013-12-08 17:16:21.617 [info] <0.240.0> ** Vals = []
+2013-12-08 17:16:21.617 [info] <0.240.0> ** POST Vals = []
+2013-12-08 17:17:01.005 [info] <0.241.0> ** Method = <<"GET">>
+2013-12-08 17:17:01.006 [info] <0.241.0> ** Path = <<"/secure/private">>
+2013-12-08 17:17:01.007 [info] <0.241.0> ** Vals = []
+2013-12-08 17:17:01.007 [info] <0.241.0> ** POST Vals = []
+2013-12-08 17:17:01.007 [info] <0.241.0> User = []
+2013-12-08 17:17:01.011 [info] <0.241.0> ** Method = <<"GET">>
+2013-12-08 17:17:01.012 [info] <0.241.0> ** Path = <<"/auth/login">>
+2013-12-08 17:17:01.012 [info] <0.241.0> ** Vals = []
+2013-12-08 17:17:01.012 [info] <0.241.0> ** POST Vals = []
+2013-12-08 17:17:01.013 [info] <0.241.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:17:04.488 [info] <0.241.0> ** Method = <<"POST">>
+2013-12-08 17:17:04.489 [info] <0.241.0> ** Path = <<"/auth/login">>
+2013-12-08 17:17:04.490 [info] <0.241.0> ** Vals = []
+2013-12-08 17:17:04.492 [info] <0.241.0> ** POST Vals = []
+2013-12-08 17:17:04.493 [info] <0.241.0> Params = [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}], {http_req,#Port<0.8253>,ranch_tcp,keepalive,<0.241.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51788},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"0">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,0},{<<"expect">>,undefined},{<<"content-length">>,0},{<<"transfer-encoding">>,[<<"identity">>]},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:17:04.495 [info] <0.241.0> Body Params = []
+2013-12-08 17:17:04.504 [info] <0.241.0> ** Method = <<"GET">>
+2013-12-08 17:17:04.504 [info] <0.241.0> ** Path = <<"/">>
+2013-12-08 17:17:04.505 [info] <0.241.0> ** Vals = []
+2013-12-08 17:17:04.505 [info] <0.241.0> ** POST Vals = []
+2013-12-08 17:21:11.143 [info] <0.244.0> ** Method = <<"GET">>
+2013-12-08 17:21:11.144 [info] <0.244.0> ** Path = <<"/">>
+2013-12-08 17:21:11.144 [info] <0.244.0> ** Vals = []
+2013-12-08 17:21:11.144 [info] <0.244.0> ** POST Vals = []
+2013-12-08 17:21:12.588 [info] <0.244.0> ** Method = <<"GET">>
+2013-12-08 17:21:12.588 [info] <0.244.0> ** Path = <<"/secure/private">>
+2013-12-08 17:21:12.588 [info] <0.244.0> ** Vals = []
+2013-12-08 17:21:12.589 [info] <0.244.0> ** POST Vals = []
+2013-12-08 17:21:12.589 [info] <0.244.0> User = []
+2013-12-08 17:21:12.593 [info] <0.244.0> ** Method = <<"GET">>
+2013-12-08 17:21:12.594 [info] <0.244.0> ** Path = <<"/auth/login">>
+2013-12-08 17:21:12.594 [info] <0.244.0> ** Vals = []
+2013-12-08 17:21:12.594 [info] <0.244.0> ** POST Vals = []
+2013-12-08 17:21:12.595 [info] <0.244.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:21:15.395 [info] <0.244.0> ** Method = <<"POST">>
+2013-12-08 17:21:15.395 [info] <0.244.0> ** Path = <<"/auth/login">>
+2013-12-08 17:21:15.395 [info] <0.244.0> ** Vals = []
+2013-12-08 17:21:15.396 [info] <0.244.0> ** POST Vals = []
+2013-12-08 17:21:15.396 [info] <0.244.0> Login Params = [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}], {http_req,#Port<0.8260>,ranch_tcp,keepalive,<0.244.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51792},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"0">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,0},{<<"expect">>,undefined},{<<"content-length">>,0},{<<"transfer-encoding">>,[<<"identity">>]},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:21:15.397 [info] <0.244.0> Body Params = []
+2013-12-08 17:21:15.401 [info] <0.244.0> ** Method = <<"GET">>
+2013-12-08 17:21:15.401 [info] <0.244.0> ** Path = <<"/">>
+2013-12-08 17:21:15.402 [info] <0.244.0> ** Vals = []
+2013-12-08 17:21:15.402 [info] <0.244.0> ** POST Vals = []
+2013-12-08 17:22:29.694 [info] <0.245.0> ** Method = <<"GET">>
+2013-12-08 17:22:29.694 [info] <0.245.0> ** Path = <<"/secure/private">>
+2013-12-08 17:22:29.694 [info] <0.245.0> ** Vals = []
+2013-12-08 17:22:29.695 [info] <0.245.0> ** POST Vals = []
+2013-12-08 17:22:29.696 [info] <0.245.0> User = []
+2013-12-08 17:22:29.713 [info] <0.245.0> ** Method = <<"GET">>
+2013-12-08 17:22:29.713 [info] <0.245.0> ** Path = <<"/auth/login">>
+2013-12-08 17:22:29.713 [info] <0.245.0> ** Vals = []
+2013-12-08 17:22:29.713 [info] <0.245.0> ** POST Vals = []
+2013-12-08 17:22:29.714 [info] <0.245.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:22:33.090 [info] <0.245.0> ** Method = <<"POST">>
+2013-12-08 17:22:33.090 [info] <0.245.0> ** Path = <<"/auth/login">>
+2013-12-08 17:22:33.091 [info] <0.245.0> ** Vals = []
+2013-12-08 17:22:33.091 [info] <0.245.0> ** POST Vals = []
+2013-12-08 17:22:33.092 [info] <0.245.0> Login Params = Args = []
+, Params = [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+, Req = {http_req,#Port<0.8264>,ranch_tcp,keepalive,<0.245.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51794},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"0">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,0},{<<"expect">>,undefined},{<<"content-length">>,0},{<<"transfer-encoding">>,[<<"identity">>]},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:22:33.093 [info] <0.245.0> Body Params = []
+2013-12-08 17:22:33.096 [info] <0.245.0> ** Method = <<"GET">>
+2013-12-08 17:22:33.097 [info] <0.245.0> ** Path = <<"/">>
+2013-12-08 17:22:33.097 [info] <0.245.0> ** Vals = []
+2013-12-08 17:22:33.097 [info] <0.245.0> ** POST Vals = []
+2013-12-08 17:23:48.463 [info] <0.246.0> ** Method = <<"GET">>
+2013-12-08 17:23:48.464 [info] <0.246.0> ** Path = <<"/secure/private">>
+2013-12-08 17:23:48.464 [info] <0.246.0> ** Vals = []
+2013-12-08 17:23:48.464 [info] <0.246.0> ** POST Vals = []
+2013-12-08 17:23:48.465 [info] <0.246.0> User = []
+2013-12-08 17:23:48.469 [info] <0.246.0> ** Method = <<"GET">>
+2013-12-08 17:23:48.469 [info] <0.246.0> ** Path = <<"/auth/login">>
+2013-12-08 17:23:48.469 [info] <0.246.0> ** Vals = []
+2013-12-08 17:23:48.469 [info] <0.246.0> ** POST Vals = []
+2013-12-08 17:23:48.470 [info] <0.246.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:23:52.834 [info] <0.246.0> ** Method = <<"POST">>
+2013-12-08 17:23:52.835 [info] <0.246.0> ** Path = <<"/auth/login">>
+2013-12-08 17:23:52.835 [info] <0.246.0> ** Vals = []
+2013-12-08 17:23:52.835 [info] <0.246.0> ** POST Vals = []
+2013-12-08 17:23:52.836 [info] <0.246.0> Login Params :: 
+Args = []
+Params = [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+Req = {http_req,#Port<0.8268>,ranch_tcp,keepalive,<0.246.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51802},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"0">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,0},{<<"expect">>,undefined},{<<"content-length">>,0},{<<"transfer-encoding">>,[<<"identity">>]},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:23:52.837 [info] <0.246.0> Body Params = []
+2013-12-08 17:23:52.841 [info] <0.246.0> ** Method = <<"GET">>
+2013-12-08 17:23:52.842 [info] <0.246.0> ** Path = <<"/">>
+2013-12-08 17:23:52.842 [info] <0.246.0> ** Vals = []
+2013-12-08 17:23:52.842 [info] <0.246.0> ** POST Vals = []
+2013-12-08 17:26:34.774 [info] <0.248.0> ** Method = <<"GET">>
+2013-12-08 17:26:34.774 [info] <0.248.0> ** Path = <<"/secure/private">>
+2013-12-08 17:26:34.774 [info] <0.248.0> ** Vals = []
+2013-12-08 17:26:34.774 [info] <0.248.0> ** POST Vals = []
+2013-12-08 17:26:34.775 [info] <0.248.0> User = []
+2013-12-08 17:26:34.779 [info] <0.248.0> ** Method = <<"GET">>
+2013-12-08 17:26:34.779 [info] <0.248.0> ** Path = <<"/auth/login">>
+2013-12-08 17:26:34.779 [info] <0.248.0> ** Vals = []
+2013-12-08 17:26:34.780 [info] <0.248.0> ** POST Vals = []
+2013-12-08 17:26:34.780 [info] <0.248.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:26:39.637 [info] <0.248.0> ** Method = <<"POST">>
+2013-12-08 17:26:39.637 [info] <0.248.0> ** Path = <<"/auth/login">>
+2013-12-08 17:26:39.638 [info] <0.248.0> ** Vals = []
+2013-12-08 17:26:39.638 [info] <0.248.0> ** POST Vals = [{<<"email">>,<<"foo">>},{<<"password">>,<<"bar">>}]
+2013-12-08 17:26:39.639 [info] <0.248.0> Login Params :: 
+Args = []
+Params = [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[{<<"email">>,<<"foo">>},{<<"password">>,<<"bar">>}]}]
+Req = {http_req,#Port<0.8272>,ranch_tcp,keepalive,<0.248.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51810},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"22">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,22},{<<"expect">>,undefined},{<<"content-length">>,22},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:26:39.640 [info] <0.248.0> Body Params = []
+2013-12-08 17:26:39.644 [info] <0.248.0> ** Method = <<"GET">>
+2013-12-08 17:26:39.644 [info] <0.248.0> ** Path = <<"/">>
+2013-12-08 17:26:39.644 [info] <0.248.0> ** Vals = []
+2013-12-08 17:26:39.644 [info] <0.248.0> ** POST Vals = []
+2013-12-08 17:27:50.547 [info] <0.250.0> ** Method = <<"GET">>
+2013-12-08 17:27:50.548 [info] <0.250.0> ** Path = <<"/secure/private">>
+2013-12-08 17:27:50.548 [info] <0.250.0> ** Vals = []
+2013-12-08 17:27:50.548 [info] <0.250.0> ** POST Vals = []
+2013-12-08 17:27:50.549 [info] <0.250.0> User = []
+2013-12-08 17:27:50.552 [info] <0.250.0> ** Method = <<"GET">>
+2013-12-08 17:27:50.553 [info] <0.250.0> ** Path = <<"/auth/login">>
+2013-12-08 17:27:50.553 [info] <0.250.0> ** Vals = []
+2013-12-08 17:27:50.553 [info] <0.250.0> ** POST Vals = []
+2013-12-08 17:27:50.553 [info] <0.250.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:27:53.857 [info] <0.250.0> ** Method = <<"POST">>
+2013-12-08 17:27:53.857 [info] <0.250.0> ** Path = <<"/auth/login">>
+2013-12-08 17:27:53.858 [info] <0.250.0> ** Vals = []
+2013-12-08 17:27:53.858 [info] <0.250.0> ** POST Vals = [{<<"email">>,<<"foo">>},{<<"password">>,<<"bar">>}]
+2013-12-08 17:27:53.859 [info] <0.250.0> Login Params :: 
+Args = []
+Params = [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[{<<"email">>,<<"foo">>},{<<"password">>,<<"bar">>}]}]
+Req = {http_req,#Port<0.8276>,ranch_tcp,keepalive,<0.250.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51816},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"22">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,22},{<<"expect">>,undefined},{<<"content-length">>,22},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:27:53.860 [info] <0.250.0> Body Params = []
+2013-12-08 17:27:53.864 [info] <0.250.0> ** Method = <<"GET">>
+2013-12-08 17:27:53.864 [info] <0.250.0> ** Path = <<"/">>
+2013-12-08 17:27:53.864 [info] <0.250.0> ** Vals = []
+2013-12-08 17:27:53.864 [info] <0.250.0> ** POST Vals = []
+2013-12-08 17:31:24.715 [info] <0.252.0> ** Method = <<"GET">>
+2013-12-08 17:31:24.715 [info] <0.252.0> ** Path = <<"/secure/private">>
+2013-12-08 17:31:24.715 [info] <0.252.0> ** Vals = []
+2013-12-08 17:31:24.716 [info] <0.252.0> ** POST Vals = []
+2013-12-08 17:31:24.716 [info] <0.252.0> User = []
+2013-12-08 17:31:24.721 [info] <0.252.0> ** Method = <<"GET">>
+2013-12-08 17:31:24.721 [info] <0.252.0> ** Path = <<"/auth/login">>
+2013-12-08 17:31:24.721 [info] <0.252.0> ** Vals = []
+2013-12-08 17:31:24.721 [info] <0.252.0> ** POST Vals = []
+2013-12-08 17:31:24.722 [info] <0.252.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:31:27.961 [info] <0.252.0> ** Method = <<"POST">>
+2013-12-08 17:31:27.961 [info] <0.252.0> ** Path = <<"/auth/login">>
+2013-12-08 17:31:27.962 [info] <0.252.0> ** Vals = []
+2013-12-08 17:31:27.962 [info] <0.252.0> ** POST Vals = [{<<"email">>,<<"foo">>},{<<"password">>,<<"bar">>}]
+2013-12-08 17:31:27.968 [info] <0.252.0> ** Method = <<"GET">>
+2013-12-08 17:31:27.968 [info] <0.252.0> ** Path = <<"/">>
+2013-12-08 17:31:27.969 [info] <0.252.0> ** Vals = []
+2013-12-08 17:31:27.969 [info] <0.252.0> ** POST Vals = []
+2013-12-08 17:32:45.451 [info] <0.253.0> User = []
+2013-12-08 17:32:45.465 [info] <0.253.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:33:00.184 [info] <0.255.0> User = []
+2013-12-08 17:33:00.191 [info] <0.255.0> Params = <<"login">>, [], [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[]}]
+2013-12-08 17:35:15.254 [info] <0.257.0> User = []
+2013-12-08 17:35:17.886 [info] <0.257.0> Login Params :: [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[{<<"email">>,<<"foo">>},{<<"password">>,<<"bar">>}]}]
+2013-12-08 17:35:17.886 [info] <0.257.0> Username = <<"foo">>, Password = <<"bar">>
+2013-12-08 17:40:34.484 [info] <0.260.0> User = []
+2013-12-08 17:40:38.209 [info] <0.260.0> Login Params :: [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[{<<"email">>,<<"foo">>},{<<"password">>,<<"bar">>}]}]
+, Req = {http_req,#Port<0.8305>,ranch_tcp,keepalive,<0.260.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51852},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"22">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,22},{<<"expect">>,undefined},{<<"content-length">>,22},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:40:38.210 [info] <0.260.0> Username = <<"foo">>, Password = <<"bar">>
+2013-12-08 17:40:43.658 [info] <0.261.0> User = []
+2013-12-08 17:42:09.847 [info] <0.263.0> User = []
+2013-12-08 17:42:15.073 [info] <0.264.0> Login Params :: [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[{<<"email">>,<<"foo@bar.com">>},{<<"password">>,<<"bar">>}]}]
+, Req = {http_req,#Port<0.8317>,ranch_tcp,keepalive,<0.264.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51869},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"32">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,32},{<<"expect">>,undefined},{<<"content-length">>,32},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:42:15.074 [info] <0.264.0> Username = <<"foo@bar.com">>, Password = <<"bar">>
+2013-12-08 17:42:46.780 [info] <0.266.0> User = []
+2013-12-08 17:42:58.544 [info] <0.267.0> User = []
+2013-12-08 17:44:22.064 [info] <0.268.0> User = []
+2013-12-08 17:44:26.853 [info] <0.268.0> Login Params :: [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[{<<"email">>,<<"foo@bar.com">>},{<<"password">>,<<"bar">>}]}]
+, Req = {http_req,#Port<0.8327>,ranch_tcp,keepalive,<0.268.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51881},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"32">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,32},{<<"expect">>,undefined},{<<"content-length">>,32},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:44:26.854 [info] <0.268.0> Username = <<"foo@bar.com">>, Password = <<"bar">>
+2013-12-08 17:44:35.715 [info] <0.269.0> User = <<"foo@bar.com">>
+2013-12-08 17:44:40.994 [info] <0.270.0> User = <<"foo@bar.com">>
+2013-12-08 17:46:52.112 [info] <0.278.0> User = <<"foo@bar.com">>
+2013-12-08 17:47:27.515 [info] <0.279.0> User = <<"foo@bar.com">>
+2013-12-08 17:48:23.015 [info] <0.282.0> User = <<"foo@bar.com">>
+2013-12-08 17:48:24.497 [info] <0.282.0> User = <<"foo@bar.com">>
+2013-12-08 17:49:36.334 [info] <0.283.0> User = <<"foo@bar.com">>
+2013-12-08 17:50:02.904 [info] <0.284.0> User = <<"foo@bar.com">>
+2013-12-08 17:50:04.297 [info] <0.284.0> User = <<"foo@bar.com">>
+2013-12-08 17:50:05.491 [info] <0.284.0> User = <<"foo@bar.com">>
+2013-12-08 17:50:06.659 [info] <0.284.0> User = <<"foo@bar.com">>
+2013-12-08 17:52:02.040 [info] <0.286.0> User = <<"foo@bar.com">>
+2013-12-08 17:52:03.833 [info] <0.286.0> User = []
+2013-12-08 17:52:16.304 [info] <0.288.0> Login Params :: [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[{<<"email">>,<<"foo@bar.com">>},{<<"password">>,<<"bar">>}]}]
+, Req = {http_req,#Port<0.8415>,ranch_tcp,keepalive,<0.288.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51919},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"32">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,32},{<<"expect">>,undefined},{<<"content-length">>,32},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:52:16.305 [info] <0.288.0> Username = <<"foo@bar.com">>, Password = <<"bar">>
+2013-12-08 17:53:46.073 [info] <0.292.0> Login Params :: [{auth,<<"foo@bar.com">>},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[{<<"email">>,<<"foo@bar.com">>},{<<"password">>,<<"bar">>}]}]
+, Req = {http_req,#Port<0.8422>,ranch_tcp,keepalive,<0.292.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51929},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"32">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,32},{<<"expect">>,undefined},{<<"content-length">>,32},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:53:46.074 [info] <0.292.0> Username = <<"foo@bar.com">>, Password = <<"bar">>
+2013-12-08 17:53:48.822 [info] <0.292.0> User = <<"foo@bar.com">>
+2013-12-08 17:53:51.891 [info] <0.292.0> User = <<"foo@bar.com">>
+2013-12-08 17:53:51.891 [info] <0.292.0> Logged in user = <<"foo@bar.com">>
+2013-12-08 17:53:53.512 [info] <0.292.0> User = <<"foo@bar.com">>
+2013-12-08 17:53:54.704 [info] <0.292.0> User = <<"foo@bar.com">>
+2013-12-08 17:53:54.705 [info] <0.292.0> Logged in user = <<"foo@bar.com">>
+2013-12-08 17:53:56.753 [info] <0.292.0> User = <<"foo@bar.com">>
+2013-12-08 17:53:57.868 [info] <0.292.0> User = <<"foo@bar.com">>
+2013-12-08 17:53:57.868 [info] <0.292.0> Logged in user = <<"foo@bar.com">>
+2013-12-08 17:53:59.516 [info] <0.292.0> User = <<"foo@bar.com">>
+2013-12-08 17:53:59.517 [info] <0.292.0> Logged in user = <<"foo@bar.com">>
+2013-12-08 17:55:05.949 [info] <0.300.0> User = []
+2013-12-08 17:55:12.596 [info] <0.301.0> Login Params :: [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[{<<"email">>,<<"foo@bar.com">>},{<<"password">>,<<"bar">>}]}]
+, Req = {http_req,#Port<0.8439>,ranch_tcp,keepalive,<0.301.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51937},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"32">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,32},{<<"expect">>,undefined},{<<"content-length">>,32},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:55:12.597 [info] <0.301.0> Username = <<"foo@bar.com">>, Password = <<"bar">>
+2013-12-08 17:55:12.603 [info] <0.301.0> User = <<"foo@bar.com">>
+2013-12-08 17:55:12.603 [info] <0.301.0> Logged in user = <<"foo@bar.com">>
+2013-12-08 17:55:17.163 [info] <0.301.0> User = <<"foo@bar.com">>
+2013-12-08 17:55:17.164 [info] <0.301.0> Logged in user = <<"foo@bar.com">>
+2013-12-08 17:55:18.238 [info] <0.301.0> User = <<"foo@bar.com">>
+2013-12-08 17:55:20.637 [info] <0.301.0> User = []
+2013-12-08 17:55:23.389 [info] <0.301.0> User = []
+2013-12-08 17:55:28.157 [info] <0.301.0> Login Params :: [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[{<<"email">>,<<"foo@bar.com">>},{<<"password">>,<<"bar">>}]}]
+, Req = {http_req,#Port<0.8439>,ranch_tcp,keepalive,<0.301.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51937},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"32">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,32},{<<"expect">>,undefined},{<<"content-length">>,32},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:55:28.158 [info] <0.301.0> Username = <<"foo@bar.com">>, Password = <<"bar">>
+2013-12-08 17:55:28.163 [info] <0.301.0> User = <<"foo@bar.com">>
+2013-12-08 17:55:28.163 [info] <0.301.0> Logged in user = <<"foo@bar.com">>
+2013-12-08 17:55:37.436 [info] <0.302.0> User = []
+2013-12-08 17:55:43.593 [info] <0.302.0> User = []
+2013-12-08 17:57:44.175 [info] <0.310.0> User = []
+2013-12-08 17:57:59.159 [info] <0.311.0> Login Params :: [{auth,[]},{sid,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>},{qs_vals,[]},{qs_body,[{<<"email">>,<<"hhh">>},{<<"password">>,<<"hh">>}]}]
+, Req = {http_req,#Port<0.8455>,ranch_tcp,keepalive,<0.311.0>,<<"POST">>,'HTTP/1.1',{{127,0,0,1},51952},<<"localhost">>,undefined,8080,<<"/auth/login">>,undefined,<<>>,[],[],[{<<"host">>,<<"localhost:8080">>},{<<"accept">>,<<"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8">>},{<<"accept-encoding">>,<<"gzip, deflate">>},{<<"accept-language">>,<<"en-us">>},{<<"content-type">>,<<"application/x-www-form-urlencoded">>},{<<"origin">>,<<"http://localhost:8080">>},{<<"content-length">>,<<"21">>},{<<"connection">>,<<"keep-alive">>},{<<"user-agent">>,<<"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71">>},{<<"referer">>,<<"http://localhost:8080/auth/login">>},{<<"dnt">>,<<"1">>},{<<"cookie">>,<<"_gauges_unique=1; _gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique_year=1; _tuah=718ec2f0-f023-4b91-bc88-415c60186c82">>}],[{<<"cookie">>,[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}]},{<<"content-length">>,21},{<<"expect">>,undefined},{<<"content-length">>,21},{<<"connection">>,[<<"keep-alive">>]}],[{<<"_gauges_unique">>,<<"1">>},{<<"_gauges_unique_day">>,<<"1">>},{<<"_gauges_unique_month">>,<<"1">>},{<<"_gauges_unique_year">>,<<"1">>},{<<"_tuah">>,<<"718ec2f0-f023-4b91-bc88-415c60186c82">>}],[],done,undefined,<<>>,false,waiting,[],<<>>,undefined}
+2013-12-08 17:57:59.160 [info] <0.311.0> Username = <<"hhh">>, Password = <<"hh">>
+2013-12-08 17:57:59.165 [info] <0.311.0> User = []
+2013-12-08 17:58:04.603 [info] <0.312.0> User = []
