@@ -1,17 +1,15 @@
 
 -module(tuah_sup).
+-behaviour(supervisor).
 -author ('Hisham Ismail <mhishami@gmail.com').
 
--behaviour(supervisor).
+-include("tuah.hrl").
 
 %% API
 -export([start_link/0]).
 
 %% Supervisor callbacks
 -export([init/1]).
-
-%% Helper macro for declaring children of supervisor
--define(CHILD(I, Type), {I, {I, start_link, []}, permanent, 5000, Type, [I]}).
 
 %% ===================================================================
 %% API functions
@@ -26,6 +24,9 @@ start_link() ->
 
 init([]) ->
     % Web = ?CHILD(tuah_srv, worker),
-    Session = ?CHILD(session_srv, worker),
-    {ok, { {one_for_one, 5, 10}, [Session]} }.
+    Session = ?CHILD(session_worker, worker),
+    Pool = ?CHILD(mongo_pool, worker),
+    Mongo = ?CHILD(mongo_worker, worker),
+    Web = ?CHILD(web_worker, worker),
+    {ok, { {one_for_one, 5, 10}, [Session, Pool, Mongo, Web]} }.
 

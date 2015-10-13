@@ -9,7 +9,7 @@ gen() ->
     to_string(v4()).
 
 init() ->
-    {A, B, C} = erlang:now(),
+    {A, B, C} = erlang:timestamp(),
     init(A, B, C).
     
 init(A, B, C) ->

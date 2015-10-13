@@ -16,12 +16,7 @@ handle(Req, State) ->
     {Vals, Req4} = cowboy_req:qs_vals(Req3),
     {ok, PostVals, Req5} = cowboy_req:body_qs(Req4),
 
-    % lager:log(info, self(), "** Method = ~p", [Method]),
-    % lager:log(info, self(), "** Path = ~p", [Path]),
-    % lager:log(info, self(), "** Vals = ~p", [Vals]),
-    % lager:log(info, self(), "** POST Vals = ~p", [PostVals]),
-
-    Params = [{qs_vals, Vals}, {qs_body, PostVals}],
+    Params = #{qs_vals => Vals, qs_body => PostVals},
     {Controller, Action, Args} =
         case get_path(Path) of
             [<<>>] ->
@@ -33,42 +28,39 @@ handle(Req, State) ->
             [C, A | R] ->
                 {C, A, R}                
         end,
-    % lager:log(info, self(), "** CAA = ~p, ~p, ~p", [Controller, Action, Args]),
+    
     {ok, Req6} = 
-        case tuah:locate(Controller) of
-            undefined ->
+        case web_worker:get_handler(Controller) of
+            error ->
                 %% error, try to reload the controller again
-                tuah:reload(),
-                case tuah:locate(Controller) of
-                    undefined ->
+                web_worker:reload_handlers(),
+                case web_worker:get_handler(Controller) of
+                    error ->
                         do_error(Req5, 
                             << <<"Controller not found: ">>/binary, Controller/binary,
                             <<"_controller">>/binary >>);
-                    Con ->
+                    {ok, Ctrl} ->
                         %% ok, found controllers
-                        process_request(Con, Controller, Method, Action, Args, Params, Req5)
+                        process_request(Ctrl, Controller, Method, Action, Args, Params, Req5)
                 end;
-            Con ->
+            {ok, Ctrl} ->
                 %% ok, found controllers
-                process_request(Con, Controller, Method, Action, Args, Params, Req5)
+                process_request(Ctrl, Controller, Method, Action, Args, Params, Req5)
          end,
          
     {ok, Req6, State}.
 
 process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     
-    % lager:log(info, self(), "process_request: Controller=~p, Method=~p, Action=~p, Params=~p", 
-    %     [Controller, Method, Action, Params]),
-        
-    %% get the cookie for session id
     {Sid, Req2} = prepare_cookie(Req),
     
     %% do other lookup based on this Sid, if need be.
     
     %% we can do filter here first
-    P = case tuah:get(Sid) of
-            undefined -> [{auth, []}, {sid, Sid}|Params];
-            Data -> [{auth, Data}, {sid, Sid}|Params]
+    P = case session_worker:get_cookies(Sid) of
+            {error, undefined} -> 
+                [{auth, []}, {sid, Sid}|Params];
+            {ok, Data} -> [{auth, Data}, {sid, Sid}|Params]
         end,
     case catch Ctrl:before_filter(P, Req2) of
         {redirect, Location} ->
@@ -78,34 +70,28 @@ process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
             handle_request(Ctrl, Controller, Method, Action, Args, P, Req2)
     end.
 
-prepare_cookie(Req) ->
-    
-    lager:log(debug, self(), "Preparing cookie..."),
-    
+prepare_cookie(Req) ->    
     {Sid, Req2} = cowboy_req:cookie(?COOKIE, Req),
     case Sid of
         undefined ->
             %% set the cookie
-            Uuid = uuid:gen(),
+            Uid = web_util:hash_password(word_util:gen_pnr()),
             Req3 = cowboy_req:set_resp_cookie(?COOKIE, 
-                     Uuid, [{path, <<"/">>}], Req2),
-            {Uuid, Req3};
+                     Uid, [{path, <<"/">>}], Req2),
+            {Uid, Req3};
         _ ->
             {Sid, Req2}
     end.
-            
-    % io:format("sid: ~p~n", [Sid]),
-    % Req2.
-        
-handle_request(Con, Controller, Method, Action, Args, Params, Req) ->
+                    
+handle_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     
     lager:log(debug, self(), "handle_request: Controller=~p, Method=~p, Action=~p, Params=~p", 
         [Controller, Method, Action, Params]),
     
     %% process request
-    case catch Con:handle_request(Method, Action, Args, Params, Req) of
-        {'EXIT', _} when is_atom(Con) ->
-            C = list_to_binary(atom_to_list(Con)),
+    case catch Ctrl:handle_request(Method, Action, Args, Params, Req) of
+        {'EXIT', _} when is_atom(Ctrl) ->
+            C = list_to_binary(atom_to_list(Ctrl)),
             do_error(Req, 
                 << <<"'handle_request/4' error, or not found: ">>/binary, C/binary >>);
         {'EXIT', _} ->

@@ -1,6 +1,8 @@
 ebin/*
-*.beam
 deps/*
-**/db
-examples/*
-.rebar
+_rel
+rel
+relx
+relx.config
+.erlang.mk/
+tuah.d

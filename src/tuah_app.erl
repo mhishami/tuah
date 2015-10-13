@@ -11,41 +11,16 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
-    lager:start(),
-    uuid:init(),
-    Dispatch = cowboy_router:compile([
-        {'_', [
-            {"/static/[...]", cowboy_static, 
-                {dir, "priv", [{mimetypes, cow_mimetypes, all}]}},
-            {'_', main_handler, []}
-        ]}
-    ]),
-    Port = case os:getenv("PORT") of
-              false -> 8080;
-              Val -> list_to_integer(Val)
-          end,
-    {ok, _} = cowboy:start_http(http, 100, [{port, Port}], [
-        {env, [{dispatch, Dispatch}]}
-    ]),
-    lager:log(info, self(), "tuah: Web server started at port ~p...~n", [Port]),
+    word_util:init(),
+    application:start(sync),
+    application:ensure_all_started(lager),
+    application:ensure_all_started(mongodb),    
+    application:ensure_all_started(cowboy),
+    application:start(erlydtl),
+    application:start(merl),
 
-    case file:list_dir("priv/ssl") of
-        {ok, _} ->
-            SSLPort = case os:getenv("SSL_PORT") of
-                          false -> 8443;
-                          SSLVal -> list_to_integer(SSLVal)
-                      end,
-            {ok, _} = cowboy:start_https(https, 100, [
-                          {port, SSLPort},
-                          {cacertfile, "priv/ssl/cowboy-ca.crt"},
-                          {certfile, "priv/ssl/server.crt"},
-                          {keyfile, "priv/ssl/server.key"}], [
-                          {env, [{dispatch, Dispatch}]}
-                      ]),
-            lager:log(info, self(), "tuah: Secure Web server started at port ~p...~n", [SSLPort]);
-        {error, _} ->
-            lager:log(info, self(), "tuah: SSL is not configured.")
-    end,
+    %% set debug for console logs
+    lager:set_loglevel(lager_console_backend, debug),
     
     tuah_sup:start_link().
 
