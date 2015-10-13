@@ -21,7 +21,7 @@ Usage
   $ cat Makefile
   PROJECT = foo
   DEPS = tuah
-  dep_tuah = git https://https://github.com/mhishami/tuah.git V1.1
+  dep_tuah = git https://github.com/mhishami/tuah.git V1.1
 
   include erlang.mk
   ````
@@ -197,19 +197,8 @@ Usage
   
 6. Run The App
 
-  Edit the Makefile a bit
-
-  ``` bash
-  dev:
-  	@erl +A 10 -sname foo \
-      -pa ebin include deps/*/ebin deps/*/include ebin include \
-  		-boot start_sasl -s reloader -s tuah -s foo
-  ```
-
-  And run it.    
-
   ``` shell
-  $ make; make dev
+  $ make; make run
   ```
   
 7. Deploy to Heroku
