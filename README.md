@@ -13,20 +13,24 @@ Usage
   ```` bash
   $ mkdir ~/Projects/Erlang/foo
   $ cd ~/Projects/Erlang/foo
-  $ rebar create template=project
-  $ rebar create template=simpleapp appid=foo
+  $ wget https://raw.githubusercontent.com/ninenines/erlang.mk/master/erlang.mk
   ````
 
-  Add tuah in the `rebar.config` file
+  Create a new file called Makefile, and add the content as per below
   ```` bash
-  $ cat rebar.config
-  ...
-  {deps, [
-      {tuah, ".*", {git, "git://github.com/mhishami/tuah.git", "master"}}
-  ]}.
-  ...
+  $ cat Makefile
+  PROJECT = foo
+  DEPS = tuah
+  dep_tuah = git https://https://github.com/mhishami/tuah.git V1.1
+
+  include erlang.mk
   ````
-  
+
+  Create a skeleton for the OTP project
+  ```` bash
+  $ make bootstrap bootstrap-rel
+  ````
+
 2. Create The App to Start/Stop
 
   ```` bash
@@ -39,32 +43,28 @@ Usage
 
   ```` erlang
 
-  -module (foo).
+  -module(foo_app).
+  -behaviour(application).
 
-  -export ([start/0]).
-  -export ([stop/0]).
+  -export([start/2]).
+  -export([stop/1]).
 
-  ensure_started(App) ->
-        case application:start(App) of
-            ok ->
-                ok;
-            {error, {already_started, App}} ->
-                ok
-        end.
-    
-  start() ->
-        ok = ensure_started(crypto),
-        ok = ensure_started(ranch),
-        ok = ensure_started(cowboy),
-        ok = ensure_started(tuah),
-        ok = ensure_started(foo).
-    
-  stop() ->
-        application:stop(foo),
-        application:stop(tuah),
-        application:stop(cowboy),
-        application:stop(ranch),
-        application:stop(crypto).
+  start(_Type, _Args) ->
+      word_util:init(),
+      application:start(sync),
+      application:ensure_all_started(lager),
+      application:ensure_all_started(mongodb),    
+      application:ensure_all_started(cowboy),
+      application:start(erlydtl),
+      application:start(merl),
+
+      %% set debug for console logs
+      lager:set_loglevel(lager_console_backend, debug),
+
+      foo_sup:start_link().
+
+  stop(_State) ->
+      ok.
     
   ````
 
@@ -135,18 +135,19 @@ Usage
   ```` bash
   $ cd ~/Projects/Erlang/foo
   $ cp -r ~/Projects/Web/bootstrap/dist priv/assets
-  $ cp -r ~/Projects/Web/bootstrap/docs-assets/ico priv/assets/.
   $ cp ~/Projects/Web/bootstrap/docs/examples/jumbotron-narrow/index.html templates/base.dtl
   $ cp ~/Projects/Web/bootstrap/docs/examples/jumbotron-narrow/jumbotron-narrow.css priv/assets/css/style.css
   ````
 
   Replace all references to css and js files
-  Edit `base.html` header file to be:
+  Edit `base.dtl` header file to be:
 
   ``` html
 
     <!-- Bootstrap core CSS -->
-    <link href="/static/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/static/assets/dist/js/ie-emulation-modes-warning.js"></script>
+
 
     <!-- Custom styles for this template -->
     <link href="/static/assets/css/style.css" rel="stylesheet">
