@@ -39,7 +39,31 @@ Usage
 
 3. Add The Code
 
-  The content might be similar to this
+  The content might be similar to these:
+
+  ````erlang
+  %% file: foo.app.src
+  {application, foo, [
+    {description, "App Foo"},
+    {vsn, "v0.1"},
+    {modules, []},
+    {registered, [foo_sup]},
+    {applications, [
+          kernel,
+          stdlib,
+          tuah, 
+          cowboy,
+          erlydtl,
+          jsx,
+          lager,
+          cowlib,
+          ranch,
+          mongodb,
+          bson
+    ]},
+  {mod, {foo_app, []}}
+  ]}.
+  ````
 
   ```` erlang
 
