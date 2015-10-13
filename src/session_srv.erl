@@ -1,6 +1,7 @@
 -module(session_srv).
 -behaviour(gen_server).
 -define(SERVER, ?MODULE).
+-author ('Hisham Ismail <mhishami@gmail.com').
 
 -include ("tuah.hrl").
 -include_lib("stdlib/include/qlc.hrl").

@@ -1,5 +1,6 @@
 -module(date_util).
 -compile(export_all).
+-author ('Hisham Ismail <mhishami@gmail.com').
 
 epoch() ->
     now_to_seconds(now()).   
