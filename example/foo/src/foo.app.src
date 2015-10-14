@@ -1,0 +1,25 @@
+{application, foo, [
+    {description, ""},
+    {vsn, "rolling"},
+    {modules, []},
+    {registered, [foo_sup]},
+    {applications, [
+                kernel,
+                stdlib,
+                tuah, 
+                cowboy,
+                erlydtl,
+                jsx,
+                lager,
+                cowlib,
+                ranch,
+                mongodb,
+                bson,
+                mnesia
+    ]},
+    {mod, {foo_app, []}},
+    {env, [
+        {http, [{port, 8080}]},
+        {dirname, foo}
+    ]}
+]}.
