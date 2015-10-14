@@ -132,8 +132,9 @@ Usage
   
       %% authenticate the user
   
-      %% set the session
-      tuah:set(Sid, <<"foo@bar.com">>),
+      %% set the session id, and user email
+      Sid = web_util:hash_password(word_util:gen_pnr()),
+      session_worker:set_cookies(Sid, Email),
 
       %% redirect
       {redirect, "/"};
@@ -160,9 +161,11 @@ Usage
   Put all the static files in the `priv` directory, and prepend it with `static` name, i.e.
   ```` bash
   $ cd ~/Projects/Erlang/foo
-  $ cp -r ~/Projects/Web/bootstrap/dist priv/assets
+  $ mkdir -p priv/static/css
+  $ cp -r ~/Projects/Web/bootstrap/dist priv/static/.
+  $ cp -r ~/Projects/Web/bootstrap/assets priv/static/.
   $ cp ~/Projects/Web/bootstrap/docs/examples/jumbotron-narrow/index.html templates/base.dtl
-  $ cp ~/Projects/Web/bootstrap/docs/examples/jumbotron-narrow/jumbotron-narrow.css priv/assets/css/style.css
+  $ cp ~/Projects/Web/bootstrap/docs/examples/jumbotron-narrow/jumbotron-narrow.css priv/static/css/style.css
   ````
 
   Replace all references to css and js files
@@ -171,12 +174,12 @@ Usage
   ``` html
 
     <!-- Bootstrap core CSS -->
-    <link href="/static/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="/static/assets/dist/js/ie-emulation-modes-warning.js"></script>
 
 
     <!-- Custom styles for this template -->
-    <link href="/static/assets/css/style.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
 
   ```
   Edit the `base.dtl` file to include the `content` block to be:
