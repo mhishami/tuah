@@ -121,10 +121,14 @@ Usage
       %%
       {json, [{username, <<"hisham">>}, {password, <<"sa">>}]};
       
-  handle_request(<<"GET">>, _Action, _Args, _Params, _Req) ->    
-      %% / will render home.dtl
+  handle_request(<<"GET">>, <<"/">>, _Args, _Params, _Req) ->    
+      %% Action / will render home.dtl
       {render, []};
       
+  handle_request(<<"GET">>, <<"login">> = Action, _Args, _Params, _Req) ->    
+      %% Action login will render login.dtl
+      {render, Action, []};
+
   handle_request(<<"POST">>, <<"login">> = Action, _, Params, _) ->
       {ok, PostVals} = maps:find(<<"qs_body">>, Params),
       Email = proplists:get_value(<<"email">>, PostVals, <<"">>),
