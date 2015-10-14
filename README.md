@@ -141,7 +141,7 @@ Usage
       session_worker:set_cookies(Sid, Email),
 
       %% redirect
-      {redirect, "/"};
+      {redirect, <<"/">>};
     
   handle_request(_, _, _, _, _) ->
       {error, <<"Opps, Forbidden">>}.
