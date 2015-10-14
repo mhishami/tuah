@@ -20,8 +20,9 @@ Usage
   ```` bash
   $ cat Makefile
   PROJECT = foo
-  DEPS = tuah
-  dep_tuah = git https://github.com/mhishami/tuah.git V1.1
+  DEPS = tuah sync eunit_formatters
+
+  tuah_dep = git http://github.com/mhishami/tuah master
 
   include erlang.mk
   ````
@@ -74,7 +75,6 @@ Usage
   -export([stop/1]).
 
   start(_Type, _Args) ->
-      word_util:init(),
       application:start(sync),
       application:ensure_all_started(lager),
       application:ensure_all_started(mongodb),    
@@ -122,7 +122,7 @@ Usage
       
   handle_request(<<"GET">>, _Action, _Args, _Params, _Req) ->    
         %% / will render home.dtl
-        {ok, []};
+        {render, []};
       
   handle_request(<<"POST">>, <<"login">>, _, [{auth, _}, {sid, Sid}, {qs_vals, _}, {qs_body, Vals}], _Req) ->
         Username = proplists:get_value(<<"email">>, Vals),
@@ -282,10 +282,10 @@ Notes
 
 1. Reply can be done in several ways in the controller:
   ``` erlang
-  {redirect, "/page"}   %% redirect to page_controller -> page.dtl
-  {ok, Data}            %% return the page for the current controller with Data
-  {<<"login">>, Data}   %% return login.dtl view with Data
-  {json, DataList}      %% return json data from erlang list
+  {redirect, <<"/page">>}     %% redirect to page_controller -> page.dtl
+  {render, Data}              %% return the page for the current controller with Data
+  {render, <<"adm">>, Data}   %% render the page adm.dtl in the current controller with data
+  {json, DataList}            %% return json data from erlang list
   ```
   
 2. Customize your error view with custom error.dtl page that takes `{{ error }}` as the message

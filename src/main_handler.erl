@@ -63,7 +63,7 @@ process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     %% we can do filter here first
     P = case session_worker:get_cookies(Sid) of
             {error, undefined} -> 
-                Params#{<<"auth">> => [], <<"sid">> => Sid};
+                Params#{<<"auth">> => <<"">>, <<"sid">> => Sid};
             {ok, Data} -> 
                 Params#{<<"auth">> => Data, <<"sid">> => Sid}
         end,
@@ -104,9 +104,12 @@ handle_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
             do_error(Req, 
                 << <<"Erorr(s) in 'handle_request/4' in ">>/binary, Controller/binary,
                 <<"_controller. Please fix it">>/binary >>);
-        {ok, Data} ->
+        {render, Data} ->
             %% render template
             Template = to_atom(Controller, "_dtl"),
+            render_template(Template, Data, Req);
+        {render, Page, Data} ->
+            Template = to_atom(Page, "_dtl"),
             render_template(Template, Data, Req);
         {redirect, Location} ->
         	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req);
@@ -126,9 +129,6 @@ handle_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
                 Json ->
                     cowboy_req:reply(200, [{<<"content-type">>, <<"application/json">>}], Json, Req)
             end;
-        {Page, Data} ->
-            Template = to_atom(Page, "_dtl"),
-            render_template(Template, Data, Req);
         _ ->
             % catch all
             Content = << <<"Cannot process this req: ">>/binary, <<"\r\n">>/binary,
@@ -139,13 +139,15 @@ handle_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     end.
     
 render_template(Template, Data, Req) ->    
+    ?DEBUG("Render Template, Data= ~p~n", [Data]),
     case catch Template:render(Data) of
         {ok, Content} ->
             % ?DEBUG("Template ~p found", [Template]),
             cowboy_req:reply(200, [], Content, Req);
         {'EXIT', _} ->
             %% No template
-            do_error(Req, "No template found for: " ++ atom_to_list(Template))
+            do_error(Req, "No template found for: " ++ atom_to_list(Template) ++ 
+                ", or method not implemented.")
     end.
     
 do_error(Req, Message) ->

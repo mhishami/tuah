@@ -19,12 +19,17 @@
 %% API.
 -export([get_handler/1]).
 -export([reload_handlers/0]).
+-export([list_handlers/0]).
+-export([reload/0]).
 
 get_handler(Handler) ->
     gen_server:call(?MODULE, {get_handler, Handler}).
 
 reload_handlers() ->
     gen_server:call(?MODULE, {reload_handlers}).
+
+list_handlers() ->
+    gen_server:call(?MODULE, {list_handlers}).
 
 -spec start_link() -> {ok, pid()}.
 start_link() ->
@@ -85,6 +90,9 @@ handle_call({get_handler, Handler}, _From, #state{handlers=Repo} = State) ->
 handle_call({reload_handlers}, _From, State) ->
     {reply, ok, State#state{handlers = reload()}};
 
+handle_call({list_handlers}, _From, #state{handlers=H} = State) ->
+    {reply, {ok, H}, State};
+
 handle_call(_Request, _From, State) ->
     {reply, ignored, State}.
 
@@ -101,11 +109,16 @@ code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
 
 reload() ->
+    App = erlang:atom_to_list(app_name()),
+    Dir = "lib/" ++ App ++ "*/ebin/*_controller.beam",
     C1 = lists:foldl(
-            fun(C, Acu) ->
-                {match, [{A, 16}]} = re:run(C, "_controller.beam"),
-                [string:sub_string(C, 22, A)|Acu]
-            end, [], filelib:wildcard("lib/*/ebin/*_controller.beam")),            
+            fun(C, Accu) ->
+                L = string:tokens(C, "/"),
+                L2 = lists:nth(4, L),
+                L3 = string:tokens(L2, "_"),
+                [lists:nth(1, L3)|Accu]
+            end,
+        [], filelib:wildcard(Dir)),
     C2 = [ {list_to_binary(W), list_to_atom(W ++ "_controller")} || W <- C1 ],
     maps:from_list(C2).
 
