@@ -37,13 +37,16 @@ init([]) ->
         {ok, [{port, P}]} -> P;
         _ -> 8080
     end,
+
+    % App = application:get_application(),
     Dispatch = cowboy_router:compile([
         {'_', [
-            {"/static/[...]", cowboy_static, {priv_dir, norum_web, "static",
+            {"/static/[...]", cowboy_static, {priv_dir, app_name(), "static",
                 [{mimetypes, cow_mimetypes, all}]}},
             {'_', main_handler, []}
         ]}
     ]),
+    ?DEBUG("Cowboy Dispatch= ~p~n", [Dispatch]),
     {ok, _} = cowboy:start_http(http, 100, [{port, Port}], [
         {env, [{dispatch, Dispatch}]}
     ]),
@@ -70,16 +73,16 @@ init([]) ->
     {ok, #state{}}.
 
 handle_call({get_handler, Handler}, _From, #state{handlers=Repo} = State) ->
-    {reply, maps:find(Handler, Repo), State};
+    % ?DEBUG("Repo= ~p~n", [Repo]),
+    Maps1 = case Repo of
+                undefined -> reload();
+                _ -> Repo
+            end,
+    % ?DEBUG("Handler= ~p~n", [maps:find(Handler, Maps1)]),
+    {reply, maps:find(Handler, Maps1), State};
 
 handle_call({reload_handlers}, _From, State) ->
-    C1 = lists:foldl(
-            fun(C, Acu) ->
-                {match, [{A, 12}]} = re:run(C, "_worker.beam"),
-                [string:sub_string(C, 19, A)|Acu]
-            end, [], filelib:wildcard("lib/tuah-*/ebin/*_worker.beam")),            
-    C2 = [ {list_to_binary(W), list_to_atom(W ++ "_controller")} || W <- C1 ],
-    {reply, ok, State#state{handlers = maps:from_list(C2)}};
+    {reply, ok, State#state{handlers = reload()}};
 
 handle_call(_Request, _From, State) ->
     {reply, ignored, State}.
@@ -95,3 +98,28 @@ terminate(_Reason, _State) ->
 
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
+
+reload() ->
+    C1 = lists:foldl(
+            fun(C, Acu) ->
+                {match, [{A, 16}]} = re:run(C, "_controller.beam"),
+                [string:sub_string(C, 22, A)|Acu]
+            end, [], filelib:wildcard("lib/*/ebin/*_controller.beam")),            
+    C2 = [ {list_to_binary(W), list_to_atom(W ++ "_controller")} || W <- C1 ],
+    maps:from_list(C2).
+
+app_name() ->
+    P = lists:nth(2, code:get_path()),
+    T = string:tokens(P, "/"),
+    A = get_last_sixth(T),
+    erlang:list_to_atom(A).
+
+get_last_sixth([H|T]) ->
+    case length(T) =:= 5 of
+        false ->
+            get_last_sixth(T);
+        true ->
+            H
+    end.
+
+

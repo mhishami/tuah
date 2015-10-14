@@ -17,8 +17,6 @@
 
 -record(state, {pool}).
 
--define(SIZE, 10).
-
 %% API.
 -export([get/1]).
 -export([peek/0]).

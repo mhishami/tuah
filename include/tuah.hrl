@@ -7,6 +7,7 @@
 -define(ERROR(Text, Args), lager:log(error, ?MODULE, "~p:~p: " ++ Text, [?MODULE, ?LINE | Args])).
 
 -define(SALT, <<"02f40807f3abd51aefb1f77d9d1535cc4e6a12e0">>).
+-define(SIZE, 5).
 
 %% record to keep the key, value
 -record(tuah_session, {key, val, expiry, timestamp = {date(), time()}}).

@@ -1,6 +1,8 @@
 -module (main_handler).
 -author ('Hisham Ismail <mhishami@gmail.com').
 
+-include("tuah.hrl").
+
 -export([init/3]).
 -export([handle/2]).
 -export([terminate/3]).
@@ -13,10 +15,10 @@ init(_Transport, Req, []) ->
 handle(Req, State) ->
     {Method, Req2} = cowboy_req:method(Req),
     {Path, Req3} = cowboy_req:path(Req2),
-    {Vals, Req4} = cowboy_req:qs_vals(Req3),
+    {QsVals, Req4} = cowboy_req:qs_vals(Req3),
     {ok, PostVals, Req5} = cowboy_req:body_qs(Req4),
 
-    Params = #{qs_vals => Vals, qs_body => PostVals},
+    Params = #{<<"qs_vals">> => QsVals, <<"qs_body">> => PostVals},
     {Controller, Action, Args} =
         case get_path(Path) of
             [<<>>] ->
@@ -45,6 +47,7 @@ handle(Req, State) ->
                 end;
             {ok, Ctrl} ->
                 %% ok, found controllers
+                ?DEBUG("Ctrl= ~p~n", [Ctrl]),
                 process_request(Ctrl, Controller, Method, Action, Args, Params, Req5)
          end,
          
@@ -53,15 +56,18 @@ handle(Req, State) ->
 process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     
     {Sid, Req2} = prepare_cookie(Req),
+    ?DEBUG("Processing req, Sid= ~p~n", [Sid]),
     
     %% do other lookup based on this Sid, if need be.
     
     %% we can do filter here first
     P = case session_worker:get_cookies(Sid) of
             {error, undefined} -> 
-                [{auth, []}, {sid, Sid}|Params];
-            {ok, Data} -> [{auth, Data}, {sid, Sid}|Params]
+                Params#{<<"auth">> => [], <<"sid">> => Sid};
+            {ok, Data} -> 
+                Params#{<<"auth">> => Data, <<"sid">> => Sid}
         end,
+    ?DEBUG("Checking for before_filter...~n", []),
     case catch Ctrl:before_filter(P, Req2) of
         {redirect, Location} ->
         	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req2);
@@ -85,8 +91,8 @@ prepare_cookie(Req) ->
                     
 handle_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     
-    lager:log(debug, self(), "handle_request: Controller=~p, Method=~p, Action=~p, Params=~p", 
-        [Controller, Method, Action, Params]),
+    ?DEBUG("handle_request: Controller= ~p, Method= ~p, Action= ~p~n", 
+        [Controller, Method, Action]),
     
     %% process request
     case catch Ctrl:handle_request(Method, Action, Args, Params, Req) of
@@ -132,12 +138,10 @@ handle_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
             do_error(Req, Content)
     end.
     
-render_template(Template, Data, Req) ->
-    lager:log(debug, self(), "render_template: Template=~p", [Template]),
-    
+render_template(Template, Data, Req) ->    
     case catch Template:render(Data) of
         {ok, Content} ->
-            lager:log(debug, self(), "Template ~p found", [Template]),
+            % ?DEBUG("Template ~p found", [Template]),
             cowboy_req:reply(200, [], Content, Req);
         {'EXIT', _} ->
             %% No template
