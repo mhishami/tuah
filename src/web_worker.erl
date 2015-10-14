@@ -33,7 +33,8 @@ start_link() ->
 %% gen_server.
 
 init([]) ->
-    Port = case application:get_env(tuah, http) of
+    AppName = app_name(),
+    Port = case application:get_env(AppName, http) of
         {ok, [{port, P}]} -> P;
         _ -> 8080
     end,
@@ -41,7 +42,7 @@ init([]) ->
     % App = application:get_application(),
     Dispatch = cowboy_router:compile([
         {'_', [
-            {"/static/[...]", cowboy_static, {priv_dir, app_name(), "static",
+            {"/static/[...]", cowboy_static, {priv_dir, AppName, "static",
                 [{mimetypes, cow_mimetypes, all}]}},
             {'_', main_handler, []}
         ]}
@@ -54,7 +55,7 @@ init([]) ->
 
     case file:list_dir("priv/ssl") of
         {ok, _} ->
-            SSLPort = case application:get_env(tuah, https) of
+            SSLPort = case application:get_env(AppName, https) of
                           {ok, [{port, SP}]} -> SP;
                           _ -> 8443
                       end,
