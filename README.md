@@ -103,12 +103,11 @@ Usage
   -export ([handle_request/5]).
   -export ([before_filter/2]).
 
-  before_filter(Params, _Req) ->
+  before_filter(SessionId) ->
       %% do some checking
-      {ok, Sid} = maps:find(<<"sid">>, Params),
-      ?DEBUG("Params= ~p, User= ~p~n", [Params, User]),
-      case User of
-          error ->
+      Sid = session_worker:get_cookies(SessionId),
+      case Sid of
+          {error, undefined} ->
               {redirect, <<"/auth/login">>};
           _ ->
               {ok, proceed}

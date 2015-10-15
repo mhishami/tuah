@@ -31,6 +31,7 @@ handle(Req, State) ->
                 {C, A, R}                
         end,
     
+    ?DEBUG("Controller= ~p, Action= ~p, Args= ~p~n", [Controller, Action, Args]),
     {ok, Req6} = 
         case web_worker:get_handler(Controller) of
             error ->
@@ -68,7 +69,7 @@ process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
                 Params#{<<"auth">> => Data, <<"sid">> => Sid}
         end,
     ?DEBUG("Checking for before_filter...~n", []),
-    case catch Ctrl:before_filter(P, Req2) of
+    case catch Ctrl:before_filter(Sid) of
         {redirect, Location} ->
         	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req2);
         _ ->
