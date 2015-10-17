@@ -92,8 +92,8 @@ prepare_cookie(Req) ->
                     
 handle_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     
-    ?DEBUG("handle_request: Controller= ~p, Method= ~p, Action= ~p~n", 
-        [Controller, Method, Action]),
+    ?DEBUG("handle_request: Controller= ~p, Method= ~p, Action= ~p, Args= ~p~n", 
+        [Controller, Method, Action, Args]),
     
     %% process request
     case catch Ctrl:handle_request(Method, Action, Args, Params, Req) of
@@ -140,7 +140,7 @@ handle_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     end.
     
 render_template(Template, Data, Req) ->    
-    ?DEBUG("Render Template, Data= ~p~n", [Data]),
+    ?DEBUG("Rendering page, Template= ~p, Data= ~p~n", [Template, Data]),
     case catch Template:render(Data) of
         {ok, Content} ->
             % ?DEBUG("Template ~p found", [Template]),

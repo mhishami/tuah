@@ -55,11 +55,15 @@
         <<"5">>, <<"6">>, <<"7">>, <<"8">>, <<"9">>
     ]).
 
--define (wrandom(List), lists:nth(random:uniform(length(List)), List)).
+-define (wrandom(List), lists:nth(random(length(List)), List)).
 
 init() ->
-    random:seed(erlang:timestamp()),
-    random:seed(erlang:timestamp()).
+    % {H, M, S} = erlang:timestamp(),
+    % random:seed(H, M, S).
+    crypto:rand_seed(crypto:rand_bytes(8)).
+
+random(N) ->
+    crypto:rand_uniform(1, N+1).
 
 gen_phrase_name() ->
     W1 = ?wrandom(?WOODS),
@@ -68,17 +72,17 @@ gen_phrase_name() ->
     <<W1/binary, <<"-">>/binary, W2/binary, <<"-">>/binary, W3/binary>>.
 
 gen_pnr() ->
-    gen_pnr(random:uniform(3), <<>>).
+    gen_pnr(random(3), <<>>).
 
 gen_pnr(1, Accu) when size(Accu) < 6 ->
     P = ?wrandom(?CAPS),
-    gen_pnr(random:uniform(3), <<Accu/binary, P/binary>>);
+    gen_pnr(random(3), <<Accu/binary, P/binary>>);
 gen_pnr(2, Accu) when size(Accu) < 6 ->
     P = ?wrandom(?LOWS),
-    gen_pnr(random:uniform(3), <<Accu/binary, P/binary>>);
+    gen_pnr(random(3), <<Accu/binary, P/binary>>);
 gen_pnr(3, Accu) when size(Accu) < 6 ->
     P = ?wrandom(?NUMS),
-    gen_pnr(random:uniform(3), <<Accu/binary, P/binary>>);
+    gen_pnr(random(3), <<Accu/binary, P/binary>>);
 gen_pnr(_, Accu) -> Accu.
 
 
