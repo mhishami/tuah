@@ -10,6 +10,7 @@
 %% Application callbacks
 %% ===================================================================
 
+-spec start(any(), any()) -> any().
 start(_StartType, _StartArgs) ->
     word_util:init(),
     application:start(sync),
@@ -24,5 +25,6 @@ start(_StartType, _StartArgs) ->
     
     tuah_sup:start_link().
 
+-spec stop(any()) -> ok.
 stop(_State) ->
     ok.

@@ -14,7 +14,7 @@
 %% ===================================================================
 %% API functions
 %% ===================================================================
-
+-spec start_link() -> any().
 start_link() ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
@@ -22,6 +22,7 @@ start_link() ->
 %% Supervisor callbacks
 %% ===================================================================
 
+-spec init(list()) -> any().
 init([]) ->
     % Web = ?CHILD(tuah_srv, worker),
     Session = ?CHILD(session_worker, worker),

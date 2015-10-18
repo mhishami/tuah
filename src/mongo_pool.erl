@@ -22,12 +22,15 @@
 -export([peek/0]).
 -export([clear_all/0]).
 
+-spec get(binary()) -> pid().
 get(Db) ->
     gen_server:call(?MODULE, {get, Db}).
 
+-spec peek() -> {ok, any()}.
 peek() ->
     gen_server:call(?MODULE, {peek}).
 
+-spec clear_all() -> {ok, any()}.
 clear_all() ->
     gen_server:call(?MODULE, {clear_all}).
 
@@ -36,11 +39,12 @@ start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 %% gen_server.
-
+-spec init(list()) -> {ok, any()}.
 init([]) ->
     random:seed(erlang:timestamp()),    
     {ok, #state{pool = maps:new()}}.
 
+-spec handle_call(any(), any(), any()) -> {ok, any()}.
 handle_call({peek}, _From, #state{pool=Pool} = State) ->
     {reply, {ok, Pool}, State};
 
@@ -74,18 +78,22 @@ handle_call({get, Db}, _From, #state{pool=Pool}) ->
 handle_call(_Request, _From, State) ->
     {reply, ignored, State}.
 
+-spec handle_cast(any(), any()) -> {noreply, any()}.
 handle_cast(_Msg, State) ->
     {noreply, State}.
 
+-spec handle_info(list(), any()) -> {noreply, any()}.
 handle_info(Info, State) ->
     ?DEBUG("****************************************************************~n", []),
     ?DEBUG("Info=~p~n", [Info]),
     ?DEBUG("****************************************************************~n", []),
     {noreply, State}.
 
+-spec terminate(any(), any()) -> ok.
 terminate(_Reason, _State) ->
     ok.
 
+-spec code_change(any(), any(), any()) -> {ok, any()}.
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
 

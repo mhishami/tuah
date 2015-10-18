@@ -57,20 +57,24 @@
 
 -define (wrandom(List), lists:nth(random(length(List)), List)).
 
+-spec init() -> ok.
 init() ->
     % {H, M, S} = erlang:timestamp(),
     % random:seed(H, M, S).
     crypto:rand_seed(crypto:rand_bytes(8)).
 
+-spec random(byte()) -> byte().
 random(N) ->
     crypto:rand_uniform(1, N+1).
 
+-spec gen_phrase_name() -> binary().
 gen_phrase_name() ->
     W1 = ?wrandom(?WOODS),
     W2 = ?wrandom(?METALS),
     W3 = ?wrandom(?LAKES),
     <<W1/binary, <<"-">>/binary, W2/binary, <<"-">>/binary, W3/binary>>.
 
+-spec gen_pnr() -> binary().
 gen_pnr() ->
     gen_pnr(random(3), <<>>).
 

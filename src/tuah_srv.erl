@@ -20,14 +20,14 @@
 %% ------------------------------------------------------------------
 %% API Function Definitions
 %% ------------------------------------------------------------------
-
+-spec start_link() -> any().
 start_link() ->
     gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
 
 %% ------------------------------------------------------------------
 %% gen_server Function Definitions
 %% ------------------------------------------------------------------
-
+-spec init(list()) -> {ok, any()}.
 init(Args) ->
     uuid:init(),
 	Dispatch = cowboy_router:compile([
@@ -47,18 +47,23 @@ init(Args) ->
     io:format("Web server started at port ~p...~n", [Port]),
     {ok, Args}.
 
+-spec handle_call(any(), any(), any()) -> {ok, any()} | {error, any()}.
 handle_call(_Request, _From, State) ->
     {reply, ok, State}.
 
+-spec handle_cast(any(), any()) -> {noreply, any()}.
 handle_cast(_Msg, State) ->
     {noreply, State}.
 
+-spec handle_info(any(), any()) -> {noreply, any()}.
 handle_info(_Info, State) ->
     {noreply, State}.
 
+-spec terminate(any(), any()) -> ok.
 terminate(_Reason, _State) ->
     ok.
 
+-spec code_change(any(), any(), any()) -> {ok, any()}.
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
 

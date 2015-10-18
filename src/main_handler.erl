@@ -9,9 +9,24 @@
 
 -define(COOKIE, <<"_tuah">>).
 
+-type opts() :: any().
+-type state() :: any().
+
+-spec init({atom(), http}, Req, opts())
+    -> {ok, Req, state()}
+    | {loop, Req, state()}
+    | {loop, Req, state(), hibernate}
+    | {loop, Req, state(), timeout()}
+    | {loop, Req, state(), timeout(), hibernate}
+    | {shutdown, Req, state()}
+    | {upgrade, protocol, module()}
+    | {upgrade, protocol, module(), Req, opts()}
+    when Req::cowboy_req:req().
 init(_Transport, Req, []) ->
     {ok, Req, undefined}.
 
+-spec handle(Req, State) -> {ok, Req, State}
+    when Req::cowboy_req:req(), State::state().
 handle(Req, State) ->
     {Method, Req2} = cowboy_req:method(Req),
     {Path, Req3} = cowboy_req:path(Req2),
@@ -54,6 +69,8 @@ handle(Req, State) ->
          
     {ok, Req6, State}.
 
+-spec process_request(atom(), binary(), binary(), list(), list(), list(), Req) -> {ok, Req, State}
+    when Req::cowboy_req:req(), State::state().
 process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     
     {Sid, Req2} = prepare_cookie(Req),
@@ -77,6 +94,7 @@ process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
             handle_request(Ctrl, Controller, Method, Action, Args, P, Req2)
     end.
 
+-spec prepare_cookie(Req) -> {binary(), Req} when Req::cowboy_req:req().
 prepare_cookie(Req) ->    
     {Sid, Req2} = cowboy_req:cookie(?COOKIE, Req),
     case Sid of
@@ -90,6 +108,15 @@ prepare_cookie(Req) ->
             {Sid, Req2}
     end.
                     
+-spec handle_request(atom(), binary(), binary(), list(), list(), list(), Req) -> {ok, Req, State}
+    | {render, binary()} 
+    | {render, binary(), binary()}
+    | {redirect, binary()}
+    | {redirect, binary(), any()}
+    | {error, binary()}
+    | {json, binary()}
+    when Req::cowboy_req:req(), State::state().
+
 handle_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     
     ?DEBUG("handle_request: Controller= ~p, Method= ~p, Action= ~p, Args= ~p~n", 
@@ -139,6 +166,8 @@ handle_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
             do_error(Req, Content)
     end.
     
+-spec render_template(atom(), list(), Req) -> {ok, Req, State}
+    when Req::cowboy_req:req(), State::state().
 render_template(Template, Data, Req) ->    
     ?DEBUG("Rendering page, Template= ~p, Data= ~p~n", [Template, Data]),
     case catch Template:render(Data) of
@@ -151,6 +180,8 @@ render_template(Template, Data, Req) ->
                 ", or method not implemented.")
     end.
     
+-spec do_error(Req, binary()) -> {ok, Req, State}
+    when Req::cowboy_req:req(), State::state().
 do_error(Req, Message) ->
     case filelib:wildcard("ebin/error_dtl.beam") of
         [] ->
@@ -160,11 +191,14 @@ do_error(Req, Message) ->
             cowboy_req:reply(200, [], Content, Req)
     end.    
     
+-spec get_path(binary()) -> list().    
 get_path(Path) ->
     tl(binary:split(Path, <<"/">>, [global])).
     
+-spec to_atom(binary(), list()) -> atom().
 to_atom(Name, Type) ->
-    binary_to_atom(iolist_to_binary([Name, Type]), latin1).
+    binary_to_atom(iolist_to_binary([Name, Type]), utf8).
     
+-spec terminate(any(), cowboy_req:req(), state()) -> ok.    
 terminate(_Reason, _Req, _State) ->
 	ok.

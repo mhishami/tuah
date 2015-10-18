@@ -30,36 +30,46 @@
     test/0              %% test app
 ]).
 
+-spec save(binary(), any()) -> {ok, any()} | {error, any()}.
 save(Coll, Doc) ->
     gen_server:call(?MODULE, {save, Coll, Doc}).
 
+-spec update(binary(), any()) -> {ok, any()} | {error, any()}.
 update(Coll, Doc) when is_map(Doc) ->
     gen_server:call(?MODULE, {update, Coll, Doc}).
 
+-spec find_one(binary(), any()) -> {ok, any()} | {error, any()}.
 find_one(Coll, Selector) ->
     gen_server:call(?MODULE, {find_one, Coll, Selector}).
 
+-spec find(binary(), any()) -> {ok, any()} | {error, any()}.
 find(Coll, Selector) ->
     gen_server:call(?MODULE, {find, Coll, Selector, []}).
 
+-spec find(binary(), any(), any()) -> {ok, any()} | {error, any()}.
 find(Coll, Selector, Projector) ->
     gen_server:call(?MODULE, {find, Coll, Selector, Projector}).
 
+-spec find(binary(), any(), any(), any()) -> {ok, any()} | {error, any()}.
 find(Coll, Selector, Projector, Limit) ->
     gen_server:call(?MODULE, {find, Coll, Selector, Projector, Limit}).
 
+-spec delete(binary(), any()) -> {ok, any()} | {error, any()}.
 delete(Coll, Selector) ->
     gen_server:call(?MODULE, {delete, Coll, Selector}).
 
 %% gen_server implementation.
 %% ----------------------------------------------------------------------------
+-spec start_link() -> {ok, pid()}.
 start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 %% gen_server.
+-spec init(list()) -> {ok, any()}.
 init([]) ->
     {ok, #state{}}.
 
+-spec handle_call(any(), any(), any()) -> {ok, any()} | {error, any()}.
 handle_call({save, Coll, Doc}, _From, State) ->
     {ok, Conn} = mongo_pool:get(Coll),
     Reply = mongo:insert(Conn, Coll, Doc),
@@ -103,19 +113,24 @@ handle_call({delete, Coll, Selector}, _From, State) ->
 handle_call(_Request, _From, State) ->
     {reply, ignored, State}.
 
+-spec handle_cast(any(), any()) -> {noreply, any()}.
 handle_cast(_Msg, State) ->
     {noreply, State}.
 
+-spec handle_info(any(), any()) -> {noreply, any()}.
 handle_info(_Info, State) ->
     {noreply, State}.
 
+-spec terminate(any(), any()) -> ok.
 terminate(_Reason, _State) ->
     ok.
 
+-spec code_change(any(), any(), any()) -> {ok, any()}.
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
 
 %% ----------------------------------------------------------------------------
+-spec test() -> ok.
 test() ->
     users:new(<<"Hisham Ismail">>, <<"hisham@mail.com">>, <<"sasa">>),
     ok.

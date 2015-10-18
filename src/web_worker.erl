@@ -22,12 +22,15 @@
 -export([list_handlers/0]).
 -export([reload/0]).
 
+-spec get_handler(binary()) -> {ok, atom()} | undefined.
 get_handler(Handler) ->
     gen_server:call(?MODULE, {get_handler, Handler}).
 
+-spec reload_handlers() -> {ok, any()}.
 reload_handlers() ->
     gen_server:call(?MODULE, {reload_handlers}).
 
+-spec list_handlers() -> {ok, any()}.
 list_handlers() ->
     gen_server:call(?MODULE, {list_handlers}).
 
@@ -36,7 +39,7 @@ start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 %% gen_server.
-
+-spec init(list()) -> {ok, any()}.
 init([]) ->
     AppName = app_name(),
     Port = case application:get_env(AppName, http) of
@@ -78,6 +81,7 @@ init([]) ->
 
     {ok, #state{}}.
 
+-spec handle_call(any(), any(), any()) -> {ok, any()} | {error, any()}.
 handle_call({get_handler, Handler}, _From, #state{handlers=Repo} = State) ->
     % ?DEBUG("Repo= ~p~n", [Repo]),
     Maps1 = case Repo of
@@ -96,18 +100,23 @@ handle_call({list_handlers}, _From, #state{handlers=H} = State) ->
 handle_call(_Request, _From, State) ->
     {reply, ignored, State}.
 
+-spec handle_cast(any(), any()) -> {noreply, any()}.
 handle_cast(_Msg, State) ->
     {noreply, State}.
 
+-spec handle_info(any(), any()) -> {noreply, any()}.
 handle_info(_Info, State) ->
     {noreply, State}.
 
+-spec terminate(any(), any()) -> ok.
 terminate(_Reason, _State) ->
     ok.
 
+-spec code_change(any(), any(), any()) -> {ok, any()}.
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
 
+-spec reload() -> map().
 reload() ->
     App = erlang:atom_to_list(app_name()),
     Dir = "lib/" ++ App ++ "*/ebin/*_controller.beam",

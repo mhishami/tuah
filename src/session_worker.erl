@@ -29,26 +29,33 @@
 
 %% ----------------------------------------------------------------------------
 %% API
+-spec set_cookies(binary(), binary()) -> {ok, any()} | {error, any()}.
 set_cookies(Key, Val) ->
     gen_server:call(?MODULE, {set_cookies, Key, Val}).
 
+-spec get_cookies(binary()) -> {ok, any()} | {error, any()}.
 get_cookies(Key) ->
     gen_server:call(?MODULE, {get_cookies, Key}).
 
+-spec del_cookies(binary()) -> {ok, any()} | {error, any()}.
 del_cookies(Key) ->
     gen_server:call(?MODULE, {del_cookies, Key}).
 
+-spec set_session(binary(), binary(), byte()) -> {ok, any()} | {error, any()}.
 set_session(Key, Val, Days) when is_integer(Days) ->
     gen_server:call(?MODULE, {set_session, Key, Val, Days}).
 
+-spec get_session(binary()) -> {ok, any()} | {error, any()}.
 get_session(Key) ->
     gen_server:call(?MODULE, {get_session, Key}).
 
+-spec start_link() -> {ok, pid()}.
 start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 %% ----------------------------------------------------------------------------
 %% gen_server.
+-spec init(list()) -> {ok, any()}.
 init([]) ->
     % ?DEBUG("~p: Initializing...~n", [?MODULE]),
     application:stop(mnesia),
@@ -74,6 +81,7 @@ init([]) ->
     mnesia:wait_for_tables([tuah_session, tuah_cookies], 1000),
     {ok, #state{nodes = Nodes}}.
 
+-spec handle_call(any(), any(), any()) -> {ok, any()} | {error, any()}.
 handle_call({set_cookies, Key, Val}, _From, State) ->
     F = fun() -> mnesia:write(#tuah_cookies{key=Key, val=Val}) end,
     ok = mnesia:activity(transaction, F),
@@ -120,14 +128,18 @@ handle_call({get_session, Key}, _From, State) ->
 handle_call(_Request, _From, State) ->
     {reply, ignored, State}.
 
+-spec handle_cast(any(), any()) -> {noreply, any()}.
 handle_cast(_Msg, State) ->
     {noreply, State}.
 
+-spec handle_info(any(), any()) -> {noreply, any()}.
 handle_info(_Info, State) ->
     {noreply, State}.
 
+-spec terminate(any(), any()) -> ok.
 terminate(_Reason, _State) ->
     ok.
 
+-spec code_change(any(), any(), any()) -> {ok, any()}.
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
