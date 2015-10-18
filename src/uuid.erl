@@ -5,9 +5,9 @@
 -export ([gen/0, init/0]).
 -export ([bin2hex/1]).
 
--spec gen() -> list().
+-spec gen() -> binary().
 gen() ->
-    to_string(v4()).
+    erlang:list_to_binary(to_string(v4())).
 
 -spec init() -> any().
 init() ->
