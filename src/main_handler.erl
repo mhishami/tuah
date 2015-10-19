@@ -28,12 +28,36 @@ init(_Transport, Req, []) ->
 -spec handle(Req, State) -> {ok, Req, State}
     when Req::cowboy_req:req(), State::state().
 handle(Req, State) ->
-    {Method, Req2} = cowboy_req:method(Req),
-    {Path, Req3} = cowboy_req:path(Req2),
-    {QsVals, Req4} = cowboy_req:qs_vals(Req3),
-    {ok, PostVals, Req5} = cowboy_req:body_qs(Req4),
+    
+    {ok, Type, Req2} = cowboy_req:parse_header(<<"content-type">>, Req),
+    case catch Type of
+        {<<"multipart">>,<<"form-data">>, _} ->
+            Req3 = multipart(Req2),
 
-    Params = #{<<"qs_vals">> => QsVals, <<"qs_body">> => PostVals},
+            Method = cowboy_req:get(method, Req3),
+            Path = cowboy_req:get(path, Req3),
+            QsVals = cowboy_req:get(qs_vals, Req3),
+            PostVals = QsVals,
+            BinaryData = cowboy_req:get(qs, Req3),
+
+            handle_http(Method, Path, QsVals, PostVals, BinaryData, Req3, State);
+
+        _ ->
+
+            Method = cowboy_req:get(method, Req2),
+            Path = cowboy_req:get(path, Req2),
+            QsVals = cowboy_req:get(qs_vals, Req2),            
+            {ok, PostVals, Req3} = cowboy_req:body_qs(Req2),
+            BinaryData = [],
+
+            handle_http(Method, Path, QsVals, PostVals, BinaryData, Req3, State)
+    end.
+
+handle_http(Method, Path, QsVals, PostVals, BinaryData, Req, State) ->
+
+    Params = #{<<"qs_vals">> => QsVals, 
+               <<"qs_body">> => PostVals, 
+               <<"binary_data">> => BinaryData},
     {Controller, Action, Args} =
         case get_path(Path) of
             [<<>>] ->
@@ -47,27 +71,27 @@ handle(Req, State) ->
         end,
     
     ?DEBUG("Controller= ~p, Action= ~p, Args= ~p~n", [Controller, Action, Args]),
-    {ok, Req6} = 
+    {ok, Req2} = 
         case web_worker:get_handler(Controller) of
             error ->
                 %% error, try to reload the controller again
                 web_worker:reload_handlers(),
                 case web_worker:get_handler(Controller) of
                     error ->
-                        do_error(Req5, 
+                        do_error(Req, 
                             << <<"Controller not found: ">>/binary, Controller/binary,
                             <<"_controller">>/binary >>);
                     {ok, Ctrl} ->
                         %% ok, found controllers
-                        process_request(Ctrl, Controller, Method, Action, Args, Params, Req5)
+                        process_request(Ctrl, Controller, Method, Action, Args, Params, Req)
                 end;
             {ok, Ctrl} ->
                 %% ok, found controllers
                 ?DEBUG("Ctrl= ~p~n", [Ctrl]),
-                process_request(Ctrl, Controller, Method, Action, Args, Params, Req5)
+                process_request(Ctrl, Controller, Method, Action, Args, Params, Req)
          end,
          
-    {ok, Req6, State}.
+    {ok, Req2, State}.
 
 -spec process_request(atom(), binary(), binary(), list(), list(), list(), Req) -> {ok, Req, State}
     when Req::cowboy_req:req(), State::state().
@@ -202,3 +226,58 @@ to_atom(Name, Type) ->
 -spec terminate(any(), cowboy_req:req(), state()) -> ok.    
 terminate(_Reason, _Req, _State) ->
 	ok.
+
+-spec multipart(cowboy_req:req()) -> cowboy_req:req().
+multipart(Req) ->
+    case cowboy_req:part(Req) of
+        {ok, Headers, Req2} ->
+            Req4 = case cow_multipart:form_data(Headers) of
+                {data, FieldName} ->
+                    {ok, Body, Req3} = cowboy_req:part_body(Req2),
+                    Vals = cowboy_req:get(qs_vals, Req3),
+                    % ?DEBUG("Vals = ~p, FieldName= ~p, Value= ~p, QS= ~p~n", [
+                    %     Vals, FieldName, Body, cowboy_req:get(qs, Req3)]),
+                    case Vals of
+                        undefined ->
+                            cowboy_req:set([{qs_vals, [{FieldName, Body}]}], Req3);
+                        _ ->
+                            cowboy_req:set([{qs_vals, [{FieldName, Body}|Vals]}], Req3)
+                    end;
+                {file, FieldName, Filename, CType, _CTransferEncoding} ->
+                    % ?DEBUG("FieldName= ~p, Filename= ~p, ContentType= ~p~n", [
+                    %     FieldName, Filename, CType]),
+                    case cowboy_req:get(qs, Req2) of
+                        <<>> ->
+                            Req3 = stream_file(Req2),
+                            Data = cowboy_req:get(qs, Req3),
+                            % ?DEBUG("Binary Data= ~p~n", [#{name => FieldName, value => Filename, data => Data}]),
+                            % cowboy_req:set([{qs, [#{name => FieldName, file => Filename, content_type => CType, 
+                            %                         data => Data}]}], Req3);
+                            cowboy_req:set([{qs, [#{FieldName => Filename, 
+                                                    <<"content-type">> => CType, 
+                                                    <<"data">> => Data}]}], Req3);
+                        PrevData ->
+                            Req3 = stream_file(Req2),
+                            Data = cowboy_req:get(qs, Req3),
+                            % ?DEBUG("Binary Data= ~p~n", [#{name => FieldName, value => Filename, data => Data}]),
+                            cowboy_req:set([{qs, [#{FieldName => Filename, 
+                                                    <<"content-type">> => CType, 
+                                                    <<"data">> => Data} | PrevData]}], Req3)
+                    end
+            end,
+            multipart(Req4);
+        {done, Req2} ->
+            Req2
+    end.
+ 
+stream_file(Req) ->
+    case cowboy_req:part_body(Req) of
+        {ok, Body, Req2} ->
+            % {Req2, State#state{data= << Data/binary, Body/binary >>}};
+            % Req2;
+            cowboy_req:set([{qs, Body}], Req2);
+        {more, Body, Req2} ->
+            Data = cowboy_req:get(qs, Req2),
+            stream_file(cowboy_req:set([{qs, << Data/binary, Body/binary >>}], Req2))
+    end.
+

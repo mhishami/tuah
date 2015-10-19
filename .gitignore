@@ -6,3 +6,4 @@ relx
 relx.config
 .erlang.mk/
 tuah.d
+.tuah.plt

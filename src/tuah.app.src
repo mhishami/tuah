@@ -1,6 +1,6 @@
 {application,tuah,
              [{description,"A Simple HTTP Framework based on Cowboy, inspired by BeepBeep"},
-              {vsn,"1.1"},
+              {vsn,"1.1.2"},
               {modules,[]},
               {registered,[tuah_sup]},
               {applications,[kernel,stdlib,crypto,sync,lager,mnesia,bson,
