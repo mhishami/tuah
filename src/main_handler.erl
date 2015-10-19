@@ -30,34 +30,36 @@ init(_Transport, Req, []) ->
 handle(Req, State) ->
     
     {ok, Type, Req2} = cowboy_req:parse_header(<<"content-type">>, Req),
+    ?DEBUG("Req type= ~p~n", [Type]),
     case catch Type of
         {<<"multipart">>,<<"form-data">>, _} ->
             Req3 = multipart(Req2),
 
-            Method = cowboy_req:get(method, Req3),
-            Path = cowboy_req:get(path, Req3),
-            QsVals = cowboy_req:get(qs_vals, Req3),
+            {Method, Req4} = cowboy_req:method(Req3),
+            {Path, Req5} = cowboy_req:path(Req4),
+            {QsVals, Req6} = cowboy_req:qs_vals(Req5),
             PostVals = QsVals,
-            BinaryData = cowboy_req:get(qs, Req3),
+            {Files, Req7} = cowboy_req:qs(Req6),
 
-            handle_http(Method, Path, QsVals, PostVals, BinaryData, Req3, State);
-
+            % ?DEBUG("Files= ~p~n", [Files]),
+            handle_http(Method, Path, QsVals, PostVals, Files, Req7, State);
         _ ->
 
-            Method = cowboy_req:get(method, Req2),
-            Path = cowboy_req:get(path, Req2),
-            QsVals = cowboy_req:get(qs_vals, Req2),            
-            {ok, PostVals, Req3} = cowboy_req:body_qs(Req2),
-            BinaryData = [],
+            {Method, Req3} = cowboy_req:method(Req2),
+            {Path, Req4} = cowboy_req:path(Req3),
+            {QsVals, Req5} = cowboy_req:qs_vals(Req4),
+            {ok, PostVals, Req6} = cowboy_req:body_qs(Req5),
+            ?DEBUG("PostVals= ~p~n", [PostVals]),
+            Files = [],
 
-            handle_http(Method, Path, QsVals, PostVals, BinaryData, Req3, State)
+            handle_http(Method, Path, QsVals, PostVals, Files, Req6, State)
     end.
 
-handle_http(Method, Path, QsVals, PostVals, BinaryData, Req, State) ->
-
+handle_http(Method, Path, QsVals, PostVals, Files, Req, State) ->
     Params = #{<<"qs_vals">> => QsVals, 
                <<"qs_body">> => PostVals, 
-               <<"binary_data">> => BinaryData},
+               <<"files">> => Files},
+    % ?DEBUG("Params= ~p~n", [Params]),
     {Controller, Action, Args} =
         case get_path(Path) of
             [<<>>] ->
@@ -70,7 +72,7 @@ handle_http(Method, Path, QsVals, PostVals, BinaryData, Req, State) ->
                 {C, A, R}                
         end,
     
-    ?DEBUG("Controller= ~p, Action= ~p, Args= ~p~n", [Controller, Action, Args]),
+    % ?DEBUG("Controller= ~p, Action= ~p, Args= ~p~n", [Controller, Action, Args]),
     {ok, Req2} = 
         case web_worker:get_handler(Controller) of
             error ->
@@ -87,7 +89,7 @@ handle_http(Method, Path, QsVals, PostVals, BinaryData, Req, State) ->
                 end;
             {ok, Ctrl} ->
                 %% ok, found controllers
-                ?DEBUG("Ctrl= ~p~n", [Ctrl]),
+                % ?DEBUG("Found controller, Ctrl= ~p~n", [Ctrl]),
                 process_request(Ctrl, Controller, Method, Action, Args, Params, Req)
          end,
          
@@ -98,7 +100,7 @@ handle_http(Method, Path, QsVals, PostVals, BinaryData, Req, State) ->
 process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
     
     {Sid, Req2} = prepare_cookie(Req),
-    ?DEBUG("Processing req, Sid= ~p~n", [Sid]),
+    % ?DEBUG("Processing req, Sid= ~p~n", [Sid]),
     
     %% do other lookup based on this Sid, if need be.
     
@@ -109,7 +111,7 @@ process_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
             {ok, Data} -> 
                 Params#{<<"auth">> => Data, <<"sid">> => Sid}
         end,
-    ?DEBUG("Checking for before_filter...~n", []),
+    % ?DEBUG("Checking for before_filter...~n", []),
     case catch Ctrl:before_filter(Sid) of
         {redirect, Location} ->
         	cowboy_req:reply(302, [{<<"Location">>, Location}], [], Req2);
@@ -141,10 +143,8 @@ prepare_cookie(Req) ->
     | {json, binary()}
     when Req::cowboy_req:req(), State::state().
 
-handle_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
-    
-    ?DEBUG("handle_request: Controller= ~p, Method= ~p, Action= ~p, Args= ~p~n", 
-        [Controller, Method, Action, Args]),
+handle_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->    
+    ?DEBUG("handle_request: ~p, ~p, ~p, ~p~n", [Controller, Method, Action, Args]),
     
     %% process request
     case catch Ctrl:handle_request(Method, Action, Args, Params, Req) of
@@ -193,7 +193,7 @@ handle_request(Ctrl, Controller, Method, Action, Args, Params, Req) ->
 -spec render_template(atom(), list(), Req) -> {ok, Req, State}
     when Req::cowboy_req:req(), State::state().
 render_template(Template, Data, Req) ->    
-    ?DEBUG("Rendering page, Template= ~p, Data= ~p~n", [Template, Data]),
+    % ?DEBUG("Rendering page, Template= ~p, Data= ~p~n", [Template, Data]),
     case catch Template:render(Data) of
         {ok, Content} ->
             % ?DEBUG("Template ~p found", [Template]),
@@ -244,7 +244,7 @@ multipart(Req) ->
                             cowboy_req:set([{qs_vals, [{FieldName, Body}|Vals]}], Req3)
                     end;
                 {file, FieldName, Filename, CType, _CTransferEncoding} ->
-                    % ?DEBUG("FieldName= ~p, Filename= ~p, ContentType= ~p~n", [
+                    % ?DEBUG("Field: {~p => ~p}, ContentType= ~p~n", [
                     %     FieldName, Filename, CType]),
                     case cowboy_req:get(qs, Req2) of
                         <<>> ->
