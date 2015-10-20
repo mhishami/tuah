@@ -1,1 +1,1 @@
-include /Users/hisham/Projects/Erlang/foo/erlang.mk
+include /Users/hisham/Projects/Erlang/fishbid/erlang.mk

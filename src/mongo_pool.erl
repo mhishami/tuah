@@ -56,7 +56,7 @@ handle_call({get, Db}, _From, #state{pool=Pool}) ->
 
     {Conn, NewPool} =  
         case catch maps:get(Db, Pool) of
-            {'EXIT', {{badkey, Db}, Ex}} -> 
+            {'EXIT', {{badkey, Db}, _Ex}} -> 
                 % ?DEBUG("Exception=~p~n", [Ex]),
                 make_one(Pool, Db);
 

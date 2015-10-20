@@ -16,53 +16,36 @@ Usage
   $ wget https://raw.githubusercontent.com/ninenines/erlang.mk/master/erlang.mk
   ````
 
+  Create a skeleton for the OTP project
+  ```` bash
+  $ make bootstrap bootstrap-rel
+  ````
+
   Create a new file called Makefile, and add the content as per below
   ```` bash
   $ cat Makefile
   PROJECT = foo
   DEPS = tuah sync eunit_formatters
 
-  tuah_dep = git http://github.com/mhishami/tuah master
+  dep_tuah = git http://github.com/mhishami/tuah.git v1.1.3
 
   include erlang.mk
   ````
 
-  Create a skeleton for the OTP project
-  ```` bash
-  $ make bootstrap bootstrap-rel
-  ````
 
-2. Create The App to Start/Stop
-
-  ```` bash
-  $ touch src/foo.erl
-  ````
-
-3. Add The Code
+2. Add The Codes
 
   The content might be similar to these:
 
   ````erlang
   %% file: foo.app.src
-  {application, foo, [
-    {description, "App Foo"},
-    {vsn, "v0.1"},
-    {modules, []},
-    {registered, [foo_sup]},
-    {applications, [
-          kernel,
-          stdlib,
-          tuah, 
-          cowboy,
-          erlydtl,
-          jsx,
-          lager,
-          cowlib,
-          ranch,
-          mongodb,
-          bson
-    ]},
-  {mod, {foo_app, []}}
+  application, foo, [
+      {description, ""},
+      {vsn, "0.1"},
+      {modules, []},
+      {registered, [fishbid_sup]},
+      {applications, [kernel,stdlib,tuah,sync,eunit_formatters]},
+      {mod, {fishbid_app, []}}
   ]}.
   ````
 
@@ -91,17 +74,44 @@ Usage
     
   ````
 
-4. Implement Your Controller
+3. Implement Your Controller
 
   ```` bash
   $ touch src/home_controller_.erl
   ````
   
   ```` erlang
-
   -module (home_controller).
   -export ([handle_request/5]).
-  -export ([before_filter/2]).
+  % -export ([before_filter/1]).
+
+  % before_filter(SessionId) ->
+  %       %% do some checking
+  %       Sid = session_worker:get_cookies(SessionId),
+  %       case Sid of
+  %           {error, undefined} ->
+  %               {redirect, <<"/auth/login">>};
+  %           _ ->
+  %               {ok, proceed}
+  %       end.
+
+  handle_request(<<"GET">>, <<"/">>, _Args, _Params, _Req) ->    
+      %% Action / will render home.dtl
+      {render, []};
+  
+  handle_request(_, _, _, _, _) ->
+      {error, <<"Opps, Forbidden">>}.
+
+  ````
+
+  ```` bash
+  $ touch src/auth_controller_.erl
+  ````
+
+  ```` erlang
+  -module (auth_controller).
+  -export ([handle_request/5]).
+  -export ([before_filter/1]).
 
   before_filter(SessionId) ->
       %% do some checking
@@ -112,41 +122,40 @@ Usage
           _ ->
               {ok, proceed}
       end.
-
-  handle_request(<<"GET">>, <<"api">>, _, _, _) ->
-      %% return data as json data
-      %%  note: value cannot be an atom.
-      %%
-      {json, [{username, <<"hisham">>}, {password, <<"sa">>}]};
-      
-  handle_request(<<"GET">>, <<"/">>, _Args, _Params, _Req) ->    
-      %% Action / will render home.dtl
-      {render, []};
-      
+    
   handle_request(<<"GET">>, <<"login">> = Action, _Args, _Params, _Req) ->    
       %% Action login will render login.dtl
       {render, Action, []};
 
-  handle_request(<<"POST">>, <<"login">> = Action, _, Params, _) ->
+  handle_request(<<"POST">>, <<"login">>, _, Params, _) ->
       {ok, PostVals} = maps:find(<<"qs_body">>, Params),
-      Email = proplists:get_value(<<"email">>, PostVals, <<"">>),
-      Password = proplists:get_value(<<"password">>, PostVals, <<"">>),
-  
-      %% authenticate the user
-  
-      %% set the session id, and user email
-      Sid = web_util:hash_password(word_util:gen_pnr()),
-      session_worker:set_cookies(Sid, Email),
+      Email = proplists:get_value(<<"email">>, PostVals),
+      Password = proplists:get_value(<<"password">>, PostVals),
 
-      %% redirect
-      {redirect, <<"/">>};
-    
+      %% authenticate the user
+      case authenticate(Email, Password) of
+          {ok, proceed} ->
+              %% set the session id, and user email
+              Sid = web_util:hash_password(word_util:gen_pnr()),
+              session_worker:set_cookies(Sid, Email),
+
+              %% redirect, assuming "main" is defined.
+              {redirect, <<"/main">>};
+          _ ->
+              {redirect, <<"/">>}
+      end;
+
   handle_request(_, _, _, _, _) ->
-      {error, <<"Opps, Forbidden">>}.
+          {error, <<"Opps, Forbidden">>}.
+
+  %% private function
+  authenticate(_Email, _Password) ->
+      {ok, proceed}.
+    
 
   ````
 
-5. Do The Templates
+4. Do The Templates
 
   ```` bash
   $ mkdir templates
@@ -226,13 +235,14 @@ Usage
   ```
 
   
-6. Run The App
+5. Run The App
 
   ``` shell
   $ make; make run
   ```
-  
-7. Deploy to Heroku
+  View the app at http://localhost:8080
+
+6. Deploy to Heroku
 
   Once everything is fine, we can then deploy it to Heroku
 
