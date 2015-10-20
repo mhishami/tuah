@@ -16,21 +16,22 @@ Usage
   $ wget https://raw.githubusercontent.com/ninenines/erlang.mk/master/erlang.mk
   ````
 
-  Create a new file called Makefile, and add the content as per below
+  Create a skeleton for the OTP project
+  ```` bash
+  $ make bootstrap bootstrap-rel
+  ````
+
+  Edit the generated Makefile, and add the content as per below
   ```` bash
   $ cat Makefile
   PROJECT = foo
   DEPS = tuah sync eunit_formatters
 
-  tuah_dep = git http://github.com/mhishami/tuah master
+  dep_tuah = git https://github.com/mhishami/tuah.git v1.1.3
 
   include erlang.mk
   ````
 
-  Create a skeleton for the OTP project
-  ```` bash
-  $ make bootstrap bootstrap-rel
-  ````
 
 2. Create The App to Start/Stop
 
