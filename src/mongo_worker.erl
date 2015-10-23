@@ -26,6 +26,8 @@
     find/2,             %% find all items by selector
     find/3,             %% find all items by selector
     find/4,
+    match/3,
+    match/4,
     delete/2,
     test/0              %% test app
 ]).
@@ -53,6 +55,14 @@ find(Coll, Selector, Projector) ->
 -spec find(binary(), any(), any(), any()) -> {ok, any()} | {error, any()}.
 find(Coll, Selector, Projector, Limit) ->
     gen_server:call(?MODULE, {find, Coll, Selector, Projector, Limit}).
+
+-spec match(binary(), any(), any()) -> {ok, any()}.
+match(Coll, Selector, Sort) ->
+    gen_server:call(?MODULE, {match, Coll, Selector, Sort}).
+
+-spec match(binary(), any(), any(), any()) -> {ok, any()}.
+match(Coll, Selector, Sort, Limit) ->
+    gen_server:call(?MODULE, {match, Coll, Selector, Sort, Limit}).
 
 -spec delete(binary(), any()) -> {ok, any()} | {error, any()}.
 delete(Coll, Selector) ->
@@ -103,6 +113,25 @@ handle_call({find, Coll, Selector, Projector, Limit}, _From, State) ->
     Cursor = mongo:find(Conn, Coll, Selector, Projector),
     Res = mc_cursor:take(Cursor, Limit),
     mc_cursor:close(Cursor),
+    {reply, {ok, Res}, State};
+
+handle_call({match, Coll, Selector, Sort}, _From, State) ->
+    {ok, Conn} = mongo_pool:get(Coll),
+    {true, #{<<"result">> := Res}} = mongo:command(Conn,
+        {<<"aggregate">>, Coll, <<"pipeline">>, [
+            {<<"$match">>, Selector},
+            {<<"$sort">>, Sort}
+        ]}),
+    {reply, {ok, Res}, State};
+
+handle_call({match, Coll, Selector, Sort, Limit}, _From, State) ->
+    {ok, Conn} = mongo_pool:get(Coll),
+    {true, #{<<"result">> := Res}} = mongo:command(Conn,
+        {<<"aggregate">>, Coll, <<"pipeline">>, [
+            {<<"$match">>, Selector},
+            {<<"$sort">>, Sort},
+            {<<"$limit">>, Limit}
+        ]}),
     {reply, {ok, Res}, State};
 
 handle_call({delete, Coll, Selector}, _From, State) ->
