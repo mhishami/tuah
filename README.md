@@ -21,13 +21,13 @@ Usage
   $ make bootstrap bootstrap-rel
   ````
 
-  Create a new file called Makefile, and add the content as per below
+  Edit the generated Makefile, and add the content as per below
   ```` bash
   $ cat Makefile
   PROJECT = foo
   DEPS = tuah sync eunit_formatters
 
-  dep_tuah = git http://github.com/mhishami/tuah.git v1.1.3
+  dep_tuah = git https://github.com/mhishami/tuah.git v1.1.3
 
   include erlang.mk
   ````
