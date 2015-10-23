@@ -27,7 +27,7 @@ Usage
   PROJECT = foo
   DEPS = tuah sync eunit_formatters
 
-  dep_tuah = git https://github.com/mhishami/tuah.git v1.1.3
+  dep_tuah = git https://github.com/mhishami/tuah.git master
 
   include erlang.mk
   ````
