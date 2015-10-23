@@ -7,6 +7,7 @@
 -export ([hash_password/2]).
 -export ([map_to_list/1]).
 -export ([maps_to_list/1]).
+-export ([now/0]).
 
 -spec hash_password(binary()) -> binary().
 hash_password(Password) ->
@@ -32,3 +33,18 @@ maps_to_list([H|T], Accu) ->
 
 maps_to_list([], Accu) ->
     Accu.
+
+-spec now() -> binary().
+now() ->
+    format(calendar:now_to_datetime(erlang:timestamp())).
+
+format({{Y,Mo,D}, {H,Mn,S}}) when is_float(S) ->
+    FmtStr = "~4.10.0B-~2.10.0B-~2.10.0BT~2.10.0B:~2.10.0B:~9.6.0fZ",
+    IsoStr = io_lib:format(FmtStr, [Y, Mo, D, H, Mn, S]),
+    list_to_binary(IsoStr);
+
+format({{Y,Mo,D}, {H,Mn,S}}) ->
+    FmtStr = "~4.10.0B-~2.10.0B-~2.10.0BT~2.10.0B:~2.10.0B:~2.10.0BZ",
+    IsoStr = io_lib:format(FmtStr, [Y, Mo, D, H, Mn, S]),
+    list_to_binary(IsoStr).
+
