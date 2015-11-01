@@ -103,14 +103,14 @@ handle_call({find_one, Coll, Selector}, _From, State) ->
 
 handle_call({find, Coll, Selector, Projector}, _From, State) ->
     {ok, Conn} = mongo_pool:get(Coll),
-    Cursor = mongo:find(Conn, Coll, Selector, Projector),
+    Cursor = mongo:find(Conn, Coll, Selector, [{projector, Projector}]),
     Res = mc_cursor:rest(Cursor),
     mc_cursor:close(Cursor),
     {reply, {ok, Res}, State};
 
 handle_call({find, Coll, Selector, Projector, Limit}, _From, State) ->
     {ok, Conn} = mongo_pool:get(Coll),
-    Cursor = mongo:find(Conn, Coll, Selector, Projector),
+    Cursor = mongo:find(Conn, Coll, Selector, [{projector, Projector}]),
     Res = mc_cursor:take(Cursor, Limit),
     mc_cursor:close(Cursor),
     {reply, {ok, Res}, State};
