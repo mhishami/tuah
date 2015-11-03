@@ -119,32 +119,20 @@ code_change(_OldVsn, State, _Extra) ->
 
 -spec reload() -> map().
 reload() ->
-    App = erlang:atom_to_list(app_name()),
-    Dir = "lib/" ++ App ++ "*/ebin/*_controller.beam",
+    Path = code:lib_dir(app_name()) ++ "/ebin/*_controller.beam",
     C1 = lists:foldl(
             fun(C, Accu) ->
-                L = string:tokens(C, "/"),
-                L2 = lists:nth(4, L),
-                L3 = string:tokens(L2, "_"),
-                [lists:nth(1, L3)|Accu]
+                L = hd(lists:reverse(string:tokens(C, "/"))),
+                L2 = string:tokens(L, "_"),
+                [hd(L2)|Accu]
             end,
-        [], filelib:wildcard(Dir)),
+        [], filelib:wildcard(Path)),
     C2 = [ {list_to_binary(W), list_to_atom(W ++ "_controller")} || W <- C1 ],
     maps:from_list(C2).
 
 -spec app_name() -> atom().
 app_name() ->
     P = lists:nth(2, code:get_path()),
-    T = string:tokens(P, "/"),
-    A = get_last_sixth(T),
-    erlang:list_to_atom(A).
-
-get_last_sixth([H|T]) ->
-    case length(T) =:= 5 of
-        false ->
-            get_last_sixth(T);
-        true ->
-            H
-    end.
-
+    T = lists:reverse(string:tokens(P, "/")),
+    erlang:list_to_atom(lists:nth(6, T)).
 

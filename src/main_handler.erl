@@ -3,6 +3,8 @@
 
 -include("tuah.hrl").
 
+-import (web_worker, [app_name/0]).
+
 -export([init/3]).
 -export([handle/2]).
 -export([terminate/3]).
@@ -207,7 +209,7 @@ render_template(Template, Data, Req) ->
 -spec do_error(Req, binary()) -> {ok, Req, State}
     when Req::cowboy_req:req(), State::state().
 do_error(Req, Message) ->
-    case filelib:wildcard("ebin/error_dtl.beam") of
+    case filelib:wildcard(code:lib_dir(app_name()) ++ "/ebin/error_dtl.beam") of
         [] ->
             cowboy_req:reply(404, [], Message, Req);
         _ ->
