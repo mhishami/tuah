@@ -45,7 +45,20 @@ Usage
       {modules, []},
       {registered, [fishbid_sup]},
       {applications, [kernel,stdlib,tuah,sync,eunit_formatters]},
-      {mod, {fishbid_app, []}}
+      {mod, {foo_app, []}},
+      {env, [
+          {http, [{port, 8080}]},
+          {pools, [
+              {foo, [
+                  {size, 10}, 
+                  {max_overflow, 30}
+              ], [
+                  {database, <<"foo">>},
+                  {w_mode, safe}
+              ]}
+          ]}
+      ]}
+
   ]}.
   ````
 
