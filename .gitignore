@@ -7,3 +7,4 @@ relx.config
 .erlang.mk/
 tuah.d
 .tuah.plt
+logs

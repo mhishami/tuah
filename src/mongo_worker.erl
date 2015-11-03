@@ -5,7 +5,7 @@
 -include("tuah.hrl").
 
 %% API.
--export([start_link/0]).
+-export([start_link/1]).
 
 %% gen_server.
 -export([init/1]).
@@ -15,7 +15,7 @@
 -export([terminate/2]).
 -export([code_change/3]).
 
--record(state, {}).
+-record(state, {pool}).
 
 %% API.
 %% ----------------------------------------------------------------------------
@@ -70,73 +70,94 @@ delete(Coll, Selector) ->
 
 %% gen_server implementation.
 %% ----------------------------------------------------------------------------
--spec start_link() -> {ok, pid()}.
-start_link() ->
-    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+-spec start_link(list()) -> {ok, pid()}.
+start_link(PoolName) ->
+    gen_server:start_link({local, ?MODULE}, ?MODULE, PoolName, []).
 
 %% gen_server.
 -spec init(list()) -> {ok, any()}.
-init([]) ->
-    {ok, #state{}}.
+init(PoolName) ->
+    {ok, #state{pool=PoolName}}.
 
 -spec handle_call(any(), any(), any()) -> {ok, any()} | {error, any()}.
-handle_call({save, Coll, Doc}, _From, State) ->
-    {ok, Conn} = mongo_pool:get(Coll),
-    Reply = mongo:insert(Conn, Coll, Doc),
+handle_call({save, Coll, Doc}, _From, #state{pool=Pool} = State) ->
+    Reply = poolboy:transaction(Pool, 
+            fun(Conn) ->
+                mongo:insert(Conn, Coll, Doc)
+            end),
     {reply, {ok, Reply}, State};
 
-handle_call({update, Coll, Doc}, _From, State) ->
-    ?DEBUG("Updating Doc= ~p~n", [Doc]),
-    {ok, Conn} = mongo_pool:get(Coll),
+handle_call({update, Coll, Doc}, _From, #state{pool=Pool} = State) ->
     Id = maps:get(<<"_id">>, Doc),
-    Reply = mongo:update(Conn, Coll, {<<"_id">>, Id}, {<<"$set">>, Doc}),
+    Reply = poolboy:transaction(Pool, 
+            fun(Conn) ->
+                mongo:update(Conn, Coll, {<<"_id">>, Id}, {<<"$set">>, Doc})
+            end),            
     {reply, {ok, Reply}, State};
 
-handle_call({find_one, Coll, Selector}, _From, State) ->
-    {ok, Conn} = mongo_pool:get(Coll),
-    Res = mongo:find_one(Conn, Coll, Selector),
+handle_call({find_one, Coll, Selector}, _From, #state{pool=Pool} = State) ->    
+    Res = poolboy:transaction(Pool, 
+            fun(Conn) ->
+                mongo:find_one(Conn, Coll, Selector)
+            end),
     Reply = case maps:size(Res) of
                 0 -> {error, not_found};
                 _ -> {ok, Res}
             end,
     {reply, Reply, State};
 
-handle_call({find, Coll, Selector, Projector}, _From, State) ->
-    {ok, Conn} = mongo_pool:get(Coll),
-    Cursor = mongo:find(Conn, Coll, Selector, [{projector, Projector}]),
-    Res = mc_cursor:rest(Cursor),
-    mc_cursor:close(Cursor),
+handle_call({find, Coll, Selector, Projector}, _From, #state{pool=Pool} = State) ->
+    Res = poolboy:transaction(Pool,
+            fun(Conn) ->
+                Cursor = mongo:find(Conn, Coll, Selector, [{projector, Projector}]),
+                Results = mc_cursor:rest(Cursor),
+                mc_cursor:close(Cursor),
+                Results
+            end),
     {reply, {ok, Res}, State};
 
-handle_call({find, Coll, Selector, Projector, Limit}, _From, State) ->
-    {ok, Conn} = mongo_pool:get(Coll),
-    Cursor = mongo:find(Conn, Coll, Selector, [{projector, Projector}]),
-    Res = mc_cursor:take(Cursor, Limit),
-    mc_cursor:close(Cursor),
+handle_call({find, Coll, Selector, Projector, Limit}, _From, #state{pool=Pool} = State) ->
+    Res = poolboy:transaction(Pool,
+            fun(Conn) ->
+                Cursor = mongo:find(Conn, Coll, Selector, [{projector, Projector}]),
+                Results = mc_cursor:take(Cursor, Limit),
+                mc_cursor:close(Cursor),
+                Results
+            end),
     {reply, {ok, Res}, State};
 
-handle_call({match, Coll, Selector, Sort}, _From, State) ->
-    {ok, Conn} = mongo_pool:get(Coll),
-    {true, #{<<"result">> := Res}} = mongo:command(Conn,
-        {<<"aggregate">>, Coll, <<"pipeline">>, [
-            {<<"$match">>, Selector},
-            {<<"$sort">>, Sort}
-        ]}),
+handle_call({match, Coll, Selector, Sort}, _From, #state{pool=Pool} = State) ->
+    Res = poolboy:transaction(Pool,
+            fun(Conn) ->
+                {true, #{<<"result">> := Results}} = mongo:command(Conn,
+                    {<<"aggregate">>, Coll, <<"pipeline">>, [
+                        {<<"$match">>, Selector},
+                        {<<"$sort">>, Sort}
+                    ]}),
+                Results
+            end),
     {reply, {ok, Res}, State};
 
-handle_call({match, Coll, Selector, Sort, Limit}, _From, State) ->
-    {ok, Conn} = mongo_pool:get(Coll),
-    {true, #{<<"result">> := Res}} = mongo:command(Conn,
-        {<<"aggregate">>, Coll, <<"pipeline">>, [
-            {<<"$match">>, Selector},
-            {<<"$sort">>, Sort},
-            {<<"$limit">>, Limit}
-        ]}),
+handle_call({match, Coll, Selector, Sort, Limit}, _From, #state{pool=Pool} = State) ->
+    Res = poolboy:transaction(Pool,
+            fun(Conn) ->
+                {true, #{<<"result">> := Results}} = mongo:command(Conn,
+                    {<<"aggregate">>, Coll, <<"pipeline">>, [
+                        {<<"$match">>, Selector},
+                        {<<"$sort">>, Sort},
+                        {<<"$limit">>, Limit}
+                    ]}),
+                Results
+            end),
+
     {reply, {ok, Res}, State};
 
-handle_call({delete, Coll, Selector}, _From, State) ->
-    {ok, Conn} = mongo_pool:get(Coll),
-    Reply = mongo:delete(Conn, Coll, Selector),
+handle_call({delete, Coll, Selector}, _From, #state{pool=Pool} = State) ->
+    
+    Reply = poolboy:transaction(Pool,
+            fun(Conn) ->
+                mongo:delete(Conn, Coll, Selector)
+            end),
     {reply, {ok, Reply}, State};
 
 handle_call(_Request, _From, State) ->

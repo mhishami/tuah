@@ -21,6 +21,7 @@
 -export([reload_handlers/0]).
 -export([list_handlers/0]).
 -export([reload/0]).
+-export([app_name/0]).
 
 -spec get_handler(binary()) -> {ok, atom()} | undefined.
 get_handler(Handler) ->
@@ -131,6 +132,7 @@ reload() ->
     C2 = [ {list_to_binary(W), list_to_atom(W ++ "_controller")} || W <- C1 ],
     maps:from_list(C2).
 
+-spec app_name() -> atom().
 app_name() ->
     P = lists:nth(2, code:get_path()),
     T = string:tokens(P, "/"),

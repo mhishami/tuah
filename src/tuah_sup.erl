@@ -5,6 +5,8 @@
 
 -include("tuah.hrl").
 
+-import (web_worker, [app_name/0]).
+
 %% API
 -export([start_link/0]).
 
@@ -25,9 +27,24 @@ start_link() ->
 -spec init(list()) -> any().
 init([]) ->
     % Web = ?CHILD(tuah_srv, worker),
+    % Pool = ?CHILD(mongo_pool, worker),
+
     Session = ?CHILD(session_worker, worker),
-    Pool = ?CHILD(mongo_pool, worker),
-    Mongo = ?CHILD(mongo_worker, worker),
     Web = ?CHILD(web_worker, worker),
-    {ok, { {one_for_one, 5, 10}, [Session, Pool, Mongo, Web]} }.
+
+    %% our mongo pool
+    %% get configs
+    {ok, Pools} = application:get_env(app_name(), pools),
+    ?DEBUG("Pools= ~p~n", [Pools]),
+
+    F = fun({PoolName, SizeArgs, WorkerArgs}) ->
+		    PoolArgs = [{name, {local, PoolName}}, {worker_module, mc_worker}] ++ SizeArgs,
+		    poolboy:child_spec(PoolName, PoolArgs, WorkerArgs)
+	    end,
+    PoolSpecs = lists:map(F, Pools),
+
+    [{PoolName, _, _}] = Pools,
+    Mongo = ?CHILD(mongo_worker, worker, [PoolName]),
+
+    {ok, { {one_for_one, 5, 10}, [Session, Mongo, Web | PoolSpecs]} }.
 
