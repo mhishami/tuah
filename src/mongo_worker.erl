@@ -176,6 +176,10 @@ handle_call({find_one, Coll, Selector, Args}, _From, #state{pool=Pool} = State) 
             end,
     {reply, Reply, State};
 
+% mongo_worker:find(<<"posts">>, 
+%   {<<"title">>, #{<<"$regex">>  => <<"some*">>, <<"$options">> => <<"i">>}}, 
+%   [{projector, #{<<"grpid">> => 1, <<"title">> => 1, <<"author.fullname">> => 1}}]).
+% 
 handle_call({find, Coll, Selector, Args}, _From, #state{pool=Pool} = State) ->
     Res = poolboy:transaction(Pool,
             fun(Conn) ->
