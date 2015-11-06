@@ -37,7 +37,7 @@ Quick Start
   ├── Makefile
   ├── erlang.mk
   ├── include
-  │   └── bb.hrl
+  │   └── foo.hrl
   ├── priv
   │   └── static
   │       ├── assets/
@@ -101,7 +101,6 @@ Mongo Backend
 4. Regular expressions are also there.
 
   ```
-  mongo_worker:find(<<"posts">>, {}, [{batchsize, 1}, {skip, 1}]).
   mongo_worker:find(<<"posts">>, 
     {<<"title">>, #{<<"$regex">>  => <<"some*">>, 
                     <<"$options">> => <<"i">>}}, 
