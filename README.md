@@ -4,7 +4,7 @@
 > ====
 > Tuah is a simple, HTTP framework, inspired by BeepBeep with Cowboy as the underlying mechanism.
 > 
-> Easy to extend, comes with session management and continous code compilations make it a very productive framework to begin with.
+> Easy to extend, comes with session management and continous code compilations to make it a very productive framework to begin with.
 > 
 > Built on the strength of Cowboy and MongoDB, development time is greatly reduced.
 
@@ -13,7 +13,7 @@ Quick Start
 
 1. Create A New Project
 
-  Create a new project is made simple via the addition of `new_app.sh` script
+  Creating a new project is made simpler via the addition of `new_app.sh` script.
 
   ``` shell
   hisham@skrall:tuah$ ./new_app.sh foo
@@ -78,7 +78,7 @@ Quick Start
   View the app at http://localhost:8080  
   That's it!
 
-5. Extend the app the way you like it by adding more templates, controllers to make a full blown app
+5. Extend the app the way you like it by adding more templates, controllers to make a full blown app.
 
 6. Feel free to fork this. Cheers!
 
