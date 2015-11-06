@@ -1,0 +1,54 @@
+{% extends "home.dtl" %}
+
+{% block content %}
+<form class="form-horizontal" method="post" action="/auth/register">
+  <fieldset>
+    <!-- Form Name -->
+    <legend>Register</legend>
+
+    {% if error %}
+    <div class="alert alert-danger alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <strong>Warning! </strong> {{ error }}.
+    </div>      
+    {% endif %}
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="username">Username</label>  
+      <div class="col-md-4">
+      <input id="username" name="username" type="text" placeholder="username..." class="form-control input-md" required="" value="{{ username }}">
+      <span class="help-block">Your username please</span>  
+      </div>
+    </div>
+
+    <!-- Password input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="password">Password</label>
+      <div class="col-md-4">
+        <input id="password" name="password" type="password" placeholder="************" class="form-control input-md" required="">
+        <span class="help-block">Your password please</span>
+      </div>
+    </div>
+
+    <!-- Password input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="password2">Password Confirm</label>
+      <div class="col-md-4">
+        <input id="password2" name="password2" type="password" placeholder="************" class="form-control input-md" required="">
+        <span class="help-block">Your password (again) please</span>
+      </div>
+    </div>
+
+    <!-- Button (Double) -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for=""></label>
+      <div class="col-md-8">
+        <button type="submit" class="btn btn-success">Register</button>
+        <a class="btn btn-info" href="/auth/login">Login?</a>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+{% endblock %}

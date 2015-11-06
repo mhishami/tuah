@@ -1,1 +1,11 @@
-{% extends "base.dtl" %}
+{% extends "home.dtl" %}
+
+{% block content %}
+
+      <div class="jumbotron">
+        <h1>Oppss!</h1>
+        <p class="lead">Something went wrong!</p>
+        <p><a class="btn btn-lg btn-success" href="/auth/register" role="button">Sign up today</a></p>
+      </div>
+  
+{% endblock %}

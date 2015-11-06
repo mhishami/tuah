@@ -1,312 +1,109 @@
-Tuah
-====
+> Tuah
+> ====
+> Tuah is a simple, HTTP framework, inspired by BeepBeep with Cowboy as the underlying mechanism.
+> 
+> Easy to extend, comes with session management and continous code compilations make it a very productive framework to begin with.
+> 
+> Built on the strength of Cowboy and MongoDB, development time is greatly reduced.
 
-Tuah is a simple, HTTP framework, inspired by BeepBeep with Cowboy as the underlying mechanism.
-
-Usage
------
+Quick Start
+-----------
 
 1. Create A New Project
 
-  Create a new project using rebar template
-
-  ```` bash
-  $ mkdir ~/Projects/Erlang/foo
-  $ cd ~/Projects/Erlang/foo
-  $ wget https://raw.githubusercontent.com/ninenines/erlang.mk/master/erlang.mk
-  ````
-
-  Create a skeleton for the OTP project
-  ```` bash
-  $ make bootstrap bootstrap-rel
-  ````
-
-  Edit the generated Makefile, and add the content as per below
-  ```` bash
-  $ cat Makefile
-  PROJECT = foo
-  DEPS = tuah sync eunit_formatters
-
-  dep_tuah = git https://github.com/mhishami/tuah.git master
-
-  include erlang.mk
-  ````
-
-
-2. Add The Codes
-
-  The content might be similar to these:
-
-  ````erlang
-  %% file: foo.app.src
-  application, foo, [
-      {description, ""},
-      {vsn, "0.1"},
-      {modules, []},
-      {registered, [fishbid_sup]},
-      {applications, [kernel,stdlib,tuah,sync,eunit_formatters]},
-      {mod, {foo_app, []}},
-      {env, [
-          {http, [{port, 8080}]},
-          {pools, [
-              {foo, [
-                  {size, 10}, 
-                  {max_overflow, 30}
-              ], [
-                  {database, <<"foo">>},
-                  {w_mode, safe}
-              ]}
-          ]}
-      ]}
-
-  ]}.
-  ````
-
-  ```` erlang
-
-  -module(foo_app).
-  -behaviour(application).
-
-  -export([start/2]).
-  -export([stop/1]).
-
-  start(_Type, _Args) ->
-      application:start(sync),
-      application:ensure_all_started(lager),
-      application:ensure_all_started(mongodb),    
-      application:ensure_all_started(cowboy),
-      application:start(erlydtl),
-
-      %% set debug for console logs
-      lager:set_loglevel(lager_console_backend, debug),
-
-      foo_sup:start_link().
-
-  stop(_State) ->
-      ok.
-    
-  ````
-
-3. Implement Your Controller
-
-  ```` bash
-  $ touch src/home_controller_.erl
-  ````
-  
-  ```` erlang
-  -module (home_controller).
-  -export ([handle_request/5]).
-  % -export ([before_filter/1]).
-
-  % before_filter(SessionId) ->
-  %       %% do some checking
-  %       Sid = session_worker:get_cookies(SessionId),
-  %       case Sid of
-  %           {error, undefined} ->
-  %               {redirect, <<"/auth/login">>};
-  %           _ ->
-  %               {ok, proceed}
-  %       end.
-
-  handle_request(<<"GET">>, <<"/">>, _Args, _Params, _Req) ->    
-      %% Action / will render home.dtl
-      {render, []};
-  
-  handle_request(_, _, _, _, _) ->
-      {error, <<"Opps, Forbidden">>}.
-
-  ````
-
-  ```` bash
-  $ touch src/auth_controller_.erl
-  ````
-
-  ```` erlang
-  -module (auth_controller).
-  -export ([handle_request/5]).
-    
-  handle_request(<<"GET">>, <<"login">> = Action, _Args, _Params, _Req) ->    
-      %% Action login will render login.dtl
-      {render, Action, []};
-
-  handle_request(<<"POST">>, <<"login">>, _, Params, _) ->
-      {ok, PostVals} = maps:find(<<"qs_body">>, Params),
-      Email = proplists:get_value(<<"email">>, PostVals),
-      Password = proplists:get_value(<<"password">>, PostVals),
-
-      %% authenticate the user
-      case authenticate(Email, Password) of
-          {ok, proceed} ->
-              %% set the session id, and user email
-              Sid = web_util:hash_password(word_util:gen_pnr()),
-              session_worker:set_cookies(Sid, Email),
-
-              %% redirect, assuming "main" is defined.
-              {redirect, <<"/main">>};
-          _ ->
-              {redirect, <<"/">>}
-      end;
-
-  handle_request(_, _, _, _, _) ->
-          {error, <<"Opps, Forbidden">>}.
-
-  %% private function
-  authenticate(_Email, _Password) ->
-      {ok, proceed}.
-    
-
-  ````
-
-4. Do The Templates
-
-  ```` bash
-  $ mkdir templates
-  $ cd templates
-  $ touch home.dtl
-  ````
-
-  We will be using a bootstrap sample page for this example. 
-  ```` bash
-  $ cd ~/Projects/Web
-  $ git clone https://github.com/twitter/bootstrap.git
-  ````
-  
-  Put all the static files in the `priv` directory, and prepend it with `static` name, i.e.
-  ```` bash
-  $ cd ~/Projects/Erlang/foo
-  $ mkdir -p priv/static/css
-  $ cp -r ~/Projects/Web/bootstrap/dist priv/static/.
-  $ cp -r ~/Projects/Web/bootstrap/assets priv/static/.
-  $ cp ~/Projects/Web/bootstrap/docs/examples/jumbotron-narrow/index.html templates/base.dtl
-  $ cp ~/Projects/Web/bootstrap/docs/examples/jumbotron-narrow/jumbotron-narrow.css priv/static/css/style.css
-  ````
-
-  Replace all references to css and js files
-  Edit `base.dtl` header file to be:
-
-  ``` html
-
-    <!-- Bootstrap core CSS -->
-    <link href="/static/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/static/assets/dist/js/ie-emulation-modes-warning.js"></script>
-
-
-    <!-- Custom styles for this template -->
-    <link href="/static/css/style.css" rel="stylesheet">
-
-  ```
-  Edit the `base.dtl` file to include the `content` block to be:
-  
-  ``` html
-  
-      {% block content %}
-      <div class="jumbotron">
-        <h1>Jumbotron heading</h1>
-        ...
-    
-        ...
-           <h4>Subheading</h4>
-          <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-        </div>
-      </div>
-      {% endblock %}
-    
-  ```
-  
-  Edit `home.dtl` to use the said template
-  
-  ```` bash
-  $ cat home.dtl
-  
-  {% extends "base.dtl" %}
-  
-  ````
-  
-  ``` bash
-  +-- Project
-      +-- deps
-      +-- ebin
-      +-- include
-      +-- priv
-        +-- assets
-          +-- css
-            - bootstrap.css
-            - ...
-          +-- js
-          +-- img      
-  ```
-
-  
-5. Run The App
+  Create a new project is made simple via the addition of `new_app.sh` script
 
   ``` shell
-  $ make; make run
-  ```
-  View the app at http://localhost:8080
+  hisham@skrall:tuah$ ./new_app.sh foo
+  Creating new app: foo
+  Creating directory...
+  Creating template files...
+  Creating bootstrap files...
+  Finishing up...
+  Done. Your app is created in ../foo.
+  +----------------------+
+  |     Happy coding!    |
+  +----------------------+
+  hisham@skrall:tuah$ 
 
-6. Deploy to Heroku
+  ```
+  
+2. The project structure looks like
 
-  Once everything is fine, we can then deploy it to Heroku
+  ``` shell
+  foo
+  ├── Makefile
+  ├── erlang.mk
+  ├── include
+  │   └── bb.hrl
+  ├── priv
+  │   └── static
+  │       ├── assets/
+  │       ├── css/
+  │       └── dist/  
+  ├── rel
+  │   ├── sys.config
+  │   └── vm.args
+  ├── relx.config
+  ├── run.sh
+  ├── src
+  │   ├── foo.app.src
+  │   ├── foo_app.erl
+  │   ├── foo_sup.erl
+  │   └── home_controller.erl
+  └── templates
+      ├── error.dtl
+      ├── home.dtl
+      ├── login.dtl
+      ├── public.dtl
+      └── register.dtl
 
-  Add git repo, and remove `ebin/*` from your `.gitignore` dir as heroku will not compile the dtl template we compiled earlier.
-  
-  ```` bash
-  $ git init
-  ````
-  
-  Edit `.gitignore`
-  ```` bash
-  $ cat .gitignore
-  deps/*
-  priv/db
-  log/*
-  
-  $ git commit -am 'initial commit'
-  ````
-  
-  
-  ``` bash
-  $ heroku create <<your app>> --stack cedar \
-      --buildpack https://github.com/archaelus/heroku-buildpack-erlang.git    
   ```
-  
-  Create a Profile that contains the above running instructions. Ensure all are in one line.
-  ``` bash
-  $ cat Procfile
-  web: erl -sname foo -pa ebin include deps/*/ebin deps/*/include ebin include __
-    -boot start_sasl -s reloader -s tuah -s foo -noshell -noinput
+3. Start the mongodb server, as the sample application does live registration and all.
+
+4. Run The App
+> The App
+> ====
+> 
+> This simple app does user registration, login and logout.
+> Extend this further to your likings.
+
+  ``` shell
+  $ make
+  $ ./run.sh console
+
   ```
-  
-  Specify Erlang version
-  
-  ``` bash
-  $ echo OTP_R15B01 > .preferred_otp_version
-  ```
-  
-  Add all to git, and do
-  
-  ``` bash
-  $ git add .
-  $ git commit -am 'commit to heroku'
-  $ git push heroku master
-  $ heroku ps:scale worker=1
-  $ heroku open
-  ```
-  
+  View the app at http://localhost:8080  
   That's it!
 
+5. Extend the app the way you like it by adding more templates, controllers to make a full blown app
 
-Notes
-=====
+6. Feel free to fork this. Cheers!
 
-1. Reply can be done in several ways in the controller:
-  ``` erlang
-  {redirect, <<"/page">>}     %% redirect to page_controller -> page.dtl
-  {render, Data}              %% return the page for the current controller with Data
-  {render, <<"adm">>, Data}   %% render the page adm.dtl in the current controller with data
-  {json, DataList}            %% return json data from erlang list
+Mongo Backend
+-------------
+1. Tuah framework comes with mongo client integration. Almost *all* the APIs are supported. Feel free to browse the source code.
+
+2. Advanced examples such as regex search, complex find and match are supported. Details query and projection operators can be found at [https://docs.mongodb.org/manual/reference/operator/](MongoDB Reference)
+
+3. Different notations for find (use which you like). I prefer the second as it is easier to read and comprehend.
+
   ```
-  
-2. Customize your error view with custom error.dtl page that takes `{{ error }}` as the message
+  mongo_worker:find(<<"posts">>, {}, [{batchsize, 3}, {skip, 1}, 
+     {projector, {<<"created_at">>, 1, <<"grpid">>, 1}}]).
+   
+  mongo_worker:find(<<"posts">>, {}, [{batchsize, 3}, {skip, 1}, 
+     {projector, #{<<"created_at">> => 1, <<"grpid">> => 1}}]).
+  ```
 
-  
+4. Regular expressions are also there.
+
+  ```
+  mongo_worker:find(<<"posts">>, {}, [{batchsize, 1}, {skip, 1}]).
+  mongo_worker:find(<<"posts">>, 
+    {<<"title">>, #{<<"$regex">>  => <<"some*">>, 
+                    <<"$options">> => <<"i">>}}, 
+    [{projector, #{<<"grpid">> => 1, 
+                   <<"title">> => 1, 
+                   <<"author.fullname">> => 1}}]).
+  ```

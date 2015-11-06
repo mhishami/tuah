@@ -1,25 +1,36 @@
 {application, foo, [
     {description, ""},
-    {vsn, "rolling"},
+    {vsn, "0.1.0"},
     {modules, []},
     {registered, [foo_sup]},
     {applications, [
                 kernel,
                 stdlib,
-                tuah, 
+                crypto,
+                mnesia,
+                tuah,
+                sync,
                 cowboy,
                 erlydtl,
                 jsx,
                 lager,
                 cowlib,
                 ranch,
-                mongodb,
                 bson,
-                mnesia
+                pbkdf2,
+                mongodb
     ]},
     {mod, {foo_app, []}},
     {env, [
         {http, [{port, 8080}]},
-        {dirname, foo}
+        {pools, [
+            {foo, [
+            {size, 10},
+            {max_overflow, 30}
+        ], [
+            {database, <<"foo">>},
+            {w_mode, safe}
+            ]}
+        ]}
     ]}
 ]}.
