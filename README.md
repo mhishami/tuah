@@ -1,3 +1,5 @@
+![logo](https://raw.githubusercontent.com/mhishami/tuah/master/example/foo/priv/static/img/tuah-small.png)
+
 > Tuah
 > ====
 > Tuah is a simple, HTTP framework, inspired by BeepBeep with Cowboy as the underlying mechanism.
