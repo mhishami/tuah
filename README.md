@@ -95,7 +95,8 @@ Mongo Backend
                                   <<"cat">>, <<"News">>}, 
     [{batchsize, 10}, {skip, 20}, 
     {projector, {<<"created_at">>, 1, <<"grpid">>, 1}}]).
-   
+  ```
+  ``` 
   mongo_worker:find(<<"posts">>, #{<<"tag">> => <<"general">>, 
                                    <<"cat">> => <<"News">>}, 
     [{batchsize, 10}, {skip, 20}, 
