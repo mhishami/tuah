@@ -27,7 +27,7 @@
 
 <p>Tuah is a simple, HTTP framework, inspired by BeepBeep with Cowboy as the underlying mechanism.</p>
 
-<p>Easy to extend, comes with session management and continous code compilations make it a very productive framework to begin with.</p>
+<p>Easy to extend, comes with session management and continous code compilations to make it a very productive framework to begin with.</p>
 
 <p>Built on the strength of Cowboy and MongoDB, development time is greatly reduced.</p>
 </blockquote>
@@ -39,7 +39,7 @@
 <li>
 <p>Create A New Project</p>
 
-<p>Creating a new project is made simple via the addition of <code>new_app.sh</code> script</p>
+<p>Creating a new project is made simpler via the addition of <code>new_app.sh</code> script.</p>
 
 <div class="highlight highlight-source-shell"><pre>hisham@skrall:tuah$ ./new_app.sh foo
 Creating new app: foo
@@ -61,7 +61,7 @@ hisham@skrall:tuah$
 ├── Makefile
 ├── erlang.mk
 ├── include
-│   └── bb.hrl
+│   └── foo.hrl
 ├── priv
 │   └── static
 │       ├── assets/
@@ -104,7 +104,7 @@ $ ./run.sh console
 <p>View the app at http://localhost:8080<br>
 That's it!</p>
 </li>
-<li><p>Extend the app the way you like it by adding more templates, controllers to make a full blown app</p></li>
+<li><p>Extend the app the way you like it by adding more templates, controllers to make a full blown app.</p></li>
 <li><p>Feel free to fork this. Cheers!</p></li>
 </ol>
 
@@ -115,20 +115,24 @@ That's it!</p>
 <li><p>Tuah framework comes with mongo client integration. Almost <em>all</em> the APIs are supported. Feel free to browse the source code.</p></li>
 <li><p>Advanced examples such as regex search, complex find and match are supported. Details query and projection operators can be found at <a href="MongoDB%20Reference">https://docs.mongodb.org/manual/reference/operator/</a></p></li>
 <li>
-<p>Different notations for find (use which you like). I prefer the second as it is easier to read and comprehend.</p>
+<p>Different notations for Selector/Projector, use which one that you like. I preferred the second notation as it is easier to read and comprehend.</p>
 
-<pre><code>mongo_worker:find(&lt;&lt;"posts"&gt;&gt;, {}, [{batchsize, 3}, {skip, 1}, 
-   {projector, {&lt;&lt;"created_at"&gt;&gt;, 1, &lt;&lt;"grpid"&gt;&gt;, 1}}]).
+<pre><code>mongo_worker:find(&lt;&lt;"posts"&gt;&gt;, {&lt;&lt;"tag"&gt;&gt;, &lt;&lt;"general"&gt;&gt;, 
+                                &lt;&lt;"cat"&gt;&gt;, &lt;&lt;"News"&gt;&gt;}, 
+  [{batchsize, 10}, {skip, 20}, 
+  {projector, {&lt;&lt;"created_at"&gt;&gt;, 1, &lt;&lt;"grpid"&gt;&gt;, 1}}]).
+</code></pre>
 
-mongo_worker:find(&lt;&lt;"posts"&gt;&gt;, {}, [{batchsize, 3}, {skip, 1}, 
-   {projector, #{&lt;&lt;"created_at"&gt;&gt; =&gt; 1, &lt;&lt;"grpid"&gt;&gt; =&gt; 1}}]).
+<pre><code>mongo_worker:find(&lt;&lt;"posts"&gt;&gt;, #{&lt;&lt;"tag"&gt;&gt; =&gt; &lt;&lt;"general"&gt;&gt;, 
+                                 &lt;&lt;"cat"&gt;&gt; =&gt; &lt;&lt;"News"&gt;&gt;}, 
+  [{batchsize, 10}, {skip, 20}, 
+  {projector, #{&lt;&lt;"created_at"&gt;&gt; =&gt; 1, &lt;&lt;"grpid"&gt;&gt; =&gt; 1}}]).
 </code></pre>
 </li>
 <li>
 <p>Regular expressions are also there.</p>
 
-<pre><code>mongo_worker:find(&lt;&lt;"posts"&gt;&gt;, {}, [{batchsize, 1}, {skip, 1}]).
-mongo_worker:find(&lt;&lt;"posts"&gt;&gt;, 
+<pre><code>mongo_worker:find(&lt;&lt;"posts"&gt;&gt;, 
   {&lt;&lt;"title"&gt;&gt;, #{&lt;&lt;"$regex"&gt;&gt;  =&gt; &lt;&lt;"some*"&gt;&gt;, 
                   &lt;&lt;"$options"&gt;&gt; =&gt; &lt;&lt;"i"&gt;&gt;}}, 
   [{projector, #{&lt;&lt;"grpid"&gt;&gt; =&gt; 1, 
