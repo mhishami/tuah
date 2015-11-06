@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Tuah by mhishami</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Tuah</h1>
+      <h2 class="project-tagline">A Simple Cowboy Frontend, inspired by BeepBeep</h2>
+      <a href="https://github.com/mhishami/tuah" class="btn">View on GitHub</a>
+      <a href="https://github.com/mhishami/tuah/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/mhishami/tuah/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <blockquote>
+<h1>
+<a id="tuah" class="anchor" href="#tuah" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tuah</h1>
+
+<p>Tuah is a simple, HTTP framework, inspired by BeepBeep with Cowboy as the underlying mechanism.</p>
+
+<p>Easy to extend, comes with session management and continous code compilations make it a very productive framework to begin with.</p>
+
+<p>Built on the strength of Cowboy and MongoDB, development time is greatly reduced.</p>
+</blockquote>
+
+<h2>
+<a id="quick-start" class="anchor" href="#quick-start" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick Start</h2>
+
+<ol>
+<li>
+<p>Create A New Project</p>
+
+<p>Create a new project is made simple via the addition of <code>new_app.sh</code> script</p>
+
+<div class="highlight highlight-source-shell"><pre>hisham@skrall:tuah$ ./new_app.sh foo
+Creating new app: foo
+Creating directory...
+Creating template files...
+Creating bootstrap files...
+Finishing up...
+Done. Your app is created <span class="pl-k">in</span> ../foo.
++----------------------+
+<span class="pl-k">|</span>     Happy coding<span class="pl-k">!</span>    <span class="pl-k">|</span>
++----------------------+
+hisham@skrall:tuah$ 
+</pre></div>
+</li>
+<li>
+<p>The project structure looks like</p>
+
+<div class="highlight highlight-source-shell"><pre>foo
+├── Makefile
+├── erlang.mk
+├── include
+│   └── bb.hrl
+├── priv
+│   └── static
+│       ├── assets/
+│       ├── css/
+│       └── dist/  
+├── rel
+│   ├── sys.config
+│   └── vm.args
+├── relx.config
+├── run.sh
+├── src
+│   ├── foo.app.src
+│   ├── foo_app.erl
+│   ├── foo_sup.erl
+│   └── home_controller.erl
+└── templates
+    ├── error.dtl
+    ├── home.dtl
+    ├── login.dtl
+    ├── public.dtl
+    └── register.dtl
+</pre></div>
+</li>
+<li><p>Start the mongodb server, as the sample application does live registration and all.</p></li>
+<li>
+<p>Run The App</p>
+
+<blockquote>
+<h1>
+<a id="the-app" class="anchor" href="#the-app" aria-hidden="true"><span class="octicon octicon-link"></span></a>The App</h1>
+
+<p>This simple app does user registration, login and logout.
+Extend this further to your likings.</p>
+</blockquote>
+
+<div class="highlight highlight-source-shell"><pre>$ make
+$ ./run.sh console
+</pre></div>
+
+<p>View the app at http://localhost:8080<br>
+That's it!</p>
+</li>
+<li><p>Extend the app the way you like it by adding more templates, controllers to make a full blown app</p></li>
+<li><p>Feel free to fork this. Cheers!</p></li>
+</ol>
+
+<h2>
+<a id="mongo-backend" class="anchor" href="#mongo-backend" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mongo Backend</h2>
+
+<ol>
+<li><p>Tuah framework comes with mongo client integration. Almost <em>all</em> the APIs are supported. Feel free to browse the source code.</p></li>
+<li><p>Advanced examples such as regex search, complex find and match are supported. Details query and projection operators can be found at <a href="MongoDB%20Reference">https://docs.mongodb.org/manual/reference/operator/</a></p></li>
+<li>
+<p>Different notations for find (use which you like). I prefer the second as it is easier to read and comprehend.</p>
+
+<pre><code>mongo_worker:find(&lt;&lt;"posts"&gt;&gt;, {}, [{batchsize, 3}, {skip, 1}, 
+   {projector, {&lt;&lt;"created_at"&gt;&gt;, 1, &lt;&lt;"grpid"&gt;&gt;, 1}}]).
+
+mongo_worker:find(&lt;&lt;"posts"&gt;&gt;, {}, [{batchsize, 3}, {skip, 1}, 
+   {projector, #{&lt;&lt;"created_at"&gt;&gt; =&gt; 1, &lt;&lt;"grpid"&gt;&gt; =&gt; 1}}]).
+</code></pre>
+</li>
+<li>
+<p>Regular expressions are also there.</p>
+
+<pre><code>mongo_worker:find(&lt;&lt;"posts"&gt;&gt;, {}, [{batchsize, 1}, {skip, 1}]).
+mongo_worker:find(&lt;&lt;"posts"&gt;&gt;, 
+  {&lt;&lt;"title"&gt;&gt;, #{&lt;&lt;"$regex"&gt;&gt;  =&gt; &lt;&lt;"some*"&gt;&gt;, 
+                  &lt;&lt;"$options"&gt;&gt; =&gt; &lt;&lt;"i"&gt;&gt;}}, 
+  [{projector, #{&lt;&lt;"grpid"&gt;&gt; =&gt; 1, 
+                 &lt;&lt;"title"&gt;&gt; =&gt; 1, 
+                 &lt;&lt;"author.fullname"&gt;&gt; =&gt; 1}}]).
+</code></pre>
+</li>
+</ol>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/mhishami/tuah">Tuah</a> is maintained by <a href="https://github.com/mhishami">mhishami</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
