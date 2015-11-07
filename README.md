@@ -119,6 +119,7 @@ Mongo Backend
                    <<"title">> => 1, 
                    <<"author.fullname">> => 1}}]).
   ```
+
 Routing
 -------
 1. Routing is made simple in tuah, where the URL is broken up into multiple items, to be handled by the request handlers.
