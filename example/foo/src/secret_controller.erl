@@ -4,7 +4,7 @@
 -export ([handle_request/5]).
 -export ([before_filter/1]).
 
--include ("foo.hrl").
+-include ("baz.hrl").
 
 before_filter(SessionId) ->
     %% do some checking
@@ -18,6 +18,6 @@ before_filter(SessionId) ->
 
 handle_request(<<"GET">>, _Action, _Args, Params, _Req) ->
 	Username = maps:get(<<"auth">>, Params),
-	{render, <<"home">>, [{user, Username}]}.
+	{render, <<"home">>, [{user, Username}, {menu_secret, <<"active">>}]}.
 
 

@@ -5,7 +5,8 @@
       <div class="jumbotron">
         <h1>Oppss!</h1>
         <p class="lead">Something went wrong!</p>
-        <p><a class="btn btn-lg btn-success" href="/auth/register" role="button">Sign up today</a></p>
+        <h4>{{ error }}</h4>
+        <p><a class="btn btn-lg btn-success" href="/" role="button">Home</a></p>
       </div>
   
 {% endblock %}

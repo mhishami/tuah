@@ -4,7 +4,7 @@
 -export ([handle_request/5]).
 -export ([before_filter/1]).
 
--include("foo.hrl").
+-include("baz.hrl").
 
 before_filter(_SessionId) ->
     {ok, proceed}.
@@ -14,7 +14,7 @@ handle_request(<<"GET">>, <<"logout">>, _Args, Params, _Req) ->
     {redirect, <<"/">>};
 
 handle_request(<<"GET">>, <<"login">>, _Args, _Params, _Req) ->
-    {render, <<"login">>, []};  
+    {render, <<"login">>, [{menu_login, <<"active">>}]};  
 
 handle_request(<<"POST">>, <<"login">> = Action, _Args, Params, _Req) ->    
     PostVals = maps:get(<<"qs_body">>, Params),
@@ -46,7 +46,7 @@ handle_request(<<"POST">>, <<"login">> = Action, _Args, Params, _Req) ->
     end;
 
 handle_request(<<"GET">>, <<"register">>, _Args, _Params, _Req) -> 
-    {render, <<"register">>, []};
+    {render, <<"register">>, [{menu_reg, <<"active">>}]};
 
 handle_request(<<"POST">>, <<"register">> = Action, _Args, Params, _Req) ->
     PostVals = maps:get(<<"qs_body">>, Params),

@@ -4,8 +4,12 @@
 
       <div class="jumbotron">
         <h1>Hello!</h1>
+        {% if user %}
+        <p class="lead">I bet you've seen the secret?</p>
+        {% else %}
         <p class="lead">This is a general page. Login to see the secret!</p>
         <p><a class="btn btn-lg btn-success" href="/auth/login" role="button">Sign In</a></p>
+        {% endif %}
       </div>
   
 {% endblock %}
