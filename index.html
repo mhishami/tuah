@@ -145,7 +145,202 @@ That's it!</p>
                  &lt;&lt;"title"&gt;&gt; =&gt; 1, 
                  &lt;&lt;"author.fullname"&gt;&gt; =&gt; 1}}]).
 </code></pre>
+
+<h2>
+<a id="routing" class="anchor" href="#routing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Routing</h2>
 </li>
+<li><p>Routing is made simple in tuah, where the URL is broken up into multiple items, to be handled by the request handlers.</p></li>
+<li>
+<p>Below is the breakdown of the request URL, and the components it is broken up into:</p>
+
+<ul>
+<li>
+<code>/post/message/20</code>
+
+<ul>
+<li>
+<strong>Controller</strong>: <code>post_controller.erl</code>
+</li>
+<li>
+<strong>Action</strong>: <code>&lt;&lt;"message"&gt;&gt;</code>
+</li>
+<li>
+<strong>Args</strong>: <code>[ 20 ]</code>
+</li>
+</ul>
+</li>
+<li>
+<code>/user/view/details/100</code>
+
+<ul>
+<li>
+<strong>Controller</strong>: <code>user_controller.erl</code>
+</li>
+<li>
+<strong>Action</strong>: <code>&lt;&lt;"view"&gt;&gt;</code>
+</li>
+<li>
+<strong>Args</strong>: <code>[&lt;&lt;"details"&gt;&gt;, 100]</code>
+</li>
+</ul>
+</li>
+<li>
+<code>/view/message/20?float=false&amp;data=none</code>
+
+<ul>
+<li>
+<strong>Controller</strong>: <code>view_controller.erl</code>
+</li>
+<li>
+<strong>Action</strong>: <code>&lt;&lt;"message"&gt;&gt;</code>
+</li>
+<li>
+<strong>Args</strong>: <code>[ 20 ]</code>
+</li>
+<li>
+<strong>Params</strong>: <code>#{qs_vals =&gt; [{&lt;&lt;"float"&gt;&gt;, &lt;&lt;"false"&gt;&gt;},
+{&lt;&lt;"data"&gt;&gt;, &lt;&lt;"none"&gt;&gt;}],...}</code>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
+<h2>
+<a id="controllers" class="anchor" href="#controllers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Controllers</h2>
+
+<ol>
+<li><p>All controllers can be defined by using the <code>tuah_controller</code> behavior.</p></li>
+<li>
+<p>All handlers are in the form:</p>
+
+<pre><code>handle_request(Method, Action, Args, Params, Req)
+</code></pre>
+</li>
+<li>
+<p>Request handler parameters:</p>
+
+<ul>
+<li>
+<code>Method</code> - can be HTTP Method, capitalized (e.g. GET, POST, PUT, DELETE etc.)</li>
+<li>
+<code>Action</code> - the second parameters in the URL chosen, e.g.
+
+<ul>
+<li>
+<code>/user/delete</code> : Action = <code>delete</code>
+</li>
+<li>
+<code>/post/view</code> : Action = <code>view</code>
+</li>
+</ul>
+</li>
+<li>
+<code>Args</code> - the list of arguments of the URL
+
+<ul>
+<li>
+<code>/user/delete/20/</code> : Args = <code>[20]</code>
+</li>
+<li>
+<code>/post/view/977/simple</code> : Args = <code>[ 997, &lt;&lt;"simple"&gt;&gt;]</code>
+</li>
+</ul>
+</li>
+<li>
+<code>Params</code> - the request parameters
+
+<ul>
+<li>
+<code>qs_vals</code> : contains the <code>GET</code> query string variables</li>
+<li>
+<code>qs_body</code> : contains the <code>POST</code> query string variables</li>
+<li>
+<code>files</code> : contains the file uploads data</li>
+<li>
+<code>auth</code> : contains the authentication context</li>
+<li>
+<code>sid</code> : contains the session id</li>
+</ul>
+</li>
+<li>
+<code>Req</code> - the Cowboy Req parameters. It is hardly used, but just in case you want to play around with the Cowboy internals.</li>
+</ul>
+</li>
+</ol>
+
+<h2>
+<a id="session-context" class="anchor" href="#session-context" aria-hidden="true"><span class="octicon octicon-link"></span></a>Session Context</h2>
+
+<ol>
+<li>
+<p>Session context is carried in the <code>Params</code> in each request:</p>
+
+<ul>
+<li>
+<code>sid</code> - The session id </li>
+<li>
+<code>auth</code> - The authentication context</li>
+</ul>
+</li>
+<li><p>Authentication context is to be used sparingly. <strong>DO NOT</strong> carry sensitive information in the <code>auth</code> context. Only username/email address is suffice.</p></li>
+</ol>
+
+<h2>
+<a id="authentication" class="anchor" href="#authentication" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authentication</h2>
+
+<ol>
+<li><p>Authentication is done using the session context <code>auth</code> and <code>sid</code> in the <code>Params</code> of request handler.</p></li>
+<li>
+<p>Typical authentication procedures are:</p>
+
+<pre><code>handle_request(&lt;&lt;"POST"&gt;&gt;, &lt;&lt;"login"&gt;&gt; = Action, _Args, Params, _Req) -&gt;    
+    PostVals = maps:get(&lt;&lt;"qs_body"&gt;&gt;, Params),
+    Username = proplists:get_value(&lt;&lt;"username"&gt;&gt;, PostVals),
+    Password = proplists:get_value(&lt;&lt;"password"&gt;&gt;, PostVals),
+
+    case Username =:= &lt;&lt;&gt;&gt; orelse Password =:= &lt;&lt;&gt;&gt; of
+        true -&gt;
+            {render, Action, [{error, &lt;&lt;"All fields are required."&gt;&gt;}]};
+        _ -&gt;
+            case mongo_worker:find(?DB_USERS, #{&lt;&lt;"username"&gt;&gt; =&gt; Username}) of
+                {ok, []} -&gt;
+                    {render, Action, [{error, &lt;&lt;"Invalid username, or password"&gt;&gt;}]};
+                {ok, [User]} -&gt;
+                    ?DEBUG("User= ~p~n", [User]),
+                    HashPass = web_util:hash_password(Password),
+                    Pass = maps:get(&lt;&lt;"password"&gt;&gt;, User),
+                    case Pass =/= HashPass of
+                        true -&gt;
+                            {render, Action, [{error, &lt;&lt;"Invalid username, or password"&gt;&gt;}]};
+                        _ -&gt;
+                            Sid = maps:get(&lt;&lt;"sid"&gt;&gt;, Params),
+                            session_worker:set_cookies(Sid, Username),
+
+                            %% redirect, assuming "secret" is defined.
+                            {redirect, &lt;&lt;"/secret"&gt;&gt;, {cookie, &lt;&lt;"auth"&gt;&gt;, Username}}
+                    end
+            end
+    end;
+</code></pre>
+</li>
+<li>
+<p>Logging out can be done by resetting the data in the session</p>
+
+<pre><code>handle_request(&lt;&lt;"GET"&gt;&gt;, &lt;&lt;"logout"&gt;&gt;, _Args, Params, _Req) -&gt;
+      session_worker:del_cookies(maps:get(&lt;&lt;"sid"&gt;&gt;, Params)),
+      {redirect, &lt;&lt;"/"&gt;&gt;};
+</code></pre>
+</li>
+</ol>
+
+<h2>
+<a id="templates" class="anchor" href="#templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Templates</h2>
+
+<ol>
+<li><p>Templates are defined using <code>erlydtl</code>, which is a fork of Django Templates.</p></li>
+<li><p>In each project, you should have a custom <code>error</code> template so that all errors can be shown nicely, and react accordingly.</p></li>
 </ol>
 
       <footer class="site-footer">
