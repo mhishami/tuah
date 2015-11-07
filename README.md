@@ -81,7 +81,7 @@ Quick Start
   $ ./run.sh console
 
   ```
-  View the app at http://localhost:8080  
+  View the app at [http://localhost:8080](App)  
   That's it!
 
 5. Extend the app the way you like it by adding more templates, controllers to make a full blown app.
@@ -124,7 +124,7 @@ Routing
 -------
 1. Routing is made simple in tuah, where the URL is broken up into multiple items, to be handled by the request handlers.
 
-2. Below is the breakdown of the request URL, and the components it is broken up into:
+2. Below is the breakdown of the request URL, and the components they are broken up into:
  
   - `/post/message/20`
     - **Controller**: `post_controller.erl`
@@ -146,7 +146,7 @@ Routing
 
 Controllers
 -----------
-1. All controllers can be defined by using the `tuah_controller` behavior.
+1. All controllers are defined by using the `tuah_controller` behavior.
 
 2. All handlers are in the form:
 
@@ -157,7 +157,7 @@ Controllers
 3. Request handler parameters:
   - `Method` : can be HTTP Method, capitalized (e.g. GET, POST, PUT, DELETE etc.)
 
-  - `Action` : the second parameters in the URL chosen, e.g.
+  - `Action` : the second parameter in the URL chosen, e.g.
     - `/user/delete` : Action = `delete`
     - `/post/view` : Action = `view`
 
@@ -181,7 +181,9 @@ Session Context
   - `sid` : The session id 
   - `auth` : The authentication context
 
-2. Authentication context is to be used sparingly. **DO NOT** carry sensitive information in the `auth` context. Only username/email address is suffice.
+2. Authentication context is to be used sparingly. It is advised not to carry sensitive information in the `auth` context. Context info such as username, or email address is suffice as the details can be queried with `mongo_worker`.
+
+3. Session context is saved in the `session_worker` where all records are stored in `Mnesia` database.
 
 Authentication
 --------------
@@ -220,7 +222,9 @@ Authentication
       end;
   ```
 
-3. Logging out can be done by resetting the data in the session
+3. Please also note that `cookies` in the example above is not the typical `HTTP Cookies`, but it's just named after the same word, but saved by `session_worker` in the `Mnesia` database.
+
+4. Logging out can be done by resetting the data in the session
 
   ``` erlang
   handle_request(<<"GET">>, <<"logout">>, _Args, Params, _Req) ->
