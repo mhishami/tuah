@@ -1,4 +1,6 @@
 -module (auth_controller).
+-behaviour (tuah_controller).
+
 -export ([handle_request/5]).
 -export ([before_filter/1]).
 
