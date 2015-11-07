@@ -12,13 +12,13 @@
 
 -spec init({atom(), http}, Req, opts())
     -> {ok, Req, state()}
-    | {loop, Req, state()}
-    | {loop, Req, state(), hibernate}
-    | {loop, Req, state(), timeout()}
-    | {loop, Req, state(), timeout(), hibernate}
-    | {shutdown, Req, state()}
-    | {upgrade, protocol, module()}
-    | {upgrade, protocol, module(), Req, opts()}
+    |  {loop, Req, state()}
+    |  {loop, Req, state(), hibernate}
+    |  {loop, Req, state(), timeout()}
+    |  {loop, Req, state(), timeout(), hibernate}
+    |  {shutdown, Req, state()}
+    |  {upgrade, protocol, module()}
+    |  {upgrade, protocol, module(), Req, opts()}
     when Req::cowboy_req:req().
 
 init(_, Req, _Opts) ->

@@ -17,7 +17,7 @@ before_filter(SessionId) ->
     end.
 
 handle_request(<<"GET">>, _Action, _Args, Params, _Req) ->
-	Username = maps:get(<<"auth">>, Params),
-	{render, <<"home">>, [{user, Username}, {menu_secret, <<"active">>}]}.
+    Username = maps:get(<<"auth">>, Params),
+    {render, <<"home">>, [{user, Username}, {menu_secret, <<"active">>}]}.
 
 

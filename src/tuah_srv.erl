@@ -30,20 +30,20 @@ start_link() ->
 -spec init(list()) -> {ok, any()}.
 init(Args) ->
     uuid:init(),
-	Dispatch = cowboy_router:compile([
-		{'_', [
-			{"/static/[...]", cowboy_static, {priv_dir, static_world, "",
+    Dispatch = cowboy_router:compile([
+        {'_', [
+            {"/static/[...]", cowboy_static, {priv_dir, static_world, "",
                 [{mimetypes, cow_mimetypes, all}]}},
             {'_', main_handler, []}
-		]}
-	]),
+        ]}
+    ]),
     Port = case os:getenv("PORT") of
                false -> 8080;
                Val -> list_to_integer(Val)
            end,
-	{ok, _} = cowboy:start_http(http, 100, [{port, Port}], [
-		{env, [{dispatch, Dispatch}]}
-	]),
+    {ok, _} = cowboy:start_http(http, 100, [{port, Port}], [
+        {env, [{dispatch, Dispatch}]}
+    ]),
     io:format("Web server started at port ~p...~n", [Port]),
     {ok, Args}.
 
