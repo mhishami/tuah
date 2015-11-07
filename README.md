@@ -102,7 +102,7 @@ Mongo Backend
     [{batchsize, 10}, {skip, 20}, 
     {projector, {<<"created_at">>, 1, <<"grpid">>, 1}}]).
   ```
-  ``` 
+  ``` erlang
   mongo_worker:find(<<"posts">>, #{<<"tag">> => <<"general">>, 
                                    <<"cat">> => <<"News">>}, 
     [{batchsize, 10}, {skip, 20}, 
@@ -171,7 +171,7 @@ Controllers
     - `files` : contains the file uploads data
     - `auth` : contains the authentication context
     - `sid` : contains the session id
-    
+
   - `Req` - the Cowboy Req parameters. It is hardly used, but just in case you want to play around with the Cowboy internals.
   
 
