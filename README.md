@@ -155,17 +155,17 @@ Controllers
   ```
 
 3. Request handler parameters:
-  - `Method` - can be HTTP Method, capitalized (e.g. GET, POST, PUT, DELETE etc.)
+  - `Method` : can be HTTP Method, capitalized (e.g. GET, POST, PUT, DELETE etc.)
 
-  - `Action` - the second parameters in the URL chosen, e.g.
+  - `Action` : the second parameters in the URL chosen, e.g.
     - `/user/delete` : Action = `delete`
     - `/post/view` : Action = `view`
 
-  - `Args` - the list of arguments of the URL
+  - `Args` : the list of arguments of the URL
     - `/user/delete/20/` : Args = `[20]`
     - `/post/view/977/simple` : Args = `[ 997, <<"simple">>]`
 
-  - `Params` - the request parameters
+  - `Params` : the request parameters
     - `qs_vals` : contains the `GET` query string variables
     - `qs_body` : contains the `POST` query string variables
     - `files` : contains the file uploads data
@@ -178,8 +178,8 @@ Controllers
 Session Context
 --------------
 1. Session context is carried in the `Params` in each request:
-  - `sid` - The session id 
-  - `auth` - The authentication context
+  - `sid` : The session id 
+  - `auth` : The authentication context
 
 2. Authentication context is to be used sparingly. **DO NOT** carry sensitive information in the `auth` context. Only username/email address is suffice.
 
