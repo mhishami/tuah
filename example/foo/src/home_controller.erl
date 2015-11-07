@@ -4,7 +4,7 @@
 -export ([handle_request/5]).
 -export ([before_filter/1]).
 
--include ("baz.hrl").
+-include ("foo.hrl").
 
 before_filter(_SessionId) ->
     {ok, proceed}.
