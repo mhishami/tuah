@@ -96,7 +96,7 @@ Mongo Backend
 
 3. Different notations for Selector/Projector, use which one that you like. I preferred the second notation as it is easier to read and comprehend.
 
-  ```
+  ``` erlang
   mongo_worker:find(<<"posts">>, {<<"tag">>, <<"general">>, 
                                   <<"cat">>, <<"News">>}, 
     [{batchsize, 10}, {skip, 20}, 
@@ -111,7 +111,7 @@ Mongo Backend
 
 4. Regular expressions are also there.
 
-  ```
+  ``` erlang
   mongo_worker:find(<<"posts">>, 
     {<<"title">>, #{<<"$regex">>  => <<"some*">>, 
                     <<"$options">> => <<"i">>}}, 
@@ -130,10 +130,12 @@ Routing
     - **Controller**: `post_controller.erl`
     - **Action**: `<<"message">>`
     - **Args**: `[ 20 ]`
+
   - `/user/view/details/100`
     - **Controller**: `user_controller.erl`
     - **Action**: `<<"view">>`
     - **Args**: `[<<"details">>, 100]`
+
   - `/view/message/20?float=false&data=none`
     - **Controller**: `view_controller.erl`
     - **Action**: `<<"message">>`
@@ -141,30 +143,35 @@ Routing
     - **Params**: `#{qs_vals => [{<<"float">>, <<"false">>},
      {<<"data">>, <<"none">>}],...}`
 
+
 Controllers
 -----------
 1. All controllers can be defined by using the `tuah_controller` behavior.
 
 2. All handlers are in the form:
 
-  ```
+  ``` erlang
   handle_request(Method, Action, Args, Params, Req)
   ```
 
 3. Request handler parameters:
   - `Method` - can be HTTP Method, capitalized (e.g. GET, POST, PUT, DELETE etc.)
+
   - `Action` - the second parameters in the URL chosen, e.g.
     - `/user/delete` : Action = `delete`
     - `/post/view` : Action = `view`
+
   - `Args` - the list of arguments of the URL
     - `/user/delete/20/` : Args = `[20]`
     - `/post/view/977/simple` : Args = `[ 997, <<"simple">>]`
+
   - `Params` - the request parameters
     - `qs_vals` : contains the `GET` query string variables
     - `qs_body` : contains the `POST` query string variables
     - `files` : contains the file uploads data
     - `auth` : contains the authentication context
     - `sid` : contains the session id
+    
   - `Req` - the Cowboy Req parameters. It is hardly used, but just in case you want to play around with the Cowboy internals.
   
 
@@ -182,7 +189,7 @@ Authentication
 
 2. Typical authentication procedures are:
 
-  ```
+  ``` erlang
   handle_request(<<"POST">>, <<"login">> = Action, _Args, Params, _Req) ->    
       PostVals = maps:get(<<"qs_body">>, Params),
       Username = proplists:get_value(<<"username">>, PostVals),
@@ -215,7 +222,7 @@ Authentication
 
 3. Logging out can be done by resetting the data in the session
 
-  ```
+  ``` erlang
   handle_request(<<"GET">>, <<"logout">>, _Args, Params, _Req) ->
         session_worker:del_cookies(maps:get(<<"sid">>, Params)),
         {redirect, <<"/">>};
@@ -226,3 +233,4 @@ Templates
 1. Templates are defined using `erlydtl`, which is a fork of Django Templates.
 
 2. In each project, you should have a custom `error` template so that all errors can be shown nicely, and react accordingly.
+
