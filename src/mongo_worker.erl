@@ -128,31 +128,43 @@ init(PoolName) ->
 handle_call({save, Coll, Doc}, _From, #state{pool=Pool} = State) ->
     Reply = poolboy:transaction(Pool, 
             fun(Conn) ->
-                mongo:insert(Conn, Coll, Doc)
+                case catch mongo:insert(Conn, Coll, Doc) of
+                    {'EXIT', Error} -> {error, Error};
+                    Else -> {ok, Else}
+                end
             end),
-    {reply, {ok, Reply}, State};
+    {reply, Reply, State};
 
 handle_call({update, Coll, Doc}, _From, #state{pool=Pool} = State) ->
     Id = maps:get(<<"_id">>, Doc),
     Reply = poolboy:transaction(Pool, 
             fun(Conn) ->
-                mongo:update(Conn, Coll, {<<"_id">>, Id}, {<<"$set">>, Doc})
+                case catch mongo:update(Conn, Coll, {<<"_id">>, Id}, {<<"$set">>, Doc}) of
+                    {'EXIT', Error} -> {error, Error};
+                    Else -> {ok, Else}
+                end
             end),            
-    {reply, {ok, Reply}, State};
+    {reply, Reply, State};
 
 handle_call({update, Coll, Selector, Doc}, _From, #state{pool=Pool} = State) ->
     Reply = poolboy:transaction(Pool, 
             fun(Conn) ->
-                mongo:update(Conn, Coll, Selector, Doc)
+                case catch mongo:update(Conn, Coll, Selector, Doc) of
+                    {'EXIT', Error} -> {error, Error};
+                    Else -> {ok, Else}
+                end
             end),            
-    {reply, {ok, Reply}, State};
+    {reply, Reply, State};
 
 handle_call({update, Coll, Selector, Doc, Args}, _From, #state{pool=Pool} = State) ->
     Reply = poolboy:transaction(Pool, 
             fun(Conn) ->
-                mongo:update(Conn, Coll, Selector, Doc, Args)
+                case catch mongo:update(Conn, Coll, Selector, Doc, Args) of
+                    {'EXIT', Error} -> {error, Error};
+                    Else -> {ok, Else}
+                end
             end),            
-    {reply, {ok, Reply}, State};
+    {reply, Reply, State};
 
 handle_call({find_one, Coll, Selector}, _From, #state{pool=Pool} = State) ->    
     Res = poolboy:transaction(Pool, 
