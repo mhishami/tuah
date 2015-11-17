@@ -36,7 +36,7 @@ maps_to_list([], Accu) ->
 
 -spec now() -> binary().
 now() ->
-    format(calendar:now_to_datetime(erlang:timestamp())).
+    format(calendar:local_time()).
 
 format({{Y,Mo,D}, {H,Mn,S}}) when is_float(S) ->
     FmtStr = "~4.10.0B-~2.10.0B-~2.10.0BT~2.10.0B:~2.10.0B:~9.6.0fZ",
