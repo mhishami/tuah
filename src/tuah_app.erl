@@ -13,7 +13,7 @@
 -spec start(any(), any()) -> any().
 start(_StartType, _StartArgs) ->
     word_util:init(),
-    application:start(sync),
+    %%application:start(sync),
     application:start(poolboy),
     application:ensure_all_started(lager),
     application:ensure_all_started(mongodb),    
@@ -21,7 +21,7 @@ start(_StartType, _StartArgs) ->
     application:start(erlydtl),
 
     %% set debug for console logs
-    lager:set_loglevel(lager_console_backend, debug),
+    %%lager:set_loglevel(lager_console_backend, debug),
     
     tuah_sup:start_link().
 
