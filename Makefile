@@ -1,6 +1,6 @@
 
 PROJECT = tuah
-DEPS = cowboy erlydtl jsx lager cowlib ranch bson mongodb sync poolboy
+DEPS = cowboy erlydtl jsx lager cowlib ranch bson mongodb sync poolboy ezmq
 
 dep_mongodb = git https://github.com/comtihon/mongodb-erlang.git master
 

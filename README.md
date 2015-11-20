@@ -8,6 +8,10 @@
 > 
 > Built on the strength of Cowboy and MongoDB, development time is greatly reduced.
 
+News
+----
+* Added WebSocket support for those working in React-based app. You can listen for the data thru ZeroMQ channels.
+
 Quick Start
 -----------
 

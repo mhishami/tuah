@@ -1,8 +1,8 @@
 {application,tuah,
              [{description,"A Simple HTTP Framework based on Cowboy, inspired by BeepBeep"},
-              {vsn,"1.2.1"},
+              {vsn,"1.3.1"},
               {modules,[]},
               {registered,[tuah_sup]},
-              {applications,[kernel,stdlib,crypto,lager,mnesia,poolboy,bson,mongodb]},
+              {applications,[kernel, stdlib, crypto, lager, mnesia, poolboy, bson, mongodb, ezmq]},
               {mod,{tuah_app,[]}},
               {env,[]}]}.
