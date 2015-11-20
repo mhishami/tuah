@@ -5,11 +5,8 @@
 -export([stop/1]).
 
 start(_Type, _Args) ->
+    application:ensure_all_started(tuah),
     application:start(sync),
-    application:ensure_all_started(lager),
-    application:ensure_all_started(mongodb),    
-    application:ensure_all_started(cowboy),
-    application:start(erlydtl),
 
     %% set debug for console logs
     lager:set_loglevel(lager_console_backend, debug),
