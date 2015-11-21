@@ -6,19 +6,11 @@
     {applications, [
                 kernel,
                 stdlib,
+                sasl,
                 crypto,
                 mnesia,
                 tuah,
-                sync,
-                cowboy,
-                erlydtl,
-                jsx,
-                lager,
-                cowlib,
-                ranch,
-                bson,
-                pbkdf2,
-                mongodb
+                sync
     ]},
     {mod, {foo_app, []}},
     {env, [

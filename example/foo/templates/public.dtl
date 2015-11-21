@@ -13,3 +13,35 @@
       </div>
   
 {% endblock %}
+
+{% block js %}
+    <script src="/static/dist/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        var ws;
+        $(function() {
+            ws_tuah.init()
+        }), ws_tuah = {
+            init: function() {
+                ws = new WebSocket("ws://localhost:8080/ws");
+                ws.onopen = function(e) { ws_tuah.onOpen(e) };
+                ws.onclose = function(e) { ws_tuah.onClose(e) };
+                ws.onmessage = function(evt) { ws_tuah.onMessage(evt) };
+            },
+            onOpen: function(e) {
+                data = {
+                    url: '/messages',
+                    auth: 'hisham',
+                    session_id: '"4a2703d7-e025-454b-916c-0e871c63b0bc"'
+                };
+                ws.send(JSON.stringify(data));
+                console.log('Data sent...');
+            },
+            onClose: function(e) {
+                console.log('Socket closed');
+            },
+            onMessage: function(e) {
+                console.log(e.data);
+            }
+        };
+    </script>
+{% endblock %}

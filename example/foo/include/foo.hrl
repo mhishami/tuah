@@ -6,4 +6,4 @@
 -define(INFO(Text, Args), lager:log(info, ?MODULE, "~p:~p: " ++ Text, [?MODULE, ?LINE | Args])).
 -define(ERROR(Text, Args), lager:log(error, ?MODULE, "~p:~p: " ++ Text, [?MODULE, ?LINE | Args])).
 
--define (DB_USERS, <<"users">>).
+-define(DB_USERS, <<"users">>).
