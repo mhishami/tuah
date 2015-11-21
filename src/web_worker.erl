@@ -26,7 +26,7 @@ start_link() ->
 %% gen_server.
 -spec init(list()) -> {ok, any()}.
 init([]) ->
-    AppName = foo, %app_name(),
+    AppName = app_name(),
     Port = case application:get_env(AppName, http) of
         {ok, [{port, P}]} -> P;
         _ -> 8080
