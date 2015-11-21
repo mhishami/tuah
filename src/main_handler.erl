@@ -3,8 +3,6 @@
 
 -include("tuah.hrl").
 
--import (web_worker, [app_name/0]).
-
 -export([init/3]).
 -export([handle/2]).
 -export([terminate/3]).
@@ -75,21 +73,18 @@ handle_http(Method, Path, QsVals, PostVals, Files, Req, State) ->
         end,
     
     % ?DEBUG("Controller= ~p, Action= ~p, Args= ~p~n", [Controller, Action, Args]),
+    %% get the controller, if any
+    Ctrl = list_to_atom(binary_to_list(<< Controller/binary, <<"_controller">>/binary >>)),
+    % ?DEBUG("Ctrl= ~p", [Ctrl]),
+
     {ok, Req2} = 
-        case web_worker:get_handler(Controller) of
-            error ->
+        case catch Ctrl:before_filter(1) of
+            {'EXIT', _} ->
                 %% error, try to reload the controller again
-                web_worker:reload_handlers(),
-                case web_worker:get_handler(Controller) of
-                    error ->
-                        do_error(Req, 
-                            << <<"Controller not found: ">>/binary, Controller/binary,
-                            <<"_controller">>/binary >>);
-                    {ok, Ctrl} ->
-                        %% ok, found controllers
-                        process_request(Ctrl, Controller, Method, Action, Args, Params, Req)
-                end;
-            {ok, Ctrl} ->
+                do_error(Req, 
+                    << <<"Controller not found: ">>/binary, Controller/binary,
+                    <<"_controller">>/binary >>);
+            {ok, _} ->
                 %% ok, found controllers
                 % ?DEBUG("Found controller, Ctrl= ~p~n", [Ctrl]),
                 process_request(Ctrl, Controller, Method, Action, Args, Params, Req)
@@ -209,8 +204,8 @@ render_template(Template, Data, Req) ->
 -spec do_error(Req, binary()) -> {ok, Req, State}
     when Req::cowboy_req:req(), State::state().
 do_error(Req, Message) ->
-    case filelib:wildcard(code:lib_dir(app_name()) ++ "/ebin/error_dtl.beam") of
-        [] ->
+    case code:is_loaded(error_dtl) of
+        false ->
             cowboy_req:reply(404, [], Message, Req);
         _ ->
             {ok, Content} = error_dtl:render([{error, Message}]),

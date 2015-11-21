@@ -1,10 +1,11 @@
+erlang.mk
+.erlang.mk/
 ebin/*
 deps/*
 _rel
 rel
 relx
 relx.config
-.erlang.mk/
 tuah.d
 .tuah.plt
 logs

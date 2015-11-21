@@ -17,23 +17,7 @@
 -record(state, {handlers}).
 
 %% API.
--export([get_handler/1]).
--export([reload_handlers/0]).
--export([list_handlers/0]).
--export([reload/0]).
 -export([app_name/0]).
-
--spec get_handler(binary()) -> {ok, atom()} | undefined.
-get_handler(Handler) ->
-    gen_server:call(?MODULE, {get_handler, Handler}).
-
--spec reload_handlers() -> {ok, any()}.
-reload_handlers() ->
-    gen_server:call(?MODULE, {reload_handlers}).
-
--spec list_handlers() -> {ok, any()}.
-list_handlers() ->
-    gen_server:call(?MODULE, {list_handlers}).
 
 -spec start_link() -> {ok, pid()}.
 start_link() ->
@@ -42,7 +26,7 @@ start_link() ->
 %% gen_server.
 -spec init(list()) -> {ok, any()}.
 init([]) ->
-    AppName = app_name(),
+    AppName = foo, %app_name(),
     Port = case application:get_env(AppName, http) of
         {ok, [{port, P}]} -> P;
         _ -> 8080
@@ -53,6 +37,7 @@ init([]) ->
         {'_', [
             {"/static/[...]", cowboy_static, {priv_dir, AppName, "static",
                 [{mimetypes, cow_mimetypes, all}]}},
+            {"/ws", ws_handler, []},
             {'_', main_handler, []}
         ]}
     ]),
@@ -83,21 +68,6 @@ init([]) ->
     {ok, #state{}}.
 
 -spec handle_call(any(), any(), any()) -> {ok, any()} | {error, any()}.
-handle_call({get_handler, Handler}, _From, #state{handlers=Repo} = State) ->
-    % ?DEBUG("Repo= ~p~n", [Repo]),
-    Maps1 = case Repo of
-                undefined -> reload();
-                _ -> Repo
-            end,
-    % ?DEBUG("Handler= ~p~n", [maps:find(Handler, Maps1)]),
-    {reply, maps:find(Handler, Maps1), State};
-
-handle_call({reload_handlers}, _From, State) ->
-    {reply, ok, State#state{handlers = reload()}};
-
-handle_call({list_handlers}, _From, #state{handlers=H} = State) ->
-    {reply, {ok, H}, State};
-
 handle_call(_Request, _From, State) ->
     {reply, ignored, State}.
 
@@ -116,19 +86,6 @@ terminate(_Reason, _State) ->
 -spec code_change(any(), any(), any()) -> {ok, any()}.
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
-
--spec reload() -> map().
-reload() ->
-    Path = code:lib_dir(app_name()) ++ "/ebin/*_controller.beam",
-    C1 = lists:foldl(
-            fun(C, Accu) ->
-                L = hd(lists:reverse(string:tokens(C, "/"))),
-                L2 = string:tokens(L, "_"),
-                [hd(L2)|Accu]
-            end,
-        [], filelib:wildcard(Path)),
-    C2 = [ {list_to_binary(W), list_to_atom(W ++ "_controller")} || W <- C1 ],
-    maps:from_list(C2).
 
 -spec app_name() -> atom().
 app_name() ->

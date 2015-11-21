@@ -10,7 +10,7 @@
 
 News
 ----
-* Added WebSocket support for those working in React-based app. You can listen for the data thru ZeroMQ channels.
+* Added WebSocket support for those working in React-based app. You can implement the `tuah_ws_controller` behavior to process the data.
 
 Quick Start
 -----------
@@ -235,6 +235,19 @@ Authentication
         session_worker:del_cookies(maps:get(<<"sid">>, Params)),
         {redirect, <<"/">>};
   ```
+
+WebSocket
+---------
+1. WebSocket are naturally implemented on the URL `/ws` of your server.
+
+2. Create a WebSocket controller by the name of home_ws_controller.erl, and implement `tuah_ws_controller` bahavior, as the `ws_handler` right now is expecting that to be available, and dispactched any WebSocket request to that handler for now.
+
+3. If the controller is not present, you should see an error like below in your log file.
+
+```
+[error] ws_handler:58: WebSocket handler 'home_ws_controller' is not implemented
+```
+4. Only data of type `{text, binary()}` is supported for now in the reply.
 
 Templates
 ---------

@@ -38,5 +38,5 @@ init([]) ->
 
     Mongo = ?CHILD(mongo_worker, worker, [PoolName]),
 
-    {ok, { {one_for_one, 5, 10}, [Session, Mongo, Web, PoolSpecs]} }.
+    {ok, { {one_for_one, 5, 10}, [Session, Web, Mongo, PoolSpecs]} }.
 
