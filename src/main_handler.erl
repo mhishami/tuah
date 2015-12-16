@@ -84,7 +84,7 @@ handle_http(Method, Path, QsVals, PostVals, Files, Req, State) ->
                 do_error(Req, 
                     << <<"Controller not found: ">>/binary, Controller/binary,
                     <<"_controller">>/binary >>);
-            {ok, _} ->
+            _ ->
                 %% ok, found controllers
                 % ?DEBUG("Found controller, Ctrl= ~p~n", [Ctrl]),
                 process_request(Ctrl, Controller, Method, Action, Args, Params, Req)
