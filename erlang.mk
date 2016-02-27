@@ -1,1 +1,1 @@
-include /Users/hisham/Projects/Erlang/gruppz/erlang.mk
+include /Users/hisham/Projects/Erlang/stumana/erlang.mk

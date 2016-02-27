@@ -17,6 +17,8 @@
 
 -record(state, {pool}).
 
+-define (mongo, mc_worker_api).
+
 %% API.
 %% ----------------------------------------------------------------------------
 -export([
@@ -70,7 +72,7 @@ find_one(Coll, Match, Args) ->
 
 -spec find(binary(), any()) -> {ok, any()}.
 find(Coll, Match) ->
-    gen_server:call(?MODULE, {find, Coll, Match, []}).
+    gen_server:call(?MODULE, {find, Coll, Match, #{}}).
 
 % Example
 % mongo_worker:find(<<"posts">>, {}, [{batchsize, 3}, {skip, 1}, 
@@ -143,7 +145,7 @@ init(PoolName) ->
 handle_call({save, Coll, Doc}, _From, #state{pool=Pool} = State) ->
     Reply = poolboy:transaction(Pool, 
             fun(Conn) ->
-                case catch mongo:insert(Conn, Coll, Doc) of
+                case catch ?mongo:insert(Conn, Coll, Doc) of
                     {'EXIT', Error} -> {error, Error};
                     Else -> {ok, Else}
                 end
@@ -154,7 +156,7 @@ handle_call({update, Coll, Doc}, _From, #state{pool=Pool} = State) ->
     Id = maps:get(<<"_id">>, Doc),
     Reply = poolboy:transaction(Pool, 
             fun(Conn) ->
-                case catch mongo:update(Conn, Coll, {<<"_id">>, Id}, {<<"$set">>, Doc}) of
+                case catch ?mongo:update(Conn, Coll, {<<"_id">>, Id}, {<<"$set">>, Doc}) of
                     {'EXIT', Error} -> {error, Error};
                     Else -> {ok, Else}
                 end
@@ -164,7 +166,7 @@ handle_call({update, Coll, Doc}, _From, #state{pool=Pool} = State) ->
 handle_call({update, Coll, Match, Doc}, _From, #state{pool=Pool} = State) ->
     Reply = poolboy:transaction(Pool, 
             fun(Conn) ->
-                case catch mongo:update(Conn, Coll, Match, Doc) of
+                case catch ?mongo:update(Conn, Coll, Match, Doc) of
                     {'EXIT', Error} -> {error, Error};
                     Else -> {ok, Else}
                 end
@@ -174,7 +176,7 @@ handle_call({update, Coll, Match, Doc}, _From, #state{pool=Pool} = State) ->
 handle_call({update, Coll, Match, Doc, Args}, _From, #state{pool=Pool} = State) ->
     Reply = poolboy:transaction(Pool, 
             fun(Conn) ->
-                case catch mongo:update(Conn, Coll, Match, Doc, Args) of
+                case catch ?mongo:update(Conn, Coll, Match, Doc, Args) of
                     {'EXIT', Error} -> {error, Error};
                     Else -> {ok, Else}
                 end
@@ -184,7 +186,7 @@ handle_call({update, Coll, Match, Doc, Args}, _From, #state{pool=Pool} = State) 
 handle_call({find_one, Coll, Match}, _From, #state{pool=Pool} = State) ->    
     Res = poolboy:transaction(Pool, 
             fun(Conn) ->
-                mongo:find_one(Conn, Coll, Match)
+                ?mongo:find_one(Conn, Coll, Match)
             end),
     Reply = case maps:size(Res) of
                 0 -> {error, not_found};
@@ -195,7 +197,7 @@ handle_call({find_one, Coll, Match}, _From, #state{pool=Pool} = State) ->
 handle_call({find_one, Coll, Match, Args}, _From, #state{pool=Pool} = State) ->    
     Res = poolboy:transaction(Pool, 
             fun(Conn) ->
-                mongo:find_one(Conn, Coll, Match, Args)
+                ?mongo:find_one(Conn, Coll, Match, Args)
             end),
     Reply = case maps:size(Res) of
                 0 -> {error, not_found};
@@ -210,7 +212,7 @@ handle_call({find_one, Coll, Match, Args}, _From, #state{pool=Pool} = State) ->
 handle_call({find, Coll, Match, Args}, _From, #state{pool=Pool} = State) ->
     Res = poolboy:transaction(Pool,
             fun(Conn) ->
-                Cursor = mongo:find(Conn, Coll, Match, Args),
+                Cursor = ?mongo:find(Conn, Coll, Match, Args),
                 Results = mc_cursor:rest(Cursor),
                 mc_cursor:close(Cursor),
                 Results
@@ -220,7 +222,7 @@ handle_call({find, Coll, Match, Args}, _From, #state{pool=Pool} = State) ->
 handle_call({match, Coll, Match, Sort}, _From, #state{pool=Pool} = State) ->
     Res = poolboy:transaction(Pool,
             fun(Conn) ->
-                {true, #{<<"result">> := Results}} = mongo:command(Conn,
+                {true, #{<<"result">> := Results}} = ?mongo:command(Conn,
                     {<<"aggregate">>, Coll, <<"pipeline">>, [
                         {<<"$match">>, Match},
                         {<<"$sort">>, Sort}
@@ -232,7 +234,7 @@ handle_call({match, Coll, Match, Sort}, _From, #state{pool=Pool} = State) ->
 handle_call({match, Coll, Match, Sort, Limit}, _From, #state{pool=Pool} = State) ->
     Res = poolboy:transaction(Pool,
             fun(Conn) ->
-                {true, #{<<"result">> := Results}} = mongo:command(Conn,
+                {true, #{<<"result">> := Results}} = ?mongo:command(Conn,
                     {<<"aggregate">>, Coll, <<"pipeline">>, [
                         {<<"$match">>, Match},
                         {<<"$sort">>, Sort},
@@ -246,7 +248,7 @@ handle_call({match, Coll, Match, Sort, Limit}, _From, #state{pool=Pool} = State)
 handle_call({match, Coll, Match, Sort, Skip, Limit}, _From, #state{pool=Pool} = State) ->
     Res = poolboy:transaction(Pool,
             fun(Conn) ->
-                {true, #{<<"result">> := Results}} = mongo:command(Conn,
+                {true, #{<<"result">> := Results}} = ?mongo:command(Conn,
                     {<<"aggregate">>, Coll, <<"pipeline">>, [
                         {<<"$match">>, Match},
                         {<<"$sort">>, Sort},
@@ -261,7 +263,7 @@ handle_call({match, Coll, Match, Sort, Skip, Limit}, _From, #state{pool=Pool} = 
 handle_call({match_group, Coll, Match, Group}, _From, #state{pool=Pool} = State) ->
     Res = poolboy:transaction(Pool,
             fun(Conn) ->
-                {true, #{<<"result">> := Results}} = mongo:command(Conn,
+                {true, #{<<"result">> := Results}} = ?mongo:command(Conn,
                     {<<"aggregate">>, Coll, <<"pipeline">>, [
                         {<<"$match">>, Match},
                         {<<"$group">>, Group}
@@ -273,7 +275,7 @@ handle_call({match_group, Coll, Match, Group}, _From, #state{pool=Pool} = State)
 handle_call({match_group, Coll, Match, Group, Sort}, _From, #state{pool=Pool} = State) ->
     Res = poolboy:transaction(Pool,
             fun(Conn) ->
-                {true, #{<<"result">> := Results}} = mongo:command(Conn,
+                {true, #{<<"result">> := Results}} = ?mongo:command(Conn,
                     {<<"aggregate">>, Coll, <<"pipeline">>, [
                         {<<"$match">>, Match},
                         {<<"$group">>, Group},
@@ -286,7 +288,7 @@ handle_call({match_group, Coll, Match, Group, Sort}, _From, #state{pool=Pool} = 
 handle_call({match_group, Coll, Match, Project, Group, Sort}, _From, #state{pool=Pool} = State) ->
     Res = poolboy:transaction(Pool,
             fun(Conn) ->
-                {true, #{<<"result">> := Results}} = mongo:command(Conn,
+                {true, #{<<"result">> := Results}} = ?mongo:command(Conn,
                     {<<"aggregate">>, Coll, <<"pipeline">>, [
                         {<<"$match">>, Match},
                         {<<"$project">>, Project},
@@ -300,21 +302,21 @@ handle_call({match_group, Coll, Match, Project, Group, Sort}, _From, #state{pool
 handle_call({delete, Coll, Match}, _From, #state{pool=Pool} = State) ->    
     Reply = poolboy:transaction(Pool,
             fun(Conn) ->
-                mongo:delete(Conn, Coll, Match)
+                ?mongo:delete(Conn, Coll, Match)
             end),
     {reply, {ok, Reply}, State};
 
 handle_call({delete_one, Coll, Match}, _From, #state{pool=Pool} = State) ->    
     Reply = poolboy:transaction(Pool,
             fun(Conn) ->
-                mongo:delete_one(Conn, Coll, Match)
+                ?mongo:delete_one(Conn, Coll, Match)
             end),
     {reply, {ok, Reply}, State};
 
 handle_call({count, Coll, Match, Limit}, _From, #state{pool=Pool} = State) ->
     Reply = poolboy:transaction(Pool,
             fun(Conn) ->
-                mongo:count(Conn, Coll, Match, Limit)
+                ?mongo:count(Conn, Coll, Match, Limit)
             end),
     {reply, {ok, Reply}, State};
 
@@ -324,7 +326,7 @@ handle_call({count, Coll, Match, Limit}, _From, #state{pool=Pool} = State) ->
 handle_call({ensure_index, Coll, IndexSpec}, _From, #state{pool=Pool} = State) ->
     Reply = poolboy:transaction(Pool,
             fun(Conn) ->
-                mongo:ensure_index(Conn, Coll, IndexSpec)
+                ?mongo:ensure_index(Conn, Coll, IndexSpec)
             end),
     {reply, {ok, Reply}, State};
 
